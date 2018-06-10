@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace Roguelike
 {
-    public class Item : IGameObject
+    public class Exit : IGameObject
     {
-        public float Weight { get; set; }
+        public GameObjects Type { get; }
 
-        public GameObjects Type { get; } = GameObjects.Item;
+        public Exit()
+        {
+            Type = GameObjects.Exit;
+        }
     }
 }

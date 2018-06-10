@@ -8,5 +8,6 @@ namespace Roguelike
 {
     public interface IGameObject
     {
+        GameObjects Type { get; }
     }
 }

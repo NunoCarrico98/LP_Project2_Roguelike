@@ -5,10 +5,12 @@ namespace Roguelike
     public class Player : IGameObject
     {
         public float Health { get; set; }
+        public GameObjects Type { get; }
 
         public Player()
         {
             Health = 100;
+            Type = GameObjects.Player;
         }
 
         public void Die()

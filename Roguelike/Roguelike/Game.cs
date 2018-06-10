@@ -7,11 +7,18 @@ namespace Roguelike
         public void GameLoop()
         {
             Player player = new Player();
+            GridManager grid = new GridManager();
+            Renderer render = new Renderer();
 
             bool endGame = false;
 
+            grid.SetInitialPlayerAndExitPosition(player);
+
             while (!endGame)
             {
+                render.RenderBoard(grid);
+
+
                 player.Die();
                 player.Health--;
                 Console.ReadKey();
