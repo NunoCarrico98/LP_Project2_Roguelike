@@ -6,35 +6,63 @@ namespace Roguelike
     {
         public void RenderBoard(GridManager grid)
         {
-            char[,][] gameSymbols = new char[grid.Rows, grid.Columns][];
+            string[,][] gameSymbols = new string[grid.Rows, grid.Columns][];
 
+            for (int i = 0; i < grid.Rows; i++)
+            {
+                for (int j = 0; j < grid.Columns; j++)
+                {
+                    gameSymbols[i, j] = new string[grid.ObjectsPerTile];
+                }
+            }
+            
+            Console.Clear();
+            Console.WriteLine("************* LP1 - RPG *************\n");
             for (int x = 0; x < grid.Rows; x++)
             {
                 for (int y = 0; y < grid.Columns; y++)
                 {
-                    for (int posInTile = 0; posInTile < grid.ObjectsPerTile;
+                    for (int posInTile = 0; posInTile < grid.ObjectsPerTile/2;
                         posInTile++)
                     {
                         gameSymbols[x, y][posInTile] =
-                            DefineGameSymbol(go: grid.GetGO(x, y, posInTile));
+                            DefineGameSymbol(grid.GetGO(x, y, posInTile));
+
+                        Console.Write(gameSymbols[x, y][posInTile]);
                     }
+                    Console.Write("\t");
                 }
+                Console.WriteLine();
+                for (int y = 0; y < grid.Columns; y++)
+                {
+                    for (int posInTile = grid.ObjectsPerTile / 2; posInTile < grid.ObjectsPerTile;
+                        posInTile++)
+                    {
+                        gameSymbols[x, y][posInTile] =
+                            DefineGameSymbol(grid.GetGO(x, y, posInTile));
+
+                        Console.Write(gameSymbols[x, y][posInTile]);
+                    }
+                    Console.Write("\t");
+                }
+                Console.WriteLine();
+                Console.WriteLine();
             }
         }
 
-        public char DefineGameSymbol(IGameObject go)
+        public string DefineGameSymbol(IGameObject go)
         {
-            char gameSymbol = ' ';
+            string gameSymbol = "";
             switch (go.Type)
             {
                 case GameObjects.None:
-                    gameSymbol = '.';
+                    gameSymbol = ".";
                     break;
                 case GameObjects.Player:
-                    gameSymbol = 'P';
+                    gameSymbol = "P";
                     break;
                 case GameObjects.Exit:
-                    gameSymbol = 'E';
+                    gameSymbol = "E";
                     break;
             }
             return gameSymbol;

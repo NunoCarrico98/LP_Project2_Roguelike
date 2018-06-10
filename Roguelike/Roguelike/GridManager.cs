@@ -30,7 +30,7 @@ namespace Roguelike
             gameGrid[0, 0][0] = player;
             for (int i = 0; i < ObjectsPerTile; i++)
             {
-                gameGrid[7, 0][i] = exit;
+                gameGrid[0, 7][i] = exit;
             }
         }
 
