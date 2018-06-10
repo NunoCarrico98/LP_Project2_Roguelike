@@ -21,7 +21,6 @@ namespace Roguelike
                 grid.UpdatePlayerPosition(player);
 
                 player.Die();
-                player.Health--;
             }
         }
     }
