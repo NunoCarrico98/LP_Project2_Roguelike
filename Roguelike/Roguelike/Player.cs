@@ -33,17 +33,50 @@ namespace Roguelike
             switch (input.ToLower())
             {
                 case "w":
-                    playerPos.X--;
-                    break;
+                    if (playerPos.X < 1)
+                    {
+                        playerPos.X = 0;
+                        break;
+                    }
+                    else {
+                        playerPos.X--;
+                        break;
+                    }
                 case "s":
-                    playerPos.X++;
-                    break;
+                    if (playerPos.X > 6)
+                    {
+                        playerPos.X = 7;
+                        break;
+                    }
+                    else
+                    {
+                        playerPos.X++;
+                        break;
+                    }
                 case "a":
-                    playerPos.Y--;
-                    break;
+
+                    if (playerPos.Y < 1)
+                    {
+                        playerPos.Y = 0;
+                        break;
+                    }
+                    else
+                    {
+                        playerPos.Y--;
+                        break;
+                    }
                 case "d":
-                    playerPos.Y++;
-                    break;
+
+                    if (playerPos.Y > 6)
+                    {
+                        playerPos.Y = 7;
+                        break;
+                    }
+                    else
+                    {
+                        playerPos.Y++;
+                        break;
+                    }
             }
         }
     }
