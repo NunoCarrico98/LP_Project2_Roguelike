@@ -8,6 +8,7 @@ namespace Roguelike
         public int Rows { get; } = 8;
         public int Columns { get; } = 8;
         public int ObjectsPerTile { get; } = 10;
+        public int Level { get; set; } = 0;
 
         private GameTile[,] gameGrid;
         private Random rnd = new Random();
@@ -27,10 +28,11 @@ namespace Roguelike
 
         public void SetInitialPlayerAndExitPosition(Player player)
         {
-            gameGrid[0, 0][0] = player;
+            gameGrid[rnd.Next(0, 8), 0][0] = player;
+            int exitRnd = rnd.Next(0, 8);
             for (int i = 0; i < ObjectsPerTile; i++)
             {
-                gameGrid[0, 7][i] = exit;
+                gameGrid[exitRnd, 7][i] = exit;
             }
         }
 

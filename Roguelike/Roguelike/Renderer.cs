@@ -17,7 +17,8 @@ namespace Roguelike
             }
             
             Console.Clear();
-            Console.WriteLine("************* LP1 - RPG *************\n");
+            Console.WriteLine($"********************* LP1 RPG : Level " +
+                $"{grid.Level} *********************\n");
             for (int x = 0; x < grid.Rows; x++)
             {
                 for (int y = 0; y < grid.Columns; y++)
@@ -35,8 +36,8 @@ namespace Roguelike
                 Console.WriteLine();
                 for (int y = 0; y < grid.Columns; y++)
                 {
-                    for (int posInTile = grid.ObjectsPerTile / 2; posInTile < grid.ObjectsPerTile;
-                        posInTile++)
+                    for (int posInTile = grid.ObjectsPerTile / 2; 
+                        posInTile < grid.ObjectsPerTile; posInTile++)
                     {
                         gameSymbols[x, y][posInTile] =
                             DefineGameSymbol(grid.GetGO(x, y, posInTile));
