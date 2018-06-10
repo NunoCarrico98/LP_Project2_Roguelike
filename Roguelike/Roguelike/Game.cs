@@ -17,12 +17,11 @@ namespace Roguelike
             while (!endGame)
             {
                 render.RenderBoard(grid);
-
+                player.GetInput(grid);
+                grid.UpdatePlayerPosition(player);
 
                 player.Die();
                 player.Health--;
-                player.GetInput(grid);
-                Console.ReadKey();
             }
         }
     }

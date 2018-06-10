@@ -6,10 +6,7 @@ namespace Roguelike
     {
         public float Health { get; set; }
         public GameObjects Type { get; }
-
-        public int playerX = 0;
-        public int playerY = 0;
-        public Player playerType;
+        public Position playerPos { get; set; }
 
         public Player()
         {
@@ -30,23 +27,22 @@ namespace Roguelike
         {
             string input = "";
 
-            Console.Write("Where to move? ");
+            Console.Write("> ");
             input = Console.ReadLine();
 
             switch (input.ToLower())
             {
                 case "w":
-                    playerY += 1;
-                    grid.SetPlayerPosition(playerX, playerY, playerType);
+                    playerPos.X--;
                     break;
                 case "s":
-                    playerY -= 1;
+                    playerPos.X++;
                     break;
                 case "a":
-                    playerX -= 1;
+                    playerPos.Y--;
                     break;
                 case "d":
-                    playerX += 1;
+                    playerPos.Y++;
                     break;
             }
         }
