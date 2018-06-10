@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Roguelike
 {
-    public class Npc : IGameObject
+    public interface IGameObject
     {
     }
 }

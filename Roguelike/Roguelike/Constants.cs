@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Roguelike
 {
-    public class Npc : IGameObject
+    public class Constants
     {
+        public int Rows { get; } = 8;
+        public int Columns { get; } = 8;
+        public int ObjectsPerTile { get; } = 10;
     }
 }
