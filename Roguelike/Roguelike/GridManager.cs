@@ -10,7 +10,7 @@ namespace Roguelike
         public int ObjectsPerTile { get; } = 10;
         public int Level { get; set; } = 0;
 
-        private GameTile[,] gameGrid;
+        public GameTile[,] gameGrid;
         private Random rnd = new Random();
         private Exit exit = new Exit();
 
@@ -34,6 +34,11 @@ namespace Roguelike
             {
                 gameGrid[exitRnd, 7][i] = exit;
             }
+        }
+
+        public void SetPlayerPosition(int x, int y, Player player)
+        {
+            gameGrid[x, y][0] = player;
         }
 
         public IGameObject GetGO(int x, int y, int posIntTile)

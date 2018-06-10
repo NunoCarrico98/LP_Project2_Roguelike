@@ -7,6 +7,10 @@ namespace Roguelike
         public float Health { get; set; }
         public GameObjects Type { get; }
 
+        public int playerX = 0;
+        public int playerY = 0;
+        public Player playerType;
+
         public Player()
         {
             Health = 100;
@@ -22,7 +26,7 @@ namespace Roguelike
             }
         }
 
-        public void GetInput()
+        public void GetInput(GridManager grid)
         {
             string input = "";
 
@@ -32,16 +36,17 @@ namespace Roguelike
             switch (input.ToLower())
             {
                 case "w":
-
+                    playerY += 1;
+                    grid.SetPlayerPosition(playerX, playerY, playerType);
                     break;
                 case "s":
-
+                    playerY -= 1;
                     break;
                 case "a":
-
+                    playerX -= 1;
                     break;
                 case "d":
-
+                    playerX += 1;
                     break;
             }
         }

@@ -21,6 +21,7 @@ namespace Roguelike
 
                 player.Die();
                 player.Health--;
+                player.GetInput(grid);
                 Console.ReadKey();
             }
         }
