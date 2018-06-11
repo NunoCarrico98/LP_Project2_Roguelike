@@ -9,7 +9,5 @@ namespace Roguelike
     public class Item : IGameObject
     {
         public float Weight { get; set; }
-
-        public GameObjects Type { get; } = GameObjects.Item;
     }
 }

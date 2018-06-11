@@ -8,6 +8,6 @@ namespace Roguelike
 {
     public class NPC : IGameObject
     {
-        public GameObjects Type { get; } = GameObjects.NPC;
+
     }
 }

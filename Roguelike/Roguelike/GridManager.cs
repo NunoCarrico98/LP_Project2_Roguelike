@@ -28,6 +28,13 @@ namespace Roguelike
             }
         }
 
+        public void Update(Player player)
+        {
+            UpdatePlayerPosition(player);
+            CheckForTraps(player);
+            WinLevel(player);
+        }
+
         public void SetInitialPlayerAndExitPosition(Player player)
         {
             int exitRnd = rnd.Next(0, 8);
@@ -42,11 +49,7 @@ namespace Roguelike
                 gameGrid[exitRnd, 7][i] = exit;
             }
             /* Testing the trap*/
-            gameGrid[5, 5].Insert(0, trap);
-            if (gameGrid[5, 5].Count > 10)
-            {
-                gameGrid[5, 5].RemoveAt(gameGrid[5, 5].Count - 1);
-            }
+            gameGrid[5, 5].AddObject(trap);
         }
 
         public void UpdatePlayerPosition(Player player)
@@ -55,30 +58,27 @@ namespace Roguelike
 
             // Remove Player from current tile
             gameGrid[oldPlayerPos.X, oldPlayerPos.Y].Remove(player);
-            gameGrid[oldPlayerPos.X, oldPlayerPos.Y].Add(new EmptyTile());
+            gameGrid[oldPlayerPos.X, oldPlayerPos.Y].Insert(0, null);
             oldPlayerPos = new Position(player.PlayerPos.X, player.PlayerPos.Y);
 
             // Add Player to new tile
             gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Insert(0, player);
-            // If tile has more than 10 objects, remove last
-            if (gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Count > 10)
-            {
-                gameGrid[player.PlayerPos.X, player.PlayerPos.Y]
-                    .RemoveAt(gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Count - 1);
-            }
+            gameGrid[player.PlayerPos.X, player.PlayerPos.Y].RemoveNullsOutsideView();
+        }
 
+        public void CheckForTraps(Player player)
+        {
             /* Testing the trap */
             if (gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Contains(trap))
             {
-                if(trap.CheckForTraps())
-                {
-                    player.Health -= rnd.Next(1, trap.MaxDamage);
-                    gameGrid[5, 5].Remove(trap);
-                    gameGrid[5, 5].Add(new EmptyTile());
-                }
+                player.Health -= rnd.Next(0, trap.MaxDamage);
+                gameGrid[5, 5].Remove(trap);
+                gameGrid[5, 5].Add(null);
             }
+        }
 
-
+        public void WinLevel(Player player)
+        {
             // If current tile contains player and exit
             if (gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Contains(exit) &&
                gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Contains(player))

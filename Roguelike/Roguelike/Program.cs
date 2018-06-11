@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            Game game = new Game();
+            GameManager game = new GameManager();
             MainMenu mainMenu = new MainMenu();
 
             if (mainMenu.GetMenuOption())

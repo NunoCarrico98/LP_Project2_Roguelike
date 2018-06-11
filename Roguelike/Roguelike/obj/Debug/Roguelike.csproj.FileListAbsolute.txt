@@ -12,3 +12,10 @@ C:\Users\Pantera\source\repos\Project2_Roguelike\Project2_Roguelike\Roguelike\Ro
 C:\Users\Pantera\source\repos\Project2_Roguelike\Project2_Roguelike\Roguelike\Roguelike\obj\Debug\Roguelike.csproj.CoreCompileInputs.cache
 C:\Users\Pantera\source\repos\Project2_Roguelike\Project2_Roguelike\Roguelike\Roguelike\obj\Debug\Roguelike.exe
 C:\Users\Pantera\source\repos\Project2_Roguelike\Project2_Roguelike\Roguelike\Roguelike\obj\Debug\Roguelike.pdb
+C:\Users\Nuno Carriço\Documents\lusofona\2sem\lp1\Project2_Roguelike\Roguelike\Roguelike\bin\Debug\Roguelike.exe.config
+C:\Users\Nuno Carriço\Documents\lusofona\2sem\lp1\Project2_Roguelike\Roguelike\Roguelike\bin\Debug\Roguelike.exe
+C:\Users\Nuno Carriço\Documents\lusofona\2sem\lp1\Project2_Roguelike\Roguelike\Roguelike\bin\Debug\Roguelike.pdb
+C:\Users\Nuno Carriço\Documents\lusofona\2sem\lp1\Project2_Roguelike\Roguelike\Roguelike\obj\Debug\Roguelike.csprojAssemblyReference.cache
+C:\Users\Nuno Carriço\Documents\lusofona\2sem\lp1\Project2_Roguelike\Roguelike\Roguelike\obj\Debug\Roguelike.csproj.CoreCompileInputs.cache
+C:\Users\Nuno Carriço\Documents\lusofona\2sem\lp1\Project2_Roguelike\Roguelike\Roguelike\obj\Debug\Roguelike.exe
+C:\Users\Nuno Carriço\Documents\lusofona\2sem\lp1\Project2_Roguelike\Roguelike\Roguelike\obj\Debug\Roguelike.pdb

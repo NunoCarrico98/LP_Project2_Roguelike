@@ -54,21 +54,10 @@ namespace Roguelike
         public string DefineGameSymbol(IGameObject go)
         {
             string gameSymbol = "";
-            switch (go.Type)
-            {
-                case GameObjects.None:
-                    gameSymbol = ".";
-                    break;
-                case GameObjects.Player:
-                    gameSymbol = "P";
-                    break;
-                case GameObjects.Exit:
-                    gameSymbol = "E";
-                    break;
-                case GameObjects.Item:
-                    gameSymbol = "I"; //Isto depois vai ser mudado, só para teste agora
-                    break;
-            }
+            if (go is null) gameSymbol = ".";
+            else if (go is Player) gameSymbol = "P";
+            else if (go is Exit) gameSymbol = "E";
+            else if (go is Trap) gameSymbol = "T";
             return gameSymbol;
         }
 
