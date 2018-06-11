@@ -46,6 +46,7 @@
     <Compile Include="GridManager.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="GameTile.cs" />
+    <Compile Include="HighScoreManager.cs" />
     <Compile Include="IGameObject.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="MainMenu.cs" />

@@ -17,10 +17,10 @@ namespace Roguelike
             while (!endGame)
             {
                 render.RenderBoard(grid);
-                player.GetInput(grid);
+                player.PlayerController(grid);
                 grid.Update(player);
 
-                player.Die();
+                player.Die(grid);
             }
         }
     }

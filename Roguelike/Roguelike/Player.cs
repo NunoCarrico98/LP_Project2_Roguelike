@@ -6,22 +6,27 @@ namespace Roguelike
     {
         public float Health { get; set; }
         public Position PlayerPos { get; set; }
+        private HighScoreManager hsm;
+        private Renderer render;
 
         public Player()
         {
             Health = 100;
+            hsm = new HighScoreManager();
+            render = new Renderer();
         }
 
-        public void Die()
+        public void Die(GridManager grid)
         {
             if (Health <= 0)
             {
                 Console.WriteLine("You Died. :(");
+                AddNewHighScore(grid);
                 Environment.Exit(1);
             }
         }
 
-        public void GetInput(GridManager grid)
+        public void PlayerController(GridManager grid)
         {
             string input = "";
 
@@ -31,17 +36,18 @@ namespace Roguelike
             switch (input.ToLower())
             {
                 case "w":
-                    if (PlayerPos.X < 1)
+                    if (PlayerPos.X == 0)
                     {
                         PlayerPos.X = 0;
                         break;
                     }
-                    else {
+                    else
+                    {
                         PlayerPos.X--;
                         break;
                     }
                 case "s":
-                    if (PlayerPos.X > 6)
+                    if (PlayerPos.X == grid.Rows)
                     {
                         PlayerPos.X = 7;
                         break;
@@ -53,7 +59,7 @@ namespace Roguelike
                     }
                 case "a":
 
-                    if (PlayerPos.Y < 1)
+                    if (PlayerPos.Y == 0)
                     {
                         PlayerPos.Y = 0;
                         break;
@@ -65,7 +71,7 @@ namespace Roguelike
                     }
                 case "d":
 
-                    if (PlayerPos.Y > 6)
+                    if (PlayerPos.Y == grid.Columns - 1)
                     {
                         PlayerPos.Y = 7;
                         break;
@@ -75,6 +81,22 @@ namespace Roguelike
                         PlayerPos.Y++;
                         break;
                     }
+                case "q":
+                    AddNewHighScore(grid);
+                    Environment.Exit(1);
+                    break;
+            }
+        }
+
+        public void AddNewHighScore(GridManager grid)
+        {
+            if (hsm.highscores[hsm.highscores.Count - 1].Item2 < grid.Level)
+            {
+                string name = "";
+                render.AddNewHighscoreInterface(grid);
+                name = Console.ReadLine();
+                hsm.AddScore(name, grid.Level);
+                hsm.Save();
             }
         }
     }
