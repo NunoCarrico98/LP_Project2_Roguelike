@@ -116,17 +116,6 @@ namespace Roguelike
             return sb.ToString();
         }
 
-        // Method that returns all highscores from list
-        public IEnumerable<Tuple<string, float>> GetScores()
-        {
-            // For each highscore in list
-            foreach (Tuple<string, float> highscore in highscores)
-            {
-                // Return the current highscore
-                yield return highscore;
-            }
-        }
-
         // Method to sort the list
         private void SortList()
         {
