@@ -65,6 +65,9 @@ namespace Roguelike
                 case GameObjects.Exit:
                     gameSymbol = "E";
                     break;
+                case GameObjects.Item:
+                    gameSymbol = "I"; //Isto depois vai ser mudado, só para teste agora
+                    break;
             }
             return gameSymbol;
         }

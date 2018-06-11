@@ -6,7 +6,7 @@ namespace Roguelike
     {
         public float Health { get; set; }
         public GameObjects Type { get; }
-        public Position playerPos { get; set; }
+        public Position PlayerPos { get; set; }
 
         public Player()
         {
@@ -33,48 +33,48 @@ namespace Roguelike
             switch (input.ToLower())
             {
                 case "w":
-                    if (playerPos.X < 1)
+                    if (PlayerPos.X < 1)
                     {
-                        playerPos.X = 0;
+                        PlayerPos.X = 0;
                         break;
                     }
                     else {
-                        playerPos.X--;
+                        PlayerPos.X--;
                         break;
                     }
                 case "s":
-                    if (playerPos.X > 6)
+                    if (PlayerPos.X > 6)
                     {
-                        playerPos.X = 7;
+                        PlayerPos.X = 7;
                         break;
                     }
                     else
                     {
-                        playerPos.X++;
+                        PlayerPos.X++;
                         break;
                     }
                 case "a":
 
-                    if (playerPos.Y < 1)
+                    if (PlayerPos.Y < 1)
                     {
-                        playerPos.Y = 0;
+                        PlayerPos.Y = 0;
                         break;
                     }
                     else
                     {
-                        playerPos.Y--;
+                        PlayerPos.Y--;
                         break;
                     }
                 case "d":
 
-                    if (playerPos.Y > 6)
+                    if (PlayerPos.Y > 6)
                     {
-                        playerPos.Y = 7;
+                        PlayerPos.Y = 7;
                         break;
                     }
                     else
                     {
-                        playerPos.Y++;
+                        PlayerPos.Y++;
                         break;
                     }
             }
