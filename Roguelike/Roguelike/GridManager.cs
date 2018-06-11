@@ -50,11 +50,13 @@ namespace Roguelike
             }
             /* Testing the trap*/
             gameGrid[5, 5].AddObject(trap);
+            Explore(player);
         }
 
         public void UpdatePlayerPosition(Player player)
         {
-            gameGrid[player.playerPos.X, player.playerPos.Y].Explored = true;
+            Explore(player);
+
             player.Health--;
 
             // Remove Player from current tile
@@ -98,6 +100,48 @@ namespace Roguelike
                 // Begin new level
                 SetInitialPlayerAndExitPosition(player);
             }
+        }
+
+        public void Explore(Player player)
+        {
+            gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Explored = true;
+
+            Position pos1 = Verify(player.PlayerPos.X - 1, player.PlayerPos.Y);
+            Position pos2 = Verify(player.PlayerPos.X + 1, player.PlayerPos.Y);
+            Position pos3 = Verify(player.PlayerPos.X, player.PlayerPos.Y - 1);
+            Position pos4 = Verify(player.PlayerPos.X, player.PlayerPos.Y + 1);
+
+            gameGrid[pos1.X, pos1.Y].Explored = true;
+            gameGrid[pos2.X, pos2.Y].Explored = true;
+            gameGrid[pos3.X, pos3.Y].Explored = true;
+            gameGrid[pos4.X, pos4.Y].Explored = true;
+        }
+
+        public Position Verify(int x, int y)
+        {
+            if (x < 0)
+            {
+                x = 0;
+            }
+            if (y < 0)
+            {
+                y = 0;
+            }
+            if (y > Columns - 1)
+            {
+                y = Columns - 1;
+            }
+            if (x > Rows - 1)
+            {
+                x = Rows - 1;
+            }
+
+            return new Position(x, y);
+        }
+
+        public GameTile GetTile(int x, int y)
+        {
+            return gameGrid[x, y];
         }
 
         public IGameObject GetGO(int x, int y, int posIntTile)

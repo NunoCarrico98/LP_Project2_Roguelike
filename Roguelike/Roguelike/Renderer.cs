@@ -28,7 +28,7 @@ namespace Roguelike
                         posInTile++)
                     {
                         gameSymbols[x, y][posInTile] =
-                            DefineGameSymbol(grid.GetGO(x, y, posInTile));
+                            DefineGameSymbol(grid.GetGO(x, y, posInTile), grid.GetTile(x, y));
 
                         Console.Write(gameSymbols[x, y][posInTile]);
                     }
@@ -41,7 +41,7 @@ namespace Roguelike
                         posInTile < grid.ObjectsPerTile; posInTile++)
                     {
                         gameSymbols[x, y][posInTile] =
-                            DefineGameSymbol(grid.GetGO(x, y, posInTile));
+                            DefineGameSymbol(grid.GetGO(x, y, posInTile), grid.GetTile(x, y));
 
                         Console.Write(gameSymbols[x, y][posInTile]);
                     }
@@ -50,144 +50,22 @@ namespace Roguelike
                 Console.WriteLine();
                 Console.WriteLine();
             }
-        }
+        }       
 
-        /*public void Neighboor(Player player, GameTile[,] gameGrid, IGameObject go)
+        public string DefineGameSymbol(IGameObject go, GameTile gametile)
         {
-            int x = player.playerPos.X;
-            int y = player.playerPos.Y;
-            string gameSymbol = "";
-            //Checks surrounding of player
-            //eSTOU PRESO AQUI
-            if (gameGrid[x + 1,y] == new GameTile())
-            {
-                switch (go.Type)
-                {
-                    case GameObjects.None:
-                        gameSymbol = ".";
-                        break;
-                    case GameObjects.Player:
-                        gameSymbol = "P";
-                        break;
-                    case GameObjects.Exit:
-                        gameSymbol = "E";
-                        break;
-                }
-            }
-            if (gameGrid[x - 1, y] == new GameTile())
-            {
-                switch (go.Type)
-                {
-                    case GameObjects.None:
-                        gameSymbol = ".";
-                        break;
-                    case GameObjects.Player:
-                        gameSymbol = "P";
-                        break;
-                    case GameObjects.Exit:
-                        gameSymbol = "E";
-                        break;
-                }
-            }
-            if (gameGrid[x, y + 1] == new GameTile())
-            {
-                switch (go.Type)
-                {
-                    case GameObjects.None:
-                        gameSymbol = ".";
-                        break;
-                    case GameObjects.Player:
-                        gameSymbol = "P";
-                        break;
-                    case GameObjects.Exit:
-                        gameSymbol = "E";
-                        break;
-                }
-            }
-            if (gameGrid[x, y - 1] == new GameTile())
-            {
-                switch (go.Type)
-                {
-                    case GameObjects.None:
-                        gameSymbol = ".";
-                        break;
-                    case GameObjects.Player:
-                        gameSymbol = "P";
-                        break;
-                    case GameObjects.Exit:
-                        gameSymbol = "E";
-                        break;
-                }
-            }
-            if (gameGrid[x - 1, y - 1] == new GameTile())
-            {
-                switch (go.Type)
-                {
-                    case GameObjects.None:
-                        gameSymbol = ".";
-                        break;
-                    case GameObjects.Player:
-                        gameSymbol = "P";
-                        break;
-                    case GameObjects.Exit:
-                        gameSymbol = "E";
-                        break;
-                }
-            }
-            if (gameGrid[x + 1, y + 1] == new GameTile())
-            {
-                switch (go.Type)
-                {
-                    case GameObjects.None:
-                        gameSymbol = ".";
-                        break;
-                    case GameObjects.Player:
-                        gameSymbol = "P";
-                        break;
-                    case GameObjects.Exit:
-                        gameSymbol = "E";
-                        break;
-                }
-            }
-            if (gameGrid[x + 1, y - 1] == new GameTile())
-            {
-                switch (go.Type)
-                {
-                    case GameObjects.None:
-                        gameSymbol = ".";
-                        break;
-                    case GameObjects.Player:
-                        gameSymbol = "P";
-                        break;
-                    case GameObjects.Exit:
-                        gameSymbol = "E";
-                        break;
-                }
-            }
-            if (gameGrid[x - 1, y + 1] == new GameTile())
-            {
-                switch (go.Type)
-                {
-                    case GameObjects.None:
-                        gameSymbol = ".";
-                        break;
-                    case GameObjects.Player:
-                        gameSymbol = "P";
-                        break;
-                    case GameObjects.Exit:
-                        gameSymbol = "E";
-                        break;
-                }
-            }
             
-        }*/
-
-        public string DefineGameSymbol(IGameObject go)
-        {
             string gameSymbol = "";
-            if (go is null) gameSymbol = ".";
-            else if (go is Player) gameSymbol = "P";
-            else if (go is Exit) gameSymbol = "E";
+            if (gametile.Explored == true)
+            {
+                if (go is null) gameSymbol = ".";
+                else if (go is Player) gameSymbol = "P";
+                else if (go is Exit) gameSymbol = "E";
+            }
+            else
+            {
+                gameSymbol = "~";
+            }
             return gameSymbol;
         }
 
