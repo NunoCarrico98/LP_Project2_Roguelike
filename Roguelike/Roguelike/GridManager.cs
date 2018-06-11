@@ -44,6 +44,7 @@ namespace Roguelike
 
         public void UpdatePlayerPosition(Player player)
         {
+            gameGrid[player.playerPos.X, player.playerPos.Y].Explored = true;
             player.Health--;
 
             // Remove Player from current tile

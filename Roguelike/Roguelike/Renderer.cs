@@ -51,7 +51,7 @@ namespace Roguelike
             }
         }
 
-        public void Neighboor(Player player, GameTile[,] gameGrid, IGameObject go)
+        /*public void Neighboor(Player player, GameTile[,] gameGrid, IGameObject go)
         {
             int x = player.playerPos.X;
             int y = player.playerPos.Y;
@@ -179,7 +179,7 @@ namespace Roguelike
                 }
             }
             
-        }
+        }*/
 
         public string DefineGameSymbol(IGameObject go)
         {
