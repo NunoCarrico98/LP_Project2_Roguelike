@@ -12,6 +12,7 @@ namespace Roguelike
 
         private GameTile[,] gameGrid;
         private Random rnd = new Random();
+        private Map map = new Map();
         private Exit exit = new Exit(); 
         private Position oldPlayerPos;
         private Trap trap = new Trap();
@@ -39,10 +40,13 @@ namespace Roguelike
         {
             int exitRnd = rnd.Next(0, 8);
             int playerRnd = rnd.Next(0, 8);
+            
 
             gameGrid[playerRnd, 0][0] = player;
             oldPlayerPos = new Position(playerRnd, 0);
             player.PlayerPos = new Position(playerRnd, 0);
+
+            gameGrid[rnd.Next(0, 8), rnd.Next(0, 8)].AddObject(map);
 
             for (int i = 0; i < ObjectsPerTile; i++)
             {
@@ -77,6 +81,17 @@ namespace Roguelike
                 player.Health -= rnd.Next(0, trap.MaxDamage);
                 gameGrid[5, 5].Remove(trap);
                 gameGrid[5, 5].Add(null);
+            }
+        }
+
+        public void PicksMap(Player player)
+        {
+            if (gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Contains(map) &&
+               gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Contains(player))
+            {
+                gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Remove(map);
+                gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Add(null);
+                RevealMap();
             }
         }
 
@@ -137,6 +152,17 @@ namespace Roguelike
             }
 
             return new Position(x, y);
+        }
+
+        public void RevealMap()
+        {
+            for (int x = 0; x < Rows; x++)
+            {
+                for (int y = 0; y < Columns; y++)
+                {
+                    gameGrid[x, y].Explored = true;
+                }
+            }
         }
 
         public GameTile GetTile(int x, int y)

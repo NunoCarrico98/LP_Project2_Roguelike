@@ -50,6 +50,7 @@
     <Compile Include="IGameObject.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="MainMenu.cs" />
+    <Compile Include="Map.cs" />
     <Compile Include="NPC.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Position.cs" />
