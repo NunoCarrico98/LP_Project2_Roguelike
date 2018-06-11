@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Roguelike
 {
@@ -87,6 +88,19 @@ namespace Roguelike
             Console.WriteLine("- Nuno Carriço\n");
             Console.WriteLine("Press ENTER to go back\n");
             Console.ReadKey();
+        }
+
+        public void InfoInterface()
+        {
+            List<Trap> TrapList = new List<Trap>();
+            Console.WriteLine("Trap          |      MaxDamage\n"); //10 spaces
+            for (int i = 0; i < Enum.GetNames(typeof(TypesOfTraps)).Length; i++)
+            {
+                TrapList.Add(new Trap((TypesOfTraps)(i)));
+                Console.WriteLine(TrapList[i]);
+            }
+            
+
         }
     }
 }
