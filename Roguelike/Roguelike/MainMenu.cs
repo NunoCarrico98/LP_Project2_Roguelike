@@ -12,7 +12,8 @@ namespace Roguelike
             int inputInt = 0;
             bool startGame = false;
 
-            while (((inputInt < 1) || (inputInt > 4)) || !startGame)
+            while ((input != "1" && input != "2" && input != "3" && 
+                input != "4") || !startGame)
             {
                 render.MainMenuInterface();
                 Console.Write("Option: ");
