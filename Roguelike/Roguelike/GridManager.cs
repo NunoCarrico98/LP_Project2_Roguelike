@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Roguelike
 {
+    /// <summary>
+    /// Class that controls all grid movement and management
+    /// </summary>
     public class GridManager
     {
         public int Rows { get; } = 8;
@@ -16,6 +19,9 @@ namespace Roguelike
         private Position oldPlayerPos;
         private Trap trap = new Trap();
 
+        /// <summary>
+        /// Constructor to Initialise Level
+        /// </summary>
         public GridManager()
         {
             gameGrid = new GameTile[Rows, Columns];
@@ -28,34 +34,44 @@ namespace Roguelike
             }
         }
 
+        /// <summary>
+        /// Update Grid
+        /// </summary>
+        /// <param name="player"></param>
         public void Update(Player player)
         {
+            // Update player position
             UpdatePlayerPosition(player);
+            //Check current tile for traps
             CheckForTraps(player);
+            // Check if player won level
             WinLevel(player);
         }
 
         public void SetInitialPlayerAndExitPosition(Player player)
         {
+            // Create and Initialise Player and Exit randoms
             int exitRnd = rnd.Next(0, 8);
             int playerRnd = rnd.Next(0, 8);
 
+            // Add player to grid
             gameGrid[playerRnd, 0][0] = player;
+            // Save player position
             oldPlayerPos = new Position(playerRnd, 0);
             player.PlayerPos = new Position(playerRnd, 0);
 
+            // Add Exit to tile on grid
             for (int i = 0; i < ObjectsPerTile; i++)
             {
                 gameGrid[exitRnd, 7][i] = exit;
             }
+
             /* Testing the trap*/
             gameGrid[5, 5].AddObject(trap);
         }
 
         public void UpdatePlayerPosition(Player player)
         {
-            player.Health--;
-
             // Remove Player from current tile
             gameGrid[oldPlayerPos.X, oldPlayerPos.Y].Remove(player);
             gameGrid[oldPlayerPos.X, oldPlayerPos.Y].Insert(0, null);
@@ -64,6 +80,9 @@ namespace Roguelike
             // Add Player to new tile
             gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Insert(0, player);
             gameGrid[player.PlayerPos.X, player.PlayerPos.Y].RemoveNullsOutsideView();
+
+            // Take 1 health from player
+            player.Health--;
         }
 
         public void CheckForTraps(Player player)
@@ -71,6 +90,7 @@ namespace Roguelike
             /* Testing the trap */
             if (gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Contains(trap))
             {
+                // Take random Health from player
                 player.Health -= rnd.Next(0, trap.MaxDamage);
                 gameGrid[5, 5].Remove(trap);
                 gameGrid[5, 5].Add(null);
@@ -94,6 +114,7 @@ namespace Roguelike
 
                 // Add level
                 Level++;
+
                 // Begin new level
                 SetInitialPlayerAndExitPosition(player);
             }
@@ -101,6 +122,7 @@ namespace Roguelike
 
         public IGameObject GetGO(int x, int y, int posIntTile)
         {
+            // Return game object on grid
             return gameGrid[x, y][posIntTile];
         }
     }

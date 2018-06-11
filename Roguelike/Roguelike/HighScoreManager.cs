@@ -5,15 +5,25 @@ using System.Text;
 
 namespace Roguelike
 {
+    /// <summary>
+    /// Class that manages High Scores
+    /// </summary>
     public class HighScoreManager
     {
-        // Create a List to hold highscores
+        /// <summary>
+        /// Create a List to hold highscores
+        /// </summary>
         public List<Tuple<string, float>> highscores { get; private set; }
 
-        // Create variable to hold the filename
+        /// <summary>
+        /// Create variable to hold the filename
+        /// </summary>
         private string filename = "";
 
-        // Constructor to initialise List
+        /// <summary>
+        /// Constructor to initialise List
+        /// </summary>
+        /// <param name="filename">Filename given by user</param>
         public HighScoreManager(string filename = "HighScores.txt")
         {
             // Initialise filename with filename given
@@ -61,7 +71,11 @@ namespace Roguelike
             }
         }
 
-        // Method that Adds a new Highscore
+        /// <summary>
+        /// Method that Adds a new Highscore
+        /// </summary>
+        /// <param name="name">Name of player</param>
+        /// <param name="score">Score of player</param>
         public void AddScore(string name, float score)
         {
             // Create and instantiate a new object to hold the new highscore
@@ -81,7 +95,9 @@ namespace Roguelike
             }
         }
 
-        // Method to save highscores to file
+        /// <summary>
+        /// Method to save highscores to file
+        /// </summary>
         public void Save()
         {
             // Create variable to hold all text from list
@@ -97,7 +113,10 @@ namespace Roguelike
             File.WriteAllText(filename, text);
         }
 
-        // Overriding method ToString()
+        /// <summary>
+        /// Overriding method ToString()
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             // Instantiate a new instance of StringBuilder
@@ -116,7 +135,9 @@ namespace Roguelike
             return sb.ToString();
         }
 
-        // Method to sort the list
+        /// <summary>
+        /// Method to sort the list
+        /// </summary>
         private void SortList()
         {
             // Sort the elements of the list in a descending order
