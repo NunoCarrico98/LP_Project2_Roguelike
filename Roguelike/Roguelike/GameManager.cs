@@ -2,7 +2,7 @@
 
 namespace Roguelike
 {
-    public class Game
+    public class GameManager
     {
         public void GameLoop()
         {
@@ -17,10 +17,10 @@ namespace Roguelike
             while (!endGame)
             {
                 render.RenderBoard(grid);
-                player.GetInput(grid);
-                grid.UpdatePlayerPosition(player);
+                player.PlayerController(grid);
+                grid.Update(player);
 
-                player.Die();
+                player.Die(grid);
             }
         }
     }

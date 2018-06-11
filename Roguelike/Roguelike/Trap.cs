@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Roguelike
 {
-    public class EmptyTile : IGameObject
+    class Trap : Item
     {
-        public GameObjects Type { get; }
+        public int MaxDamage { get; } 
 
-        public EmptyTile()
+        public Trap()
         {
-            Type = GameObjects.None;
+            MaxDamage = 100;
         }
     }
 }

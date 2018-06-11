@@ -5,25 +5,28 @@ namespace Roguelike
     public class Player : IGameObject
     {
         public float Health { get; set; }
-        public GameObjects Type { get; }
-        public Position playerPos { get; set; }
+        public Position PlayerPos { get; set; }
+        private HighScoreManager hsm;
+        private Renderer render;
 
         public Player()
         {
             Health = 100;
-            Type = GameObjects.Player;
+            hsm = new HighScoreManager();
+            render = new Renderer();
         }
 
-        public void Die()
+        public void Die(GridManager grid)
         {
             if (Health <= 0)
             {
                 Console.WriteLine("You Died. :(");
+                AddNewHighScore(grid);
                 Environment.Exit(1);
             }
         }
 
-        public void GetInput(GridManager grid)
+        public void PlayerController(GridManager grid)
         {
             string input = "";
 
@@ -33,50 +36,67 @@ namespace Roguelike
             switch (input.ToLower())
             {
                 case "w":
-                    if (playerPos.X < 1)
+                    if (PlayerPos.X == 0)
                     {
-                        playerPos.X = 0;
-                        break;
-                    }
-                    else {
-                        playerPos.X--;
-                        break;
-                    }
-                case "s":
-                    if (playerPos.X > 6)
-                    {
-                        playerPos.X = 7;
+                        PlayerPos.X = 0;
                         break;
                     }
                     else
                     {
-                        playerPos.X++;
+                        PlayerPos.X--;
+                        break;
+                    }
+                case "s":
+                    if (PlayerPos.X == grid.Rows)
+                    {
+                        PlayerPos.X = 7;
+                        break;
+                    }
+                    else
+                    {
+                        PlayerPos.X++;
                         break;
                     }
                 case "a":
 
-                    if (playerPos.Y < 1)
+                    if (PlayerPos.Y == 0)
                     {
-                        playerPos.Y = 0;
+                        PlayerPos.Y = 0;
                         break;
                     }
                     else
                     {
-                        playerPos.Y--;
+                        PlayerPos.Y--;
                         break;
                     }
                 case "d":
 
-                    if (playerPos.Y > 6)
+                    if (PlayerPos.Y == grid.Columns - 1)
                     {
-                        playerPos.Y = 7;
+                        PlayerPos.Y = 7;
                         break;
                     }
                     else
                     {
-                        playerPos.Y++;
+                        PlayerPos.Y++;
                         break;
                     }
+                case "q":
+                    AddNewHighScore(grid);
+                    Environment.Exit(1);
+                    break;
+            }
+        }
+
+        public void AddNewHighScore(GridManager grid)
+        {
+            if (hsm.highscores[hsm.highscores.Count - 1].Item2 < grid.Level)
+            {
+                string name = "";
+                render.AddNewHighscoreInterface(grid);
+                name = Console.ReadLine();
+                hsm.AddScore(name, grid.Level);
+                hsm.Save();
             }
         }
     }

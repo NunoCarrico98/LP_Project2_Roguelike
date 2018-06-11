@@ -4,6 +4,7 @@ namespace Roguelike
 {
     public class Renderer
     {
+
         public void RenderBoard(GridManager grid)
         {
             string[,][] gameSymbols = new string[grid.Rows, grid.Columns][];
@@ -15,7 +16,7 @@ namespace Roguelike
                     gameSymbols[i, j] = new string[grid.ObjectsPerTile];
                 }
             }
-            
+
             Console.Clear();
             Console.WriteLine($"********************* LP1 RPG : Level " +
                 $"{grid.Level} *********************\n");
@@ -23,7 +24,7 @@ namespace Roguelike
             {
                 for (int y = 0; y < grid.Columns; y++)
                 {
-                    for (int posInTile = 0; posInTile < grid.ObjectsPerTile/2;
+                    for (int posInTile = 0; posInTile < grid.ObjectsPerTile / 2;
                         posInTile++)
                     {
                         gameSymbols[x, y][posInTile] =
@@ -36,7 +37,7 @@ namespace Roguelike
                 Console.WriteLine();
                 for (int y = 0; y < grid.Columns; y++)
                 {
-                    for (int posInTile = grid.ObjectsPerTile / 2; 
+                    for (int posInTile = grid.ObjectsPerTile / 2;
                         posInTile < grid.ObjectsPerTile; posInTile++)
                     {
                         gameSymbols[x, y][posInTile] =
@@ -184,19 +185,18 @@ namespace Roguelike
         public string DefineGameSymbol(IGameObject go)
         {
             string gameSymbol = "";
-            switch (go.Type)
-            {
-                case GameObjects.None:
-                    gameSymbol = ".";
-                    break;
-                case GameObjects.Player:
-                    gameSymbol = "P";
-                    break;
-                case GameObjects.Exit:
-                    gameSymbol = "E";
-                    break;
-            }
+            if (go is null) gameSymbol = ".";
+            else if (go is Player) gameSymbol = "P";
+            else if (go is Exit) gameSymbol = "E";
             return gameSymbol;
+        }
+
+        public void AddNewHighscoreInterface(GridManager grid)
+        {
+            Console.WriteLine("GOOD JOB!");
+            Console.WriteLine("You're 1 of the 10 best players!");
+            Console.WriteLine($"Score: {grid.Level}");
+            Console.Write("What's your name? ");
         }
 
         public void MainMenuInterface()
