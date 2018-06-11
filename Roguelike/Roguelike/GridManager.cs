@@ -12,7 +12,7 @@ namespace Roguelike
 
         private GameTile[,] gameGrid;
         private Random rnd = new Random();
-        private Exit exit = new Exit();
+        private Exit exit = new Exit(); 
         private Position oldPlayerPos;
 
         public GridManager()
