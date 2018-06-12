@@ -74,7 +74,6 @@ namespace Roguelike
 
         public void AddNewHighscoreInterface(GridManager grid)
         {
-            Console.WriteLine("GOOD JOB!");
             Console.WriteLine("You're 1 of the 10 best players!");
             Console.WriteLine($"Score: {grid.Level}");
             Console.Write("What's your name? ");

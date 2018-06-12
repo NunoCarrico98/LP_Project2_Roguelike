@@ -20,6 +20,7 @@ namespace Roguelike
         {
             if (Health <= 0)
             {
+                render.RenderBoard(grid);
                 Console.WriteLine("You Died. :(");
                 AddNewHighScore(grid);
                 Environment.Exit(1);

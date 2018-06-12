@@ -60,6 +60,8 @@ namespace Roguelike
             // Save player position
             oldPlayerPos = new Position(playerRnd, 0);
             player.PlayerPos = new Position(playerRnd, 0);
+            Explore(player);
+            CheckForTraps(player);
 
             gameGrid[rnd.Next(0, 8), rnd.Next(0, 8)].AddObject(map);
 
@@ -69,17 +71,11 @@ namespace Roguelike
                 gameGrid[exitRnd, 7][i] = exit;
             }
 
-<<<<<<< HEAD
-            /* Testing the trap*/
-            gameGrid[5, 5].AddObject(trap);
-            Explore(player);
-=======
             for (int i = 0; i < 5; i++)
             {
                 Trap trap = new Trap(new Position(rnd.Next(0,8), rnd.Next(0,8)));
                 gameGrid[trap.TrapPos.X, trap.TrapPos.Y].AddObject(trap);
             }
->>>>>>> ianis
         }
 
         public void UpdatePlayerPosition(Player player)
