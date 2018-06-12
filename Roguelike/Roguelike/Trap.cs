@@ -11,12 +11,14 @@ namespace Roguelike
         public int MaxDamage { get; private set; } 
         public float Damage { get; private set; }
         public TypesOfTraps TrapType { get; set; }
+        public Position TrapPos { get; set; }
         Random rnd = new Random();
 
-        public Trap()
+        public Trap(Position pos)
         {
             TrapType = (TypesOfTraps)rnd.Next(0, Enum.GetNames(typeof(TypesOfTraps)).Length + 1);
             SetMaxDamage();
+            TrapPos = pos; 
         }
 
         public Trap(TypesOfTraps typetrap)
