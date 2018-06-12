@@ -21,13 +21,13 @@ namespace Roguelike
             bool endGame = false;
 
             // Set initial Positions
-            grid.SetInitialPlayerAndExitPosition(player);
+            grid.SetInitialPositions(player);
 
             // GameLoop
             while (!endGame)
             {
-                // Render ht game grid
-                render.RenderBoard(grid);
+                // Render the game grid
+                render.RenderBoard(grid, player);
                 // Ask for player input
                 player.PlayerController(grid);
                 // Update the game
