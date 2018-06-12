@@ -92,7 +92,7 @@ namespace Roguelike
                     Environment.Exit(1);
                     break;
                 case "e":               
-                    grid.PicksMap(this);
+                    grid.PickUpMap(this);
                     break;
             }
 

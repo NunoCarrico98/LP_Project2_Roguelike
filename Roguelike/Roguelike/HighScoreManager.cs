@@ -10,31 +10,22 @@ namespace Roguelike
     /// </summary>
     public class HighScoreManager
     {
-<<<<<<< HEAD
+
         /// <summary>
         /// Create a List to hold highscores
         /// </summary>
-        public List<Tuple<string, float>> highscores { get; private set; }
-=======
-        // Create a List to hold Highscores
         public List<Tuple<string, float>> Highscores { get; private set; }
->>>>>>> ianis
 
         /// <summary>
         /// Create variable to hold the filename
         /// </summary>
         private string filename = "";
 
-<<<<<<< HEAD
         /// <summary>
         /// Constructor to initialise List
         /// </summary>
         /// <param name="filename">Filename given by user</param>
         public HighScoreManager(string filename = "HighScores.txt")
-=======
-        // Constructor to initialise List
-        public HighScoreManager(string filename = "Highscores.txt")
->>>>>>> ianis
         {
             // Initialise filename with filename given
             this.filename = filename;
