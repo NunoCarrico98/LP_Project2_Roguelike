@@ -7,10 +7,13 @@ namespace Roguelike
     /// </summary>
     public class GameTile : List<IGameObject>
     {
+
+        public bool Explored { get; set; }
+
         /// <summary>
         /// Constructor that initialises each game tile
         /// </summary>
-        public GameTile()
+        public GameTile() : base(10)
         {
             // Add null to the respective tile
             for (int posInTile = 0; posInTile < 100;

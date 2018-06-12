@@ -28,7 +28,7 @@ namespace Roguelike
                         posInTile++)
                     {
                         gameSymbols[x, y][posInTile] =
-                            DefineGameSymbol(grid.GetGO(x, y, posInTile));
+                            DefineGameSymbol(grid.GetGO(x, y, posInTile), grid.GetTile(x, y));
 
                         Console.Write(gameSymbols[x, y][posInTile]);
                     }
@@ -41,7 +41,7 @@ namespace Roguelike
                         posInTile < grid.ObjectsPerTile; posInTile++)
                     {
                         gameSymbols[x, y][posInTile] =
-                            DefineGameSymbol(grid.GetGO(x, y, posInTile));
+                            DefineGameSymbol(grid.GetGO(x, y, posInTile), grid.GetTile(x, y));
 
                         Console.Write(gameSymbols[x, y][posInTile]);
                     }
@@ -50,14 +50,23 @@ namespace Roguelike
                 Console.WriteLine();
                 Console.WriteLine();
             }
-        }
+        }       
 
-        public string DefineGameSymbol(IGameObject go)
+        public string DefineGameSymbol(IGameObject go, GameTile gametile)
         {
+            
             string gameSymbol = "";
-            if (go is null) gameSymbol = ".";
-            else if (go is Player) gameSymbol = "P";
-            else if (go is Exit) gameSymbol = "E";
+            if (gametile.Explored == true)
+            {
+                if (go is null) gameSymbol = ".";
+                else if (go is Player) gameSymbol = "P";
+                else if (go is Exit) gameSymbol = "E";
+                else if (go is Map) gameSymbol = "M";
+            }
+            else
+            {
+                gameSymbol = "~";
+            }
             return gameSymbol;
         }
 
