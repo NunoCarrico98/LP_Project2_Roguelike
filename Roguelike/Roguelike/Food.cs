@@ -13,11 +13,11 @@ namespace Roguelike
         public Position FoodPos { get; set; }
         Random rnd = new Random();
 
-        public Food(Position Pos)
+        public Food(Position pos)
         {
             FoodType = (TypesOfFood)rnd.Next(0, Enum.GetNames(typeof(TypesOfTraps)).Length + 1);
             SetHp();
-            FoodPos = Pos;
+            FoodPos = pos;
         }
 
         public Food(TypesOfFood typefood)

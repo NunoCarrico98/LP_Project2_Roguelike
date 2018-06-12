@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Roguelike
 {
-    class TypesOfGun
+    public enum TypesOfWeapon
     {
+        Lance,
+        Sword,
+        SlingShot,
+        Axe,
+        Dagger,
     }
 }
