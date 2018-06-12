@@ -6,7 +6,7 @@ namespace Roguelike
     public class Renderer
     {
 
-        public void RenderBoard(GridManager grid)
+        public void RenderBoard(GridManager grid, Player player)
         {
             string[,][] gameSymbols = new string[grid.Rows, grid.Columns][];
 
@@ -51,11 +51,13 @@ namespace Roguelike
                 Console.WriteLine();
                 Console.WriteLine();
             }
-        }       
+
+            ShowGameInterface(grid, player);
+        }
 
         public string DefineGameSymbol(IGameObject go, GameTile gametile)
         {
-            
+
             string gameSymbol = "";
             if (gametile.Explored == true)
             {
@@ -70,6 +72,100 @@ namespace Roguelike
                 gameSymbol = "~";
             }
             return gameSymbol;
+        }
+
+        public void ShowGameInterface(GridManager grid, Player p)
+        {
+            ShowMessages(p.Input);
+            ShowTileObjects(grid, p);
+            ShowsOptions();
+        }
+
+        public void ShowMessages(string input)
+        {
+            Console.WriteLine("Messages");
+            Console.WriteLine("----------");
+            switch (input)
+            {
+                case "w":
+                    Console.WriteLine("* You moved NORTH");
+                    break;
+                case "s":
+                    Console.WriteLine("* You moved SOUTH");
+                    break;
+                case "a":
+                    Console.WriteLine("* You moved WEST");
+                    break;
+                case "d":
+                    Console.WriteLine("* You moved EAST");
+                    break;
+            }
+        }
+
+        public void ShowTileObjects(GridManager grid, Player p)
+        {
+            Position pos1 = grid.Verify(p.PlayerPos.X - 1, p.PlayerPos.Y);
+            Position pos2 = grid.Verify(p.PlayerPos.X + 1, p.PlayerPos.Y);
+            Position pos3 = grid.Verify(p.PlayerPos.X, p.PlayerPos.Y - 1);
+            Position pos4 = grid.Verify(p.PlayerPos.X, p.PlayerPos.Y + 1);
+
+            Console.WriteLine("\nWhat do I see?");
+            Console.WriteLine("----------------");
+
+            Console.Write("* NORTH: ");
+            ObjectsInTile(grid, pos1);
+            Console.WriteLine();
+
+            Console.Write("* EAST: ");
+            ObjectsInTile(grid, pos4);
+            Console.WriteLine();
+
+            Console.Write("* WEST: ");
+            ObjectsInTile(grid, pos3);
+            Console.WriteLine();
+
+            Console.Write("* SOUTH: ");
+            ObjectsInTile(grid, pos2);
+            Console.WriteLine();
+        }
+
+        public void ObjectsInTile(GridManager grid, Position pos)
+        {
+            if (grid.gameGrid[pos.X, pos.Y].Contains(grid.Exit))
+                Console.Write("Exit");
+            foreach (IGameObject go in grid.gameGrid[pos.X, pos.Y])
+            {
+                if (go is Trap) Console.Write($"Trap " +
+                    $"({(TypesOfTraps)(go as Trap).TrapType})");
+                if (go is Map) Console.Write("Map");
+            }
+        }
+
+        public void ShowsOptions()
+        {
+            Console.WriteLine("\nOptions");
+            Console.WriteLine("---------");
+            Console.WriteLine("(W) Move NORTH  (A) Move WEST  " +
+                "  (S) Move SOUTH (D) Move EAST");
+            Console.WriteLine("(F) Attack NPC  (E) Pick up item " +
+                "(U) Use item   (V) Drop item");
+            Console.WriteLine("(I) Information (Q) Quit game");
+        }
+
+        public void InfoInterface()
+        {
+            ShowTrapInfo();
+        }
+
+        public void ShowTrapInfo()
+        {
+            List<Trap> TrapList = new List<Trap>();
+            Console.WriteLine("Trap          |      MaxDamage\n"); //10 spaces
+            for (int i = 0; i < Enum.GetNames(typeof(TypesOfTraps)).Length; i++)
+            {
+                TrapList.Add(new Trap((TypesOfTraps)(i)));
+                Console.WriteLine(TrapList[i]);
+            }
         }
 
         public void AddNewHighscoreInterface(GridManager grid)
@@ -97,19 +193,6 @@ namespace Roguelike
             Console.WriteLine("- Nuno Carriço\n");
             Console.WriteLine("Press ENTER to go back\n");
             Console.ReadKey();
-        }
-
-        public void InfoInterface()
-        {
-            List<Trap> TrapList = new List<Trap>();
-            Console.WriteLine("Trap          |      MaxDamage\n"); //10 spaces
-            for (int i = 0; i < Enum.GetNames(typeof(TypesOfTraps)).Length; i++)
-            {
-                TrapList.Add(new Trap((TypesOfTraps)(i)));
-                Console.WriteLine(TrapList[i]);
-            }
-            
-
         }
     }
 }
