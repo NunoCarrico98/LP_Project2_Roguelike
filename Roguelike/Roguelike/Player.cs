@@ -81,6 +81,12 @@ namespace Roguelike
                         PlayerPos.Y++;
                         break;
                     }
+                case "i":
+
+                    Console.Clear();
+                    render.InfoInterface();
+                    Console.ReadKey();
+                    break;
                 case "q":
                     AddNewHighScore(grid);
                     Environment.Exit(1);
@@ -94,7 +100,7 @@ namespace Roguelike
 
         public void AddNewHighScore(GridManager grid)
         {
-            if (hsm.highscores[hsm.highscores.Count - 1].Item2 < grid.Level)
+            if (hsm.Highscores[hsm.Highscores.Count - 1].Item2 < grid.Level)
             {
                 string name = "";
                 render.AddNewHighscoreInterface(grid);

@@ -10,21 +10,31 @@ namespace Roguelike
     /// </summary>
     public class HighScoreManager
     {
+<<<<<<< HEAD
         /// <summary>
         /// Create a List to hold highscores
         /// </summary>
         public List<Tuple<string, float>> highscores { get; private set; }
+=======
+        // Create a List to hold Highscores
+        public List<Tuple<string, float>> Highscores { get; private set; }
+>>>>>>> ianis
 
         /// <summary>
         /// Create variable to hold the filename
         /// </summary>
         private string filename = "";
 
+<<<<<<< HEAD
         /// <summary>
         /// Constructor to initialise List
         /// </summary>
         /// <param name="filename">Filename given by user</param>
         public HighScoreManager(string filename = "HighScores.txt")
+=======
+        // Constructor to initialise List
+        public HighScoreManager(string filename = "Highscores.txt")
+>>>>>>> ianis
         {
             // Initialise filename with filename given
             this.filename = filename;
@@ -32,14 +42,14 @@ namespace Roguelike
             // If File does not exist, initialise empty list
             if (!File.Exists(filename))
             {
-                highscores = new List<Tuple<string, float>>(10);
+                Highscores = new List<Tuple<string, float>>(10);
                 AddScore("Default", 0);
             }
             // If file exists
             else
             {
                 // Initialise List
-                highscores = new List<Tuple<string, float>>(10);
+                Highscores = new List<Tuple<string, float>>(10);
                 // Read All Lines from file
                 string[] text = File.ReadAllLines(filename);
 
@@ -63,7 +73,7 @@ namespace Roguelike
                     string name = subStrings[0];
 
                     // Add highscore to list
-                    highscores.Add(new Tuple<string, float>(name, score));
+                    Highscores.Add(new Tuple<string, float>(name, score));
                 }
 
                 // Sort the elements of the list in descending order
@@ -82,16 +92,16 @@ namespace Roguelike
             Tuple<string, float> newScore = new Tuple<string, float>(name, score);
 
             // Add highscore to list
-            highscores.Add(newScore);
+            Highscores.Add(newScore);
 
             // Sort the elements of the list in descending order
             SortList();
 
             // If list has more than 10 elements
-            if (highscores.Count > 10)
+            if (Highscores.Count > 10)
             {
                 // Remove last item on list
-                highscores.RemoveAt(highscores.Count - 1);
+                Highscores.RemoveAt(Highscores.Count - 1);
             }
         }
 
@@ -103,13 +113,13 @@ namespace Roguelike
             // Create variable to hold all text from list
             string text = "Name:Score\n";
             // For each element of the list
-            foreach (Tuple<string, float> highscore in highscores)
+            foreach (Tuple<string, float> highscore in Highscores)
             {
                 // Add text with Name and score
                 text += $"{highscore.Item1}:{highscore.Item2}\n";
             }
 
-            // Write all the highscores on the specified file
+            // Write all the Highscores on the specified file
             File.WriteAllText(filename, text);
         }
 
@@ -125,7 +135,7 @@ namespace Roguelike
             sb.Append("-------------------------\n");
 
             // For each element of the list
-            foreach (Tuple<string, float> highscore in highscores)
+            foreach (Tuple<string, float> highscore in Highscores)
             {
                 // Add text with Name and score in table format
                 sb.AppendFormat($"{highscore.Item1,-14}|{highscore.Item2,-14}\n");
@@ -141,16 +151,16 @@ namespace Roguelike
         private void SortList()
         {
             // Sort the elements of the list in a descending order
-            for (int i = 0; i <= highscores.Count - 1; i++)
+            for (int i = 0; i <= Highscores.Count - 1; i++)
             {
-                for (int j = 0; j < highscores.Count - 1; j++)
+                for (int j = 0; j < Highscores.Count - 1; j++)
                 {
                     // Use Bubble Sort to sort the list
-                    if (highscores[j].Item2 < highscores[i].Item2)
+                    if (Highscores[j].Item2 < Highscores[i].Item2)
                     {
-                        Tuple<string, float> temp = highscores[i];
-                        highscores[i] = highscores[j];
-                        highscores[j] = temp;
+                        Tuple<string, float> temp = Highscores[i];
+                        Highscores[i] = Highscores[j];
+                        Highscores[j] = temp;
                     }
                 }
             }
