@@ -63,6 +63,7 @@ namespace Roguelike
                 else if (go is Player) gameSymbol = "P";
                 else if (go is Exit) gameSymbol = "E";
                 else if (go is Map) gameSymbol = "M";
+                else if (go is Trap) gameSymbol = "T";
             }
             else
             {
@@ -73,7 +74,6 @@ namespace Roguelike
 
         public void AddNewHighscoreInterface(GridManager grid)
         {
-            Console.WriteLine("GOOD JOB!");
             Console.WriteLine("You're 1 of the 10 best players!");
             Console.WriteLine($"Score: {grid.Level}");
             Console.Write("What's your name? ");

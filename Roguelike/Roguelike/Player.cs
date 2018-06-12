@@ -20,6 +20,7 @@ namespace Roguelike
         {
             if (Health <= 0)
             {
+                render.RenderBoard(grid);
                 Console.WriteLine("You Died. :(");
                 AddNewHighScore(grid);
                 Environment.Exit(1);
@@ -47,7 +48,7 @@ namespace Roguelike
                         break;
                     }
                 case "s":
-                    if (PlayerPos.X == grid.Rows)
+                    if (PlayerPos.X == grid.Rows - 1)
                     {
                         PlayerPos.X = 7;
                         break;
