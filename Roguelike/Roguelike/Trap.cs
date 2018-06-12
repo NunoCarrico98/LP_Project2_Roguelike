@@ -12,7 +12,7 @@ namespace Roguelike
         public float Damage { get; private set; }
         public TypesOfTraps TrapType { get; set; }
         public Position TrapPos { get; set; }
-        Random rnd = new Random();
+        Random rnd = new Random(Guid.NewGuid().GetHashCode());
 
         public Trap(Position pos)
         {
