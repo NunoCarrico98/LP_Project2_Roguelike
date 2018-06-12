@@ -18,7 +18,6 @@ namespace Roguelike
         private Map map = new Map();
         private Exit exit = new Exit();
         private Position oldPlayerPos;
-        private Trap trap = new Trap();
 
         /// <summary>
         /// Constructor to Initialise Level
@@ -70,9 +69,17 @@ namespace Roguelike
                 gameGrid[exitRnd, 7][i] = exit;
             }
 
+<<<<<<< HEAD
             /* Testing the trap*/
             gameGrid[5, 5].AddObject(trap);
             Explore(player);
+=======
+            for (int i = 0; i < 5; i++)
+            {
+                Trap trap = new Trap(new Position(rnd.Next(0,8), rnd.Next(0,8)));
+                gameGrid[trap.TrapPos.X, trap.TrapPos.Y].AddObject(trap);
+            }
+>>>>>>> ianis
         }
 
         public void UpdatePlayerPosition(Player player)
@@ -94,14 +101,20 @@ namespace Roguelike
 
         public void CheckForTraps(Player player)
         {
-            /* Testing the trap */
-            if (gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Contains(trap))
+            for (int i = ObjectsPerTile - 1; i >= 0; i--)
             {
-                // Take random Health from player
-                player.Health -= rnd.Next(0, trap.MaxDamage);
-                gameGrid[5, 5].Remove(trap);
-                gameGrid[5, 5].Add(null);
+                IGameObject go = gameGrid[player.PlayerPos.X, player.PlayerPos.Y][i];
+                if (go is Trap)
+                {
+                    if (gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Contains(go as Trap))
+                    {
+                        player.Health -= (go as Trap).Damage;
+                        gameGrid[player.PlayerPos.X, player.PlayerPos.Y].RemoveAt(i);
+                        gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Add(null);
+                    }
+                }
             }
+
         }
 
         public void PickUpMap(Player player)

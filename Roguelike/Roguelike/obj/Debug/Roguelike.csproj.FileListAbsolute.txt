@@ -28,4 +28,14 @@ C:\Users\Nuno Carriço\Documents\lusofona\2sem\lp1\Project2_Roguelike\Roguelike\
 C:\Users\Nuno Carriço\Documents\lusofona\2sem\lp1\Project2_Roguelike\Roguelike\Roguelike\obj\Debug\Roguelike.csproj.CoreCompileInputs.cache
 C:\Users\Nuno Carriço\Documents\lusofona\2sem\lp1\Project2_Roguelike\Roguelike\Roguelike\obj\Debug\Roguelike.exe
 C:\Users\Nuno Carriço\Documents\lusofona\2sem\lp1\Project2_Roguelike\Roguelike\Roguelike\obj\Debug\Roguelike.pdb
+<<<<<<< HEAD
 >>>>>>> master
+=======
+C:\Users\I_J_S\source\repos\Project2_Roguelike\Roguelike\Roguelike\bin\Debug\Roguelike.exe.config
+C:\Users\I_J_S\source\repos\Project2_Roguelike\Roguelike\Roguelike\bin\Debug\Roguelike.exe
+C:\Users\I_J_S\source\repos\Project2_Roguelike\Roguelike\Roguelike\bin\Debug\Roguelike.pdb
+C:\Users\I_J_S\source\repos\Project2_Roguelike\Roguelike\Roguelike\obj\Debug\Roguelike.csprojAssemblyReference.cache
+C:\Users\I_J_S\source\repos\Project2_Roguelike\Roguelike\Roguelike\obj\Debug\Roguelike.csproj.CoreCompileInputs.cache
+C:\Users\I_J_S\source\repos\Project2_Roguelike\Roguelike\Roguelike\obj\Debug\Roguelike.exe
+C:\Users\I_J_S\source\repos\Project2_Roguelike\Roguelike\Roguelike\obj\Debug\Roguelike.pdb
+>>>>>>> ianis
