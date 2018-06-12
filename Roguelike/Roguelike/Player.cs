@@ -85,7 +85,11 @@ namespace Roguelike
                     AddNewHighScore(grid);
                     Environment.Exit(1);
                     break;
+                case "e":               
+                    grid.PicksMap(this);
+                    break;
             }
+
         }
 
         public void AddNewHighScore(GridManager grid)
