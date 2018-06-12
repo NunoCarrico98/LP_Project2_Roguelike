@@ -9,6 +9,7 @@ namespace Roguelike
     class Trap : Item
     {
         public int MaxDamage { get; private set; } 
+        public float Damage { get; private set; }
         public TypesOfTraps TrapType { get; set; }
         Random rnd = new Random();
 
@@ -44,12 +45,14 @@ namespace Roguelike
                     MaxDamage = 25;
                     break;
             }
+
+            Damage = (float)(rnd.NextDouble() * MaxDamage);
         }
 
         public override string ToString()
         {
 
-            return ($"{TrapType,-14}| {MaxDamage,14} \n");
+            return ($"{TrapType,-14}| {MaxDamage,14}");
         }
     }
 }

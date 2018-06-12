@@ -47,7 +47,7 @@ namespace Roguelike
                         break;
                     }
                 case "s":
-                    if (PlayerPos.X == grid.Rows)
+                    if (PlayerPos.X == grid.Rows - 1)
                     {
                         PlayerPos.X = 7;
                         break;

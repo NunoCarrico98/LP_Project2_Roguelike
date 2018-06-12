@@ -50,6 +50,7 @@ namespace Roguelike
             }
             /* Testing the trap*/
             gameGrid[5, 5].AddObject(trap);
+            gameGrid[5, 5].AddObject(trap);
         }
 
         public void UpdatePlayerPosition(Player player)
@@ -71,9 +72,16 @@ namespace Roguelike
             /* Testing the trap */
             if (gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Contains(trap))
             {
-                player.Health -= rnd.Next(0, trap.MaxDamage);
-                gameGrid[5, 5].Remove(trap);
-                gameGrid[5, 5].Add(null);
+                for(int i = ObjectsPerTile -1; i >=0; i--)
+                {
+                    IGameObject go = gameGrid[player.PlayerPos.X, player.PlayerPos.Y][i];
+                    if (go is Trap)
+                    {
+                        player.Health -= (go as Trap).Damage;
+                        gameGrid[player.PlayerPos.X, player.PlayerPos.Y].RemoveAt(i);
+                        gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Add(null);
+                    }
+                }
             }
         }
 
