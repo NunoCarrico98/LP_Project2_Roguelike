@@ -104,14 +104,14 @@ namespace Roguelike
             }
         }
 
-        public void PicksMap(Player player)
+        public void PickUpMap(Player player)
         {
             if (gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Contains(map) &&
                gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Contains(player))
             {
                 gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Remove(map);
                 gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Add(null);
-                RevealMap();
+                foreach(GameTile gt in gameGrid) gt.Explored = true;
             }
         }
 
@@ -173,17 +173,6 @@ namespace Roguelike
             }
 
             return new Position(x, y);
-        }
-
-        public void RevealMap()
-        {
-            for (int x = 0; x < Rows; x++)
-            {
-                for (int y = 0; y < Columns; y++)
-                {
-                    gameGrid[x, y].Explored = true;
-                }
-            }
         }
 
         public GameTile GetTile(int x, int y)
