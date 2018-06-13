@@ -1,6 +1,6 @@
 ﻿namespace Roguelike
 {
-    enum TypesOfFood
+    public enum TypesOfFood
     {
         Pizza,
         Bacon,

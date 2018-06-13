@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Roguelike
 {
-    enum StateOfNpc
+    public enum StateOfNpc
     {
         Enemy,
         Neutral

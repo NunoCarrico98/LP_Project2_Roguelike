@@ -2,7 +2,7 @@
 
 namespace Roguelike
 {
-    class Food : Item
+    public class Food : Item
     {
         public float HPIncrease { get; private set; }
         public TypesOfFood FoodType { get; set; }

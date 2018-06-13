@@ -6,22 +6,38 @@ using System.Threading.Tasks;
 
 namespace Roguelike
 {
-    class NPC : IGameObject
+    public class NPC : IGameObject
     {
-        public float Hp { get; private set; }
-        public float Attack { get; private set; }
         public StateOfNpc NpcType { get; set; }
         public Position Pos { get; set; }
-        double maxHPForThisLevel = 10;
-        Random rnd = new Random();
+        public double HP { get; set; }
+        public double AP { get; set; }
+        public double MaxAPForThisLevel { get; set; }
+        public double MaxHPForThisLevel { get; set; }
+        public double HostileProbabilityForThisLevel { get; set; }
+        public double InitialHP { get; set; } = 10f;
+        public double InitialAP { get; set; } = 7f;
 
-        public NPC(Position pos)
+        private Random rnd = new Random();
+
+        public NPC(Position pos, GridManager grid)
         {
-            Hp = (float)(rnd.NextDouble() * 10);
-            Attack = (float)(rnd.NextDouble() * 10);
-            NpcType = (StateOfNpc)rnd.Next(0, Enum.GetNames(typeof(StateOfNpc)).Length);
-            Pos = pos;
-        }
+            MaxAPForThisLevel =
+                    ProcGenFunctions.Logistic(grid.Level, 100d, InitialHP, 0.15d);
 
+            MaxHPForThisLevel =
+                    ProcGenFunctions.Logistic(grid.Level, 100d, InitialAP, 0.1d);
+
+            HostileProbabilityForThisLevel =
+                    ProcGenFunctions.Logistic(grid.Level, 1d, 0, 0.1d);
+
+            NpcType = rnd.NextDouble() < HostileProbabilityForThisLevel
+                ? StateOfNpc.Enemy : StateOfNpc.Neutral;
+
+            Pos = pos;
+
+            AP = rnd.NextDouble() * MaxAPForThisLevel;
+            HP = rnd.NextDouble() * MaxHPForThisLevel;
+        }
     }
 }

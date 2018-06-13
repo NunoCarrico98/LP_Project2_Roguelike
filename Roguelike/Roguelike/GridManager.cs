@@ -109,6 +109,23 @@ namespace Roguelike
 
             // Spawn Traps
             SpawnTraps();
+
+            // Spawn NPCs
+            SpawnNPC();
+        }
+
+        public void SpawnNPC()
+        {
+            int maxNPCsForLevel = (int)ProcGenFunctions.Linear(Level, 1d, 2d);
+            int numberOfNPCs = rnd.Next(maxNPCsForLevel);
+
+            for (int i = 0; i < numberOfNPCs; i++)
+            {
+                int row = rnd.Next(8);
+                int column = rnd.Next(8);
+                Position pos = new Position(row, column);
+                gameGrid[row, column].AddObject(new NPC(pos, this));
+            }
         }
 
         /// <summary>

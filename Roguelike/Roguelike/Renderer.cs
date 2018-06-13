@@ -67,6 +67,7 @@ namespace Roguelike
                 else if (go is Exit) gameSymbol = "E";
                 else if (go is Map) gameSymbol = "M";
                 else if (go is Trap) gameSymbol = "T";
+                else if (go is NPC) gameSymbol = "E";
             }
             else
             {
