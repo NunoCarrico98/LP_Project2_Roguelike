@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Roguelike
 {
@@ -78,7 +77,12 @@ namespace Roguelike
         {
             for (int i = 0; i < 5; i++)
             {
-                Trap trap = new Trap(new Position(rnd.Next(0, 8), rnd.Next(0, 8)));
+                Trap trap;
+                do
+                {
+                    trap = new Trap(new Position(rnd.Next(0, 8), rnd.Next(0, 8)));
+                } while (gameGrid[trap.TrapPos.X, trap.TrapPos.Y].Contains(Exit));
+
                 gameGrid[trap.TrapPos.X, trap.TrapPos.Y].AddObject(trap);
             }
         }

@@ -136,7 +136,7 @@ namespace Roguelike
             foreach (IGameObject go in grid.gameGrid[pos.X, pos.Y])
             {
                 if (go is Trap) Console.Write($"Trap " +
-                    $"({(TypesOfTraps)(go as Trap).TrapType})");
+                    $"({(go as Trap).TrapType})");
                 if (go is Map) Console.Write("Map");
             }
         }
