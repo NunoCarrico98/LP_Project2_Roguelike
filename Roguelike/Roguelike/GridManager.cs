@@ -91,7 +91,7 @@ namespace Roguelike
         {
             // Remove Player from current tile
             gameGrid[oldPlayerPos.X, oldPlayerPos.Y].Remove(player);
-            gameGrid[oldPlayerPos.X, oldPlayerPos.Y].Insert(0, null);
+            gameGrid[oldPlayerPos.X, oldPlayerPos.Y].Add(null);
             oldPlayerPos = new Position(player.PlayerPos.X, player.PlayerPos.Y);
 
             // Add Player to new tile
@@ -109,11 +109,12 @@ namespace Roguelike
             for (int i = ObjectsPerTile - 1; i >= 0; i--)
             {
                 IGameObject go = gameGrid[player.PlayerPos.X, player.PlayerPos.Y][i];
-                if (go is Trap)
+                if (go is Trap && (go as Trap).FallenInto == false)
                 {
+                    (go as Trap).FallenInto = true;
                     player.Health -= (go as Trap).Damage;
-                    gameGrid[player.PlayerPos.X, player.PlayerPos.Y].RemoveAt(i);
-                    gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Add(null);
+
+
                 }
             }
 
