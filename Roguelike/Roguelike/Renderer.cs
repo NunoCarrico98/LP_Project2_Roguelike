@@ -161,10 +161,31 @@ namespace Roguelike
             ShowTrapInfo();
         }
 
-        public void InventoryScreen()
+        public void PickUpScreen(GridManager grid, Player p)
         {
-            Console.WriteLine("\nSelect Item to ");
+            int count = 1;
+            Console.WriteLine($"\nSelect Item to pick up");
             Console.WriteLine("---------------");
+            Console.WriteLine("0. Go back");
+            
+            for (int i = 0; i < grid.ObjectsPerTile; i++)
+            {
+                IGameObject go = grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y][i];
+                if (go is Food)
+                {
+                    Console.WriteLine($"{count}. Food ({(go as Food).FoodType}) ");
+                    count++;
+                }
+                else if (go is Weapon)
+                {
+                    Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
+                    count++;
+                } else if (go is Map)
+                {
+                    Console.WriteLine($"{count}. Map");
+                    count++;
+                }
+            }
         }
 
 

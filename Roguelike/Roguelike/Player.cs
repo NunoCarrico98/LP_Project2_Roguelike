@@ -98,15 +98,15 @@ namespace Roguelike
                         MakeSureQuit(grid);
                         break;
                     case "e":
-                        //Console.Clear();
-                        //render.InventoryScreen();
-                        //Console.ReadKey();
-                        //render.RenderBoard(grid, this);
-                        grid.PickUpMap(this);
+                        Console.Clear();
+                        render.PickUpScreen(grid, this);
                         grid.PickUpItems(this);
+                        Console.ReadKey();
+                        //grid.PickUpMap(this);
+                        //grid.PickUpItems(this);
                         break;
                 }
-            } while (Input == "I" || Input == "Q");
+            } while (Input == "I" || Input == "Q" || Input == "E" || Input == "U" || Input == "V");
 
         }
 

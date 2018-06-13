@@ -17,7 +17,7 @@ namespace Roguelike
 
         public Weapon(Position pos)
         {
-            WeaponType = (TypesOfWeapon)rnd.Next(0, Enum.GetNames(typeof(TypesOfTraps)).Length + 1);
+            WeaponType = (TypesOfWeapon)rnd.Next(0, Enum.GetNames(typeof(TypesOfTraps)).Length);
             WeaponPos = pos;
         }
 

@@ -129,29 +129,32 @@ namespace Roguelike
 
         }
 
-        public void PickUpMap(Player player)
+        public void PickUpItems(Player p)
         {
-            if (gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Contains(Map) &&
-               gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Contains(player))
+            bool picked = false;
+            string choice = Console.ReadLine();
+            int i = Convert.ToInt32(choice);
+            do
             {
-                gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Remove(Map);
-                gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Add(null);
-                foreach (GameTile gt in gameGrid) gt.Explored = true;
-            }
-        }
-
-        public void PickUpItems(Player player)
-        {
-            for (int i = ObjectsPerTile - 1; i >= 0; i--)
-            {
-                IGameObject go = gameGrid[player.PlayerPos.X, player.PlayerPos.Y][i];
-                if (go is Food)
+                IGameObject go = gameGrid[p.PlayerPos.X, p.PlayerPos.Y][i];
+                if (go is Item)
                 {
-                    player.Inventory.Add(go as Food);
-                    gameGrid[player.PlayerPos.X, player.PlayerPos.Y].RemoveAt(i);
-                    gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Add(null);
+                    p.Inventory.Add(go as Item);
+                    gameGrid[p.PlayerPos.X, p.PlayerPos.Y].RemoveAt(i);
+                    gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Add(null);
+                    picked = true;
+
+                } else if (go is Map)
+                {
+                    gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Remove(Map);
+                    gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Add(null);
+                    foreach (GameTile gt in gameGrid) gt.Explored = true;
+                    picked = true;
+                } else
+                {
+                    i++;
                 }
-            }
+            } while (!picked);
         }
 
         public void WinLevel(Player player)
