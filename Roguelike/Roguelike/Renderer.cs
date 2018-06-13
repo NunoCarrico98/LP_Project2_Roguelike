@@ -102,6 +102,8 @@ namespace Roguelike
 
         public void ShowGameInterface(GridManager grid, Player p)
         {
+            Console.WriteLine(p.Health);
+            Console.WriteLine(p.Weight);
             ShowMessages(p.Input);
             ShowTrapMessages(grid, p);
             ShowTileObjects(grid, p);
@@ -110,6 +112,7 @@ namespace Roguelike
 
         public void ShowMessages(string input)
         {
+
             Console.WriteLine("Messages");
             Console.WriteLine("----------");
             switch (input)
@@ -285,6 +288,52 @@ namespace Roguelike
             }
 
             Console.Write("\n> ");
+        }
+
+        public void DropItemsScreen(GridManager grid, Player p)
+        {
+            int count = 1;
+            Console.WriteLine($"\nSelect Item to drop");
+            Console.WriteLine("---------------");
+            Console.WriteLine("0. Go back");
+
+            for (int i = 0; i < p.Inventory.Count; i++)
+            {
+                IGameObject go = p.Inventory[i];
+                if (go is Food)
+                {
+                    Console.WriteLine($"{count}. Food ({(go as Food).FoodType}) ");
+                    count++;
+                }
+                else if (go is Weapon)
+                {
+                    Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
+                    count++;
+                }
+            }
+        }
+
+        public void UseItemScreen(Player p)
+        {
+            int count = 1;
+            Console.WriteLine($"\nSelect Item to use");
+            Console.WriteLine("---------------");
+            Console.WriteLine("0. Go back");
+
+            for (int i = 0; i < p.Inventory.Count; i++)
+            {
+                IGameObject go = p.Inventory[i];
+                if (go is Food)
+                {
+                    Console.WriteLine($"{count}. Food ({(go as Food).FoodType}) ");
+                    count++;
+                }
+                else if (go is Weapon)
+                {
+                    Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
+                    count++;
+                }
+            }
         }
 
 

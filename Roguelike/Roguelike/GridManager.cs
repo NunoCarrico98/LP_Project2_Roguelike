@@ -253,29 +253,108 @@ namespace Roguelike
             bool picked = false;
             string choice = Console.ReadLine();
             int i = Convert.ToInt32(choice);
-            do
+            if (i == 0)
+            {   
+                p.Health++;
+                return;
+            }
+            else
+            {   
+                do
+                {
+                    IGameObject go = gameGrid[p.PlayerPos.X, p.PlayerPos.Y][i];
+                    if (go is Item)
+                    {
+                        if ((p.Weight + (go as Item).Weight) > p.MaxWeight)
+                        {
+                            Console.WriteLine("You can't carry anymore.");
+                            Console.ReadLine();
+                            return;
+                        }
+                        else
+                        {
+                            p.Inventory.Add(go as Item);
+                            p.Weight += (go as Item).Weight;
+                            gameGrid[p.PlayerPos.X, p.PlayerPos.Y].RemoveAt(i);
+                            gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Add(null);
+                            picked = true;
+                        }
+                    }
+                    else if (go is Map)
+                    {
+                        gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Remove(Map);
+                        gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Add(null);
+                        foreach (GameTile gt in gameGrid) gt.Explored = true;
+                        picked = true;
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                } while (!picked);
+            }
+        }
+
+        public void DropItems(Player p)
+        {
+            string choice = Console.ReadLine();
+            int i = Convert.ToInt32(choice);
+
+            if (i == 0)
             {
-                IGameObject go = gameGrid[p.PlayerPos.X, p.PlayerPos.Y][i];
+                p.Health++;
+                return;
+            }
+            else
+            {
+                IGameObject go = p.Inventory[i - 1];
                 if (go is Item)
                 {
-                    p.Inventory.Add(go as Item);
-                    gameGrid[p.PlayerPos.X, p.PlayerPos.Y].RemoveAt(i);
-                    gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Add(null);
-                    picked = true;
+                    gameGrid[p.PlayerPos.X, p.PlayerPos.Y].AddObject(go);
+                    p.Inventory.RemoveAt(i - 1);
+                    p.Weight -= (go as Item).Weight;
+                }
+            }
+        }
 
-                }
-                else if (go is Map)
+        public void UseItems(Player p)
+        {
+            string choice = Console.ReadLine();
+            int i = Convert.ToInt32(choice);
+
+            if (i == 0)
+            {
+                p.Health++;
+                return;
+            }
+            else
+            {
+                IGameObject go = p.Inventory[i - 1];
+                if (go is Food)
                 {
-                    gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Remove(Map);
-                    gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Add(null);
-                    foreach (GameTile gt in gameGrid) gt.Explored = true;
-                    picked = true;
+                    p.Inventory.RemoveAt(i - 1);
+                    p.Weight -= (go as Item).Weight;
+                    if((p.Health + (go as Food).HPIncrease) > 100)
+                    {
+                        p.Health = 100;
+                    } else
+                    {
+                        p.Health += (go as Food).HPIncrease;
+                    }
                 }
-                else
+                else if (go is Weapon)
                 {
-                    i++;
+                    p.Inventory.RemoveAt(i - 1);
+                    if (p.Equipped == null)
+                    {
+                        p.Equipped = (go as Weapon);
+                    } else 
+                    {
+                        p.Inventory.Add(p.Equipped as Weapon);
+                        p.Equipped = (go as Weapon);
+                    }
                 }
-            } while (!picked);
+            }
         }
 
         /// <summary>

@@ -11,6 +11,7 @@ namespace Roguelike
         public float MaxWeight { get; private set; }
         public List<Item> Inventory { get; set; } = new List<Item>();
         public float Weight { get; set; }
+        public Weapon Equipped { get; set; }
 
         private HighScoreManager hsm;
         private Renderer render;
@@ -20,6 +21,8 @@ namespace Roguelike
             Health = 100;
             hsm = new HighScoreManager();
             render = new Renderer();
+            MaxWeight = 20;
+            Equipped = null;
         }
 
         public void Die(GridManager grid)
@@ -103,10 +106,18 @@ namespace Roguelike
                         render.PickUpScreen(grid, this);
                         grid.PickUpItems(this);
                         break;
+                    case "v":
+                        Console.Clear();
+                        render.DropItemsScreen(grid, this);
+                        grid.DropItems(this);
+                        break;
+                    case "u":
+                        Console.Clear();
+                        render.UseItemScreen(this);
+                        grid.UseItems(this);
+                        break;
                 }
             } while (Input == "i" || Input == "q");
-
-
         }
 
         public void MakeSureQuit(GridManager grid)

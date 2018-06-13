@@ -15,6 +15,7 @@ namespace Roguelike
         {
             WeaponType = (TypesOfWeapon)rnd.Next(0, Enum.GetNames(typeof(TypesOfTraps)).Length);
             WeaponPos = pos;
+            SetDurAndAP();
         }
 
         public Weapon(TypesOfWeapon typeweapon)
@@ -30,27 +31,27 @@ namespace Roguelike
                 case TypesOfWeapon.Axe:
                     AttackPower = rnd.Next(5, 15);
                     Durability = rnd.NextDouble();
-                    Weight = 5;
+                    Weight = 5f;
                     break;
                 case TypesOfWeapon.Dagger:
                     AttackPower = rnd.Next(1, 10);
                     Durability = rnd.NextDouble();
-                    Weight = 2;
+                    Weight = 2f;
                     break;
                 case TypesOfWeapon.Lance:
                     AttackPower = rnd.Next(5, 20);
                     Durability = rnd.NextDouble();
-                    Weight = 7;
+                    Weight = 7f;
                     break;
                 case TypesOfWeapon.SlingShot:
                     AttackPower = rnd.Next(1, 5);
                     Durability = rnd.NextDouble();
-                    Weight = 1;
+                    Weight = 1f;
                     break;
                 case TypesOfWeapon.Sword:
                     AttackPower = rnd.Next(5, 20);
                     Durability = rnd.NextDouble();
-                    Weight = 7;
+                    Weight = 7f;
                     break;
             }
         }
