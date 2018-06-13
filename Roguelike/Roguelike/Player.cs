@@ -5,7 +5,9 @@ namespace Roguelike
     public class Player : IGameObject
     {
         public float Health { get; set; }
+        public string Input { get; private set; } = "";
         public Position PlayerPos { get; set; }
+
         private HighScoreManager hsm;
         private Renderer render;
 
@@ -20,7 +22,7 @@ namespace Roguelike
         {
             if (Health <= 0)
             {
-                render.RenderBoard(grid);
+                render.RenderBoard(grid, this);
                 Console.WriteLine("You Died. :(");
                 AddNewHighScore(grid);
                 Environment.Exit(1);
@@ -29,74 +31,90 @@ namespace Roguelike
 
         public void PlayerController(GridManager grid)
         {
+            do
+            {
+                Console.Write("\n> ");
+                Input = Console.ReadLine();
+
+                switch (Input.ToLower())
+                {
+                    case "w":
+                        if (PlayerPos.X == 0)
+                        {
+                            PlayerPos.X = 0;
+                            break;
+                        }
+                        else
+                        {
+                            PlayerPos.X--;
+                            break;
+                        }
+                    case "s":
+                        if (PlayerPos.X == grid.Rows - 1)
+                        {
+                            PlayerPos.X = 7;
+                            break;
+                        }
+                        else
+                        {
+                            PlayerPos.X++;
+                            break;
+                        }
+                    case "a":
+
+                        if (PlayerPos.Y == 0)
+                        {
+                            PlayerPos.Y = 0;
+                            break;
+                        }
+                        else
+                        {
+                            PlayerPos.Y--;
+                            break;
+                        }
+                    case "d":
+
+                        if (PlayerPos.Y == grid.Columns - 1)
+                        {
+                            PlayerPos.Y = 7;
+                            break;
+                        }
+                        else
+                        {
+                            PlayerPos.Y++;
+                            break;
+                        }
+                    case "i":
+                        Console.Clear();
+                        render.InfoInterface();
+                        Console.ReadKey();
+                        render.RenderBoard(grid, this);
+                        break;
+                    case "q":
+                        MakeSureQuit(grid);
+                        break;
+                    case "e":
+                        grid.PickUpMap(this);
+                        break;
+                }
+            } while (Input == "I" || Input == "Q");
+
+        }
+
+        public void MakeSureQuit(GridManager grid)
+        {
+            Console.WriteLine("Are you sure you want to quit? (y/n)");
             string input = "";
-
-            Console.Write("> ");
             input = Console.ReadLine();
-
             switch (input.ToLower())
             {
-                case "w":
-                    if (PlayerPos.X == 0)
-                    {
-                        PlayerPos.X = 0;
-                        break;
-                    }
-                    else
-                    {
-                        PlayerPos.X--;
-                        break;
-                    }
-                case "s":
-                    if (PlayerPos.X == grid.Rows - 1)
-                    {
-                        PlayerPos.X = 7;
-                        break;
-                    }
-                    else
-                    {
-                        PlayerPos.X++;
-                        break;
-                    }
-                case "a":
-
-                    if (PlayerPos.Y == 0)
-                    {
-                        PlayerPos.Y = 0;
-                        break;
-                    }
-                    else
-                    {
-                        PlayerPos.Y--;
-                        break;
-                    }
-                case "d":
-
-                    if (PlayerPos.Y == grid.Columns - 1)
-                    {
-                        PlayerPos.Y = 7;
-                        break;
-                    }
-                    else
-                    {
-                        PlayerPos.Y++;
-                        break;
-                    }
-                case "i":
-
-                    Console.Clear();
-                    render.InfoInterface();
-                    Console.ReadKey();
-                    break;
-                case "q":
+                case "y":
                     AddNewHighScore(grid);
                     Environment.Exit(1);
                     break;
-                case "e":               
-                    grid.PickUpMap(this);
+                case "n":
                     break;
             }
-
         }
 
         public void AddNewHighScore(GridManager grid)
