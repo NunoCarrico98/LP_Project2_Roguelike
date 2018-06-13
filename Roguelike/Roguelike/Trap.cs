@@ -5,7 +5,7 @@ namespace Roguelike
     class Trap : IGameObject
     {
         public int MaxDamage { get; private set; } 
-        public float Damage { get; private set; }
+        public double Damage { get; private set; }
         public TypesOfTraps TrapType { get; set; }
         public Position TrapPos { get; set; }
         public bool FallenInto { get; set; }
@@ -49,7 +49,7 @@ namespace Roguelike
                     break;
             }
 
-            Damage = (float)(rnd.NextDouble() * MaxDamage);
+            Damage = rnd.NextDouble() * MaxDamage;
         }
 
         public override string ToString()

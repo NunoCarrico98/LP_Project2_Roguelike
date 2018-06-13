@@ -15,21 +15,19 @@ namespace Roguelike
         public double MaxAPForThisLevel { get; set; }
         public double MaxHPForThisLevel { get; set; }
         public double HostileProbabilityForThisLevel { get; set; }
-        public double InitialHP { get; set; } = 10f;
-        public double InitialAP { get; set; } = 7f;
 
         private Random rnd = new Random();
 
         public NPC(Position pos, GridManager grid)
         {
             MaxAPForThisLevel =
-                    ProcGenFunctions.Logistic(grid.Level, 100d, InitialHP, 0.2d);
+                    ProcGenFunctions.Logistic(grid.Level, 100d, 15, 0.1d);
 
             MaxHPForThisLevel =
-                    ProcGenFunctions.Logistic(grid.Level, 100d, InitialAP, 0.2d);
+                    ProcGenFunctions.Logistic(grid.Level, 100d, 15, 0.1d);
 
             HostileProbabilityForThisLevel =
-                    ProcGenFunctions.Logistic(grid.Level, 1d, 0, 0.1d);
+                    ProcGenFunctions.Logistic(grid.Level, 1d, 15, 0.1d);
 
             NpcType = rnd.NextDouble() < HostileProbabilityForThisLevel
                 ? StateOfNpc.Enemy : StateOfNpc.Neutral;
@@ -38,6 +36,11 @@ namespace Roguelike
 
             AP = rnd.NextDouble() * MaxAPForThisLevel;
             HP = rnd.NextDouble() * MaxHPForThisLevel;
+        }
+
+        public void Fight(Player p)
+        {
+            p.Health -= rnd.NextDouble() * AP;
         }
     }
 }

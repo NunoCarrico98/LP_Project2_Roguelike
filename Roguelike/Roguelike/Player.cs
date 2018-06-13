@@ -5,7 +5,7 @@ namespace Roguelike
 {
     public class Player : IGameObject
     {
-        public float Health { get; set; }
+        public double Health { get; set; }
         public string Input { get; private set; } = "";
         public Position PlayerPos { get; set; }
         public float MaxWeight { get; private set; }
@@ -102,11 +102,9 @@ namespace Roguelike
                         Console.Clear();
                         render.PickUpScreen(grid, this);
                         grid.PickUpItems(this);
-                        Console.ReadKey();
                         break;
                 }
-            } while (Input == "i" || Input == "q" || Input == "e" ||
-                     Input == "u" || Input == "v");
+            } while (Input == "i" || Input == "q");
 
 
         }

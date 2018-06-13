@@ -209,7 +209,17 @@ namespace Roguelike
                     player.Health -= (go as Trap).Damage;
                 }
             }
+        }
 
+        public void CheckForNPC(Player p)
+        {
+            foreach(IGameObject go in gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
+            {
+                if(go is NPC && (go as NPC).NpcType == StateOfNpc.Enemy)
+                {
+
+                }
+            }
         }
 
         public void PickUpItems(Player p)

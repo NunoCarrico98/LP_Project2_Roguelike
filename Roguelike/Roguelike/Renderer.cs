@@ -88,7 +88,7 @@ namespace Roguelike
             Console.SetCursorPosition(70, 3);
             Console.WriteLine("--------------");
             Console.SetCursorPosition(70, 4);
-            Console.WriteLine($"HP{c,10}{p.Health, 7:f1}");
+            Console.WriteLine($"HP{c,10}{p.Health,7:f1}");
             Console.SetCursorPosition(70, 5);
             Console.WriteLine($"Weapon{c,6}");
             Console.SetCursorPosition(yCursor, xCursor);
@@ -126,7 +126,7 @@ namespace Roguelike
         public void ShowTrapMessages(GridManager grid, Player p)
         {
             // Cycle through all objects in tile backwards
-            foreach(IGameObject go in grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
+            foreach (IGameObject go in grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
             {
                 // If object is a Trap and it wasn't activated yet
                 if (go is Trap && (go as Trap).WroteMessage == false)
@@ -141,50 +141,97 @@ namespace Roguelike
 
         public void ShowTileObjects(GridManager grid, Player p)
         {
-            Position pos1 = grid.RestrictToMap(p.PlayerPos.X - 1, p.PlayerPos.Y);
-            Position pos2 = grid.RestrictToMap(p.PlayerPos.X + 1, p.PlayerPos.Y);
-            Position pos3 = grid.RestrictToMap(p.PlayerPos.X, p.PlayerPos.Y - 1);
-            Position pos4 = grid.RestrictToMap(p.PlayerPos.X, p.PlayerPos.Y + 1);
+            char c = ':';
 
             Console.WriteLine("\nWhat do I see?");
             Console.WriteLine("----------------");
 
-            char c = ':';
-            Console.Write($"* NORTH{c,2} ");
-            ObjectsInTile(grid, pos1);
-            Console.WriteLine();
+            // Top of player
+            if (RestrictToMap(grid, p.PlayerPos.X, p.PlayerPos.Y)[0])
+            {
+                Console.Write($"* NORTH{c,2} ");
+                ObjectsInTile(grid, p.PlayerPos.X - 1, p.PlayerPos.Y);
+                Console.WriteLine();
+            }
+            else Console.WriteLine($"* NORTH{c,2} ");
 
-            Console.Write($"* EAST{c,3} ");
-            ObjectsInTile(grid, pos4);
-            Console.WriteLine();
+            // Right of Player
+            if (RestrictToMap(grid, p.PlayerPos.X, p.PlayerPos.Y)[3])
+            {
+                Console.Write($"* EAST{c,3} ");
+                ObjectsInTile(grid, p.PlayerPos.X, p.PlayerPos.Y + 1);
+                Console.WriteLine();
+            }
+            else Console.WriteLine($"* EAST{c,3} ");
 
-            Console.Write($"* WEST{c,3} ");
-            ObjectsInTile(grid, pos3);
-            Console.WriteLine();
+            // Left of player
+            if (RestrictToMap(grid, p.PlayerPos.X, p.PlayerPos.Y)[2])
+            {
+                Console.Write($"* WEST{c,3} ");
+                ObjectsInTile(grid, p.PlayerPos.X, p.PlayerPos.Y - 1);
+                Console.WriteLine();
+            }
+            else Console.WriteLine($"* WEST{c,3} ");
 
-            Console.Write($"* SOUTH{c,2} ");
-            ObjectsInTile(grid, pos2);
-            Console.WriteLine();
+            // Below Player
+            if (RestrictToMap(grid, p.PlayerPos.X, p.PlayerPos.Y)[1])
+            {
+                Console.Write($"* SOUTH{c,2} ");
+                ObjectsInTile(grid, p.PlayerPos.X + 1, p.PlayerPos.Y);
+                Console.WriteLine();
+            }
+            else Console.WriteLine($"* SOUTH{c,2} ");
 
+            // Player Position
             Console.Write($"* HERE{c,3} ");
-            ObjectsInTile(grid, p.PlayerPos);
+            ObjectsInTile(grid, p.PlayerPos.X, p.PlayerPos.Y);
             Console.WriteLine();
         }
 
-        public void ObjectsInTile(GridManager grid, Position pos)
+        public void ObjectsInTile(GridManager grid, int x, int y)
         {
             bool empty = true;
-            if (grid.gameGrid[pos.X, pos.Y].Contains(grid.Exit))
+            if (grid.gameGrid[x, y].Contains(grid.Exit))
                 Console.Write("Exit");
-            foreach (IGameObject go in grid.gameGrid[pos.X, pos.Y])
+            foreach (IGameObject go in grid.gameGrid[x, y])
             {
                 if (go != null) empty = false;
                 if (go is Trap) Console.Write($"Trap " +
                     $"({(go as Trap).TrapType}) ");
-                else if (go is Map) Console.Write("Map ");
+                if (go is Map) Console.Write("Map ");
+                if (go is Food) Console.Write($"Food " +
+                    $"({(go as Food).FoodType}) ");
+                if (go is Weapon) Console.Write($"Weapon " +
+                    $"({(go as Weapon).WeaponType}) ");
+                if (go is NPC) Console.Write($"NPC " +
+                    $"({(go as NPC).NpcType}, HP = {(go as NPC).HP}, " +
+                    $"{(go as NPC).AP}) ");
             }
 
             if (empty) Console.Write("Empty");
+        }
+
+        public bool[] RestrictToMap(GridManager grid, int x, int y)
+        {
+            bool[] bools = new bool[4];
+
+            // Top
+            if (x - 1 < 0) bools[0] = false;
+            else bools[0] = true;
+
+            // Bottom
+            if (x + 1 > grid.Rows - 1) bools[1] = false;
+            else bools[1] = true;
+
+            // Left
+            if (y - 1 < 0) bools[2] = false;
+            else bools[2] = true;
+
+            // Right
+            if (y + 1 > grid.Columns - 1) bools[3] = false;
+            else bools[3] = true;
+
+            return bools;
         }
 
         public void ShowsOptions()
@@ -211,7 +258,7 @@ namespace Roguelike
             Console.WriteLine($"\nSelect Item to pick up");
             Console.WriteLine("---------------");
             Console.WriteLine("0. Go back");
-            
+
             for (int i = 0; i < grid.ObjectsPerTile; i++)
             {
                 IGameObject go = grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y][i];
@@ -224,12 +271,15 @@ namespace Roguelike
                 {
                     Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
                     count++;
-                } else if (go is Map)
+                }
+                else if (go is Map)
                 {
                     Console.WriteLine($"{count}. Map");
                     count++;
                 }
             }
+
+            Console.Write("\n> ");
         }
 
 
