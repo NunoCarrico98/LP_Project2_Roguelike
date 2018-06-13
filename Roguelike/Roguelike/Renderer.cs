@@ -67,9 +67,15 @@ namespace Roguelike
                 else if (go is Exit) gameSymbol = "E";
                 else if (go is Map) gameSymbol = "M";
                 else if (go is Trap) gameSymbol = "T";
-                else if (go is NPC) gameSymbol = "E";
                 else if (go is Food) gameSymbol = "F";
                 else if (go is Weapon) gameSymbol = "W";
+                else if (go is NPC)
+                {
+                    if((go as NPC).NpcType == StateOfNpc.Enemy) 
+                        gameSymbol = "H";
+                    if ((go as NPC).NpcType == StateOfNpc.Neutral)
+                        gameSymbol = "N";
+                }
             }
             else
             {
@@ -205,9 +211,8 @@ namespace Roguelike
                     $"({(go as Weapon).WeaponType}) ");
                 if (go is NPC) Console.Write($"NPC " +
                     $"({(go as NPC).NpcType}, HP = {(go as NPC).HP}, " +
-                    $"{(go as NPC).AP}) ");
+                    $"AP = {(go as NPC).AP}) ");
             }
-
             if (empty) Console.Write("Empty");
         }
 

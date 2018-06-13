@@ -21,6 +21,7 @@ namespace Roguelike
             {
                 Add(null);
             }
+            Explored = true;
         }
 
         /// <summary>

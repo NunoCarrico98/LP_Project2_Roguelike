@@ -21,13 +21,13 @@ namespace Roguelike
         public NPC(Position pos, GridManager grid)
         {
             MaxAPForThisLevel =
-                    ProcGenFunctions.Logistic(grid.Level, 100d, 15, 0.1d);
+                    ProcGenFunctions.Logistic(grid.Level, 100d, 20d, 0.1d);
 
             MaxHPForThisLevel =
-                    ProcGenFunctions.Logistic(grid.Level, 100d, 15, 0.1d);
+                    ProcGenFunctions.Logistic(grid.Level, 100d, 20d, 0.1d);
 
             HostileProbabilityForThisLevel =
-                    ProcGenFunctions.Logistic(grid.Level, 1d, 15, 0.1d);
+                    ProcGenFunctions.Logistic(grid.Level, 1d, 20d, 0.1d);
 
             NpcType = rnd.NextDouble() < HostileProbabilityForThisLevel
                 ? StateOfNpc.Enemy : StateOfNpc.Neutral;

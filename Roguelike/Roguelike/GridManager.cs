@@ -75,6 +75,7 @@ namespace Roguelike
             UpdatePlayerPosition(player);
             //Check current tile for traps
             CheckForTraps(player);
+            CheckForNPC(player);
             // Check if player won level
             WinLevel(player);
         }
@@ -120,15 +121,19 @@ namespace Roguelike
 
         public void SpawnNPC()
         {
-            int maxNPCsForLevel = (int)ProcGenFunctions.Linear(Level, 1d, 2d);
+            int maxNPCsForLevel =
+                (int)ProcGenFunctions.Logistic(Level, 20d, 10d, 0.3d);
             int numberOfNPCs = rnd.Next(maxNPCsForLevel);
 
             for (int i = 0; i < numberOfNPCs; i++)
             {
                 int row = rnd.Next(8);
                 int column = rnd.Next(8);
-                Position pos = new Position(row, column);
-                gameGrid[row, column].AddObject(new NPC(pos, this));
+                do
+                {
+                    Position pos = new Position(row, column);
+                    gameGrid[row, column].AddObject(new NPC(pos, this));
+                } while (gameGrid[row,column].Contains(Exit));
             }
         }
 
@@ -137,7 +142,11 @@ namespace Roguelike
         /// </summary>
         public void SpawnTraps()
         {
-            for (int i = 0; i < 5; i++)
+            int maxTrapsPerLevel =
+                (int)ProcGenFunctions.Logistic(Level, 20d, 10d, 0.3d);
+            int numberOfTraps = rnd.Next(maxTrapsPerLevel);
+
+            for (int i = 0; i < numberOfTraps; i++)
             {
                 // Create new trap
                 Trap trap;
@@ -157,13 +166,30 @@ namespace Roguelike
 
         public void SpawnItems()
         {
-            for (int i = 0; i < 5; i++)
-            {
-                Food food = new Food(new Position(rnd.Next(0, 8), rnd.Next(0, 8)));
-                gameGrid[food.FoodPos.X, food.FoodPos.Y].AddObject(food);
+            int maxItensPerLevel =
+                (int)ProcGenFunctions.Logistic(Level, 30d, 10d, -0.3d);
+            int numberOfItens = rnd.Next(maxItensPerLevel);
 
-                Weapon weapon = new Weapon(new Position(rnd.Next(0, 8), rnd.Next(0, 8)));
-                gameGrid[weapon.WeaponPos.X, weapon.WeaponPos.Y].AddObject(weapon);
+            for (int i = 0; i < numberOfItens; i++)
+            {
+                Position pos;
+                do
+                {
+                    int item = rnd.Next(2);
+                    pos = new Position(rnd.Next(8), rnd.Next(8));
+                    switch (item)
+                    {
+                        case 0:
+                            Food food = new Food(pos);
+                            gameGrid[pos.X, pos.Y].AddObject(food);
+                            break;
+                        case 1:
+                            Weapon weapon = new Weapon(pos);
+                            gameGrid[pos.X, pos.Y].AddObject(weapon);
+                            break;
+                    }
+                } while (gameGrid[pos.X, pos.Y].Contains(Exit));
+
             }
         }
 
@@ -213,11 +239,11 @@ namespace Roguelike
 
         public void CheckForNPC(Player p)
         {
-            foreach(IGameObject go in gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
+            foreach (IGameObject go in gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
             {
-                if(go is NPC && (go as NPC).NpcType == StateOfNpc.Enemy)
+                if (go is NPC && (go as NPC).NpcType == StateOfNpc.Enemy)
                 {
-
+                    (go as NPC).Fight(p);
                 }
             }
         }
@@ -237,13 +263,15 @@ namespace Roguelike
                     gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Add(null);
                     picked = true;
 
-                } else if (go is Map)
+                }
+                else if (go is Map)
                 {
                     gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Remove(Map);
                     gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Add(null);
                     foreach (GameTile gt in gameGrid) gt.Explored = true;
                     picked = true;
-                } else
+                }
+                else
                 {
                     i++;
                 }
@@ -287,13 +315,13 @@ namespace Roguelike
             gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Explored = true;
 
             // Make sure that the positions we're checking are not outside the map
-            Position pos1 = 
+            Position pos1 =
                 RestrictToMap(player.PlayerPos.X - 1, player.PlayerPos.Y);
-            Position pos2 = 
+            Position pos2 =
                 RestrictToMap(player.PlayerPos.X + 1, player.PlayerPos.Y);
-            Position pos3 = 
+            Position pos3 =
                 RestrictToMap(player.PlayerPos.X, player.PlayerPos.Y - 1);
-            Position pos4 = 
+            Position pos4 =
                 RestrictToMap(player.PlayerPos.X, player.PlayerPos.Y + 1);
 
             // Tiles above, below, to the left and right become visible
