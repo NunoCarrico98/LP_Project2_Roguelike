@@ -13,7 +13,7 @@ namespace Roguelike
         public double Durability { get; private set; }
         public TypesOfWeapon WeaponType { get; set; }
         public Position WeaponPos { get; set; }
-        Random rnd = new Random();
+        Random rnd = new Random(Guid.NewGuid().GetHashCode());
 
         public Weapon(Position pos)
         {
@@ -62,7 +62,7 @@ namespace Roguelike
         public override string ToString()
         {
 
-            return ($"{WeaponType,-14}| {AttackPower,14} | {Durability,14}");
+            return ($"{WeaponType,-14}| {AttackPower,13} | {Weight,10} | {Durability,12:f1}|");
         }
     }
 }

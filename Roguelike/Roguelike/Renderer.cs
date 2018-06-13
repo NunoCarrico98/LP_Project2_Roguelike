@@ -156,6 +156,8 @@ namespace Roguelike
 
         public void InfoInterface()
         {
+            ShowFoodInfo();
+            ShowWeaponInfo();
             ShowTrapInfo();
         }
 
@@ -165,10 +167,39 @@ namespace Roguelike
             Console.WriteLine("---------------");
         }
 
+
+        public void ShowFoodInfo()
+        {
+            List<Food> FoodList = new List<Food>();
+            Console.WriteLine("Food          |    Hp Increase|      Weight|\n");
+            for (int i = 0; i < Enum.GetNames(typeof(TypesOfTraps)).Length; i++)
+            {
+                FoodList.Add(new Food((TypesOfFood)(i)));
+                Console.WriteLine(FoodList[i]);
+            }
+            Console.WriteLine();
+            Console.WriteLine("------------------------------------------------------------");
+            Console.WriteLine();
+        }
+
+        public void ShowWeaponInfo()
+        {
+            List<Weapon> WeaponList = new List<Weapon>();
+            Console.WriteLine("Weapon        |   Attack Power|      Weight|   Durability|\n");
+            for (int i = 0; i < Enum.GetNames(typeof(TypesOfTraps)).Length; i++)
+            {
+                WeaponList.Add(new Weapon((TypesOfWeapon)(i)));
+                Console.WriteLine(WeaponList[i]);
+            }
+            Console.WriteLine();
+            Console.WriteLine("------------------------------------------------------------");
+            Console.WriteLine();
+        }
+
         public void ShowTrapInfo()
         {
             List<Trap> TrapList = new List<Trap>();
-            Console.WriteLine("Trap          |      MaxDamage\n"); //10 spaces
+            Console.WriteLine("Trap          |      MaxDamage|\n");
             for (int i = 0; i < Enum.GetNames(typeof(TypesOfTraps)).Length; i++)
             {
                 TrapList.Add(new Trap((TypesOfTraps)(i)));

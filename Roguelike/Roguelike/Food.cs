@@ -11,7 +11,7 @@ namespace Roguelike
         public float HPIncrease { get; private set; }
         public TypesOfFood FoodType { get; set; }
         public Position FoodPos { get; set; }
-        Random rnd = new Random();
+        Random rnd = new Random(Guid.NewGuid().GetHashCode());
 
         public Food(Position pos)
         {
@@ -55,8 +55,8 @@ namespace Roguelike
         }
         public override string ToString()
         {
-
-            return ($"{FoodType}| {HPIncrease}");
+            char plus = '+';
+            return ($"{FoodType,-14}|{plus,12}{HPIncrease,4}| {Weight, 10}|");
         }
     }
 }

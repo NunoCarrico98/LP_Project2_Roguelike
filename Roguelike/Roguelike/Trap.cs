@@ -56,7 +56,7 @@ namespace Roguelike
         public override string ToString()
         {
 
-            return ($"{TrapType,-14}| {MaxDamage,14}");
+            return ($"{TrapType,-14}| {MaxDamage,14}|");
         }
     }
 }
