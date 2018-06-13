@@ -110,8 +110,12 @@ namespace Roguelike
             // Spawn Traps
             SpawnTraps();
 
+            // Spawn Items
+            SpawnItems();
+
             // Spawn NPCs
             SpawnNPC();
+
         }
 
         public void SpawnNPC()
@@ -147,6 +151,19 @@ namespace Roguelike
 
                 // Add trap to grid
                 gameGrid[trap.TrapPos.X, trap.TrapPos.Y].AddObject(trap);
+            }
+        }
+
+
+        public void SpawnItems()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                Food food = new Food(new Position(rnd.Next(0, 8), rnd.Next(0, 8)));
+                gameGrid[food.FoodPos.X, food.FoodPos.Y].AddObject(food);
+
+                Weapon weapon = new Weapon(new Position(rnd.Next(0, 8), rnd.Next(0, 8)));
+                gameGrid[weapon.WeaponPos.X, weapon.WeaponPos.Y].AddObject(weapon);
             }
         }
 
@@ -195,15 +212,32 @@ namespace Roguelike
 
         }
 
-        public void PickUpMap(Player player)
+        public void PickUpItems(Player p)
         {
-            if (gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Contains(Map) &&
-               gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Contains(player))
+            bool picked = false;
+            string choice = Console.ReadLine();
+            int i = Convert.ToInt32(choice);
+            do
             {
-                gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Remove(Map);
-                gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Add(null);
-                foreach (GameTile gt in gameGrid) gt.Explored = true;
-            }
+                IGameObject go = gameGrid[p.PlayerPos.X, p.PlayerPos.Y][i];
+                if (go is Item)
+                {
+                    p.Inventory.Add(go as Item);
+                    gameGrid[p.PlayerPos.X, p.PlayerPos.Y].RemoveAt(i);
+                    gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Add(null);
+                    picked = true;
+
+                } else if (go is Map)
+                {
+                    gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Remove(Map);
+                    gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Add(null);
+                    foreach (GameTile gt in gameGrid) gt.Explored = true;
+                    picked = true;
+                } else
+                {
+                    i++;
+                }
+            } while (!picked);
         }
 
         /// <summary>

@@ -68,6 +68,8 @@ namespace Roguelike
                 else if (go is Map) gameSymbol = "M";
                 else if (go is Trap) gameSymbol = "T";
                 else if (go is NPC) gameSymbol = "E";
+                else if (go is Food) gameSymbol = "F";
+                else if (go is Weapon) gameSymbol = "W";
             }
             else
             {
@@ -198,13 +200,71 @@ namespace Roguelike
 
         public void InfoInterface()
         {
+            ShowFoodInfo();
+            ShowWeaponInfo();
             ShowTrapInfo();
+        }
+
+        public void PickUpScreen(GridManager grid, Player p)
+        {
+            int count = 1;
+            Console.WriteLine($"\nSelect Item to pick up");
+            Console.WriteLine("---------------");
+            Console.WriteLine("0. Go back");
+            
+            for (int i = 0; i < grid.ObjectsPerTile; i++)
+            {
+                IGameObject go = grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y][i];
+                if (go is Food)
+                {
+                    Console.WriteLine($"{count}. Food ({(go as Food).FoodType}) ");
+                    count++;
+                }
+                else if (go is Weapon)
+                {
+                    Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
+                    count++;
+                } else if (go is Map)
+                {
+                    Console.WriteLine($"{count}. Map");
+                    count++;
+                }
+            }
+        }
+
+
+        public void ShowFoodInfo()
+        {
+            List<Food> FoodList = new List<Food>();
+            Console.WriteLine("Food          |    Hp Increase|      Weight|\n");
+            for (int i = 0; i < Enum.GetNames(typeof(TypesOfTraps)).Length; i++)
+            {
+                FoodList.Add(new Food((TypesOfFood)(i)));
+                Console.WriteLine(FoodList[i]);
+            }
+            Console.WriteLine();
+            Console.WriteLine("------------------------------------------------------------");
+            Console.WriteLine();
+        }
+
+        public void ShowWeaponInfo()
+        {
+            List<Weapon> WeaponList = new List<Weapon>();
+            Console.WriteLine("Weapon        |   Attack Power|      Weight|   Durability|\n");
+            for (int i = 0; i < Enum.GetNames(typeof(TypesOfTraps)).Length; i++)
+            {
+                WeaponList.Add(new Weapon((TypesOfWeapon)(i)));
+                Console.WriteLine(WeaponList[i]);
+            }
+            Console.WriteLine();
+            Console.WriteLine("------------------------------------------------------------");
+            Console.WriteLine();
         }
 
         public void ShowTrapInfo()
         {
             List<Trap> TrapList = new List<Trap>();
-            Console.WriteLine("Trap          |      MaxDamage\n"); //10 spaces
+            Console.WriteLine("Trap          |      MaxDamage|\n");
             for (int i = 0; i < Enum.GetNames(typeof(TypesOfTraps)).Length; i++)
             {
                 TrapList.Add(new Trap((TypesOfTraps)(i)));

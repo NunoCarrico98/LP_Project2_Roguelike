@@ -9,7 +9,7 @@ namespace Roguelike
         public double Durability { get; private set; }
         public TypesOfWeapon WeaponType { get; set; }
         public Position WeaponPos { get; set; }
-        Random rnd = new Random();
+        Random rnd = new Random(Guid.NewGuid().GetHashCode());
 
         public Weapon(Position pos)
         {
@@ -30,22 +30,27 @@ namespace Roguelike
                 case TypesOfWeapon.Axe:
                     AttackPower = rnd.Next(5, 15);
                     Durability = rnd.NextDouble();
+                    Weight = 5;
                     break;
                 case TypesOfWeapon.Dagger:
                     AttackPower = rnd.Next(1, 10);
                     Durability = rnd.NextDouble();
+                    Weight = 2;
                     break;
                 case TypesOfWeapon.Lance:
                     AttackPower = rnd.Next(5, 20);
                     Durability = rnd.NextDouble();
+                    Weight = 7;
                     break;
                 case TypesOfWeapon.SlingShot:
                     AttackPower = rnd.Next(1, 5);
                     Durability = rnd.NextDouble();
+                    Weight = 1;
                     break;
                 case TypesOfWeapon.Sword:
                     AttackPower = rnd.Next(5, 20);
                     Durability = rnd.NextDouble();
+                    Weight = 7;
                     break;
             }
         }
@@ -53,7 +58,7 @@ namespace Roguelike
         public override string ToString()
         {
 
-            return ($"{WeaponType,-14}| {AttackPower,14} | {Durability,14}");
+            return ($"{WeaponType,-14}| {AttackPower,13} | {Weight,10} | {Durability,12:f1}|");
         }
     }
 }

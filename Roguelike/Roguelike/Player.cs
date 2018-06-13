@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Roguelike
 {
@@ -7,6 +8,9 @@ namespace Roguelike
         public float Health { get; set; }
         public string Input { get; private set; } = "";
         public Position PlayerPos { get; set; }
+        public float MaxWeight { get; private set; }
+        public List<Item> Inventory { get; set; } = new List<Item>();
+        public float Weight { get; set; }
 
         private HighScoreManager hsm;
         private Renderer render;
@@ -95,10 +99,15 @@ namespace Roguelike
                         render.RenderBoard(grid, this);
                         break;
                     case "e":
-                        grid.PickUpMap(this);
+                        Console.Clear();
+                        render.PickUpScreen(grid, this);
+                        grid.PickUpItems(this);
+                        Console.ReadKey();
                         break;
                 }
-            } while (Input == "i" || Input == "q");
+            } while (Input == "i" || Input == "q" || Input == "e" ||
+                     Input == "u" || Input == "v");
+
 
         }
 
