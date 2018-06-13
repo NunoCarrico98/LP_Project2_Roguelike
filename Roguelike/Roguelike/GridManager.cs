@@ -149,7 +149,6 @@ namespace Roguelike
                         if ((p.Weight + (go as Item).Weight) > p.MaxWeight)
                         {
                             Console.WriteLine("You can't carry anymore.");
-                            Console.WriteLine("Press Enter to go back.");
                             Console.ReadLine();
                             return;
                         }
@@ -192,11 +191,49 @@ namespace Roguelike
                 IGameObject go = p.Inventory[i - 1];
                 if (go is Item)
                 {
-
                     gameGrid[p.PlayerPos.X, p.PlayerPos.Y].AddObject(go);
                     p.Inventory.RemoveAt(i - 1);
                     p.Weight -= (go as Item).Weight;
+                }
+            }
+        }
 
+        public void UseItems(Player p)
+        {
+            string choice = Console.ReadLine();
+            int i = Convert.ToInt32(choice);
+
+            if (i == 0)
+            {
+                p.Health++;
+                return;
+            }
+            else
+            {
+                IGameObject go = p.Inventory[i - 1];
+                if (go is Food)
+                {
+                    p.Inventory.RemoveAt(i - 1);
+                    p.Weight -= (go as Item).Weight;
+                    if((p.Health + (go as Food).HPIncrease) > 100)
+                    {
+                        p.Health = 100;
+                    } else
+                    {
+                        p.Health += (go as Food).HPIncrease;
+                    }
+                }
+                else if (go is Weapon)
+                {
+                    p.Inventory.RemoveAt(i - 1);
+                    if (p.Equipped == null)
+                    {
+                        p.Equipped = (go as Weapon);
+                    } else 
+                    {
+                        p.Inventory.Add(p.Equipped as Weapon);
+                        p.Equipped = (go as Weapon);
+                    }
                 }
             }
         }

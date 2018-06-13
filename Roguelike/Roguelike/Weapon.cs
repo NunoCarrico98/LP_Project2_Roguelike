@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Roguelike
 {
-    class Weapon : Item
+    public class Weapon : Item
     {
 
         public int AttackPower { get; private set; }
