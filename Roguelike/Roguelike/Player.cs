@@ -92,12 +92,13 @@ namespace Roguelike
                         break;
                     case "q":
                         MakeSureQuit(grid);
+                        render.RenderBoard(grid, this);
                         break;
                     case "e":
                         grid.PickUpMap(this);
                         break;
                 }
-            } while (Input == "I" || Input == "Q");
+            } while (Input == "i" || Input == "q");
 
         }
 

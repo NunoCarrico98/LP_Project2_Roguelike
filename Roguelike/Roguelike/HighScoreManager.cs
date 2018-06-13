@@ -117,7 +117,7 @@ namespace Roguelike
         /// <summary>
         /// Overriding method ToString()
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns a fully formmated table with all high scores</returns>
         public override string ToString()
         {
             // Instantiate a new instance of StringBuilder

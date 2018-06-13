@@ -94,6 +94,7 @@ namespace Roguelike
         public void ShowGameInterface(GridManager grid, Player p)
         {
             ShowMessages(p.Input);
+            ShowTrapMessages(grid, p);
             ShowTileObjects(grid, p);
             ShowsOptions();
         }
@@ -116,6 +117,22 @@ namespace Roguelike
                 case "d":
                     Console.WriteLine("* You moved EAST");
                     break;
+            }
+        }
+
+        public void ShowTrapMessages(GridManager grid, Player p)
+        {
+            // Cycle through all objects in tile backwards
+            foreach(IGameObject go in grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
+            {
+                // If object is a Trap and it wasn't activated yet
+                if (go is Trap && (go as Trap).WroteMessage == false)
+                {
+                    Console.WriteLine($"* You got hit by a " +
+                        $"{(go as Trap).TrapType} and lost " +
+                        $"{(go as Trap).Damage:f1} HP");
+                    (go as Trap).WroteMessage = true;
+                }
             }
         }
 
@@ -160,8 +177,8 @@ namespace Roguelike
             {
                 if (go != null) empty = false;
                 if (go is Trap) Console.Write($"Trap " +
-                    $"({(go as Trap).TrapType})");
-                else if (go is Map) Console.Write("Map");
+                    $"({(go as Trap).TrapType}) ");
+                else if (go is Map) Console.Write("Map ");
             }
 
             if (empty) Console.Write("Empty");

@@ -3,7 +3,7 @@
 namespace Roguelike
 {
     /// <summary>
-    /// Classe that defines a game tile. Each is a list of IGameObjects
+    /// Classe that defines a game tile. Each tile is a list of IGameObjects
     /// </summary>
     public class GameTile : List<IGameObject>
     {
@@ -55,16 +55,23 @@ namespace Roguelike
                 // Put gameObject in position defined by index
                 this[i] = go;
             }
+            // If tile does not contain a null
             else
             {
+                // Add gameObject to the end of the list
                 Add(go);
             }
         }
 
+        /// <summary>
+        /// Remove nulls that exist but are not being rendered by the grid
+        /// </summary>
         public void RemoveNullsOutsideView()
         {
+            // Do cycle while there nulls outside view
             while (Count > 10 && Contains(null))
             {
+                // Remove a null from list
                 Remove(null);
             }
         }
