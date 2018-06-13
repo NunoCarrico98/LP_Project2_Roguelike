@@ -72,6 +72,7 @@ namespace Roguelike
             }
 
             SpawnTraps();
+            SpawnItems();
         }
 
         public void SpawnTraps()
@@ -80,6 +81,18 @@ namespace Roguelike
             {
                 Trap trap = new Trap(new Position(rnd.Next(0, 8), rnd.Next(0, 8)));
                 gameGrid[trap.TrapPos.X, trap.TrapPos.Y].AddObject(trap);
+            }
+        }
+
+        public void SpawnItems()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                Food food = new Food(new Position(rnd.Next(0, 8), rnd.Next(0, 8)));
+                gameGrid[food.FoodPos.X, food.FoodPos.Y].AddObject(food);
+
+                Weapon weapon = new Weapon(new Position(rnd.Next(0, 8), rnd.Next(0, 8)));
+                gameGrid[weapon.WeaponPos.X, weapon.WeaponPos.Y].AddObject(weapon);
             }
         }
 
@@ -124,6 +137,20 @@ namespace Roguelike
                 gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Remove(Map);
                 gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Add(null);
                 foreach (GameTile gt in gameGrid) gt.Explored = true;
+            }
+        }
+
+        public void PickUpItems(Player player)
+        {
+            for (int i = ObjectsPerTile - 1; i >= 0; i--)
+            {
+                IGameObject go = gameGrid[player.PlayerPos.X, player.PlayerPos.Y][i];
+                if (go is Food)
+                {
+                    player.Inventory.Add(go as Food);
+                    gameGrid[player.PlayerPos.X, player.PlayerPos.Y].RemoveAt(i);
+                    gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Add(null);
+                }
             }
         }
 

@@ -66,6 +66,8 @@ namespace Roguelike
                 else if (go is Exit) gameSymbol = "E";
                 else if (go is Map) gameSymbol = "M";
                 else if (go is Trap) gameSymbol = "T";
+                else if (go is Food) gameSymbol = "F";
+                else if (go is Weapon) gameSymbol = "W";
             }
             else
             {
@@ -155,6 +157,12 @@ namespace Roguelike
         public void InfoInterface()
         {
             ShowTrapInfo();
+        }
+
+        public void InventoryScreen()
+        {
+            Console.WriteLine("\nSelect Item to ");
+            Console.WriteLine("---------------");
         }
 
         public void ShowTrapInfo()
