@@ -16,7 +16,7 @@ namespace Roguelike
         public GameTile() : base(10)
         {
             // Add null to the respective tile
-            for (int posInTile = 0; posInTile < 100;
+            for (int posInTile = 0; posInTile < 10;
                          posInTile++)
             {
                 Add(null);
@@ -54,6 +54,10 @@ namespace Roguelike
 
                 // Put gameObject in position defined by index
                 this[i] = go;
+            }
+            else
+            {
+                Add(go);
             }
         }
 

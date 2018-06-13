@@ -19,8 +19,8 @@ namespace Roguelike
             }
 
             Console.Clear();
-            Console.WriteLine($"********************* LP1 RPG : Level " +
-                $"{grid.Level} *********************\n");
+            Console.WriteLine($"------------------------------------  LP1 - RPG : Level " +
+                $"{grid.Level}  ------------------------------------\n");
             for (int x = 0; x < grid.Rows; x++)
             {
                 for (int y = 0; y < grid.Columns; y++)
@@ -52,6 +52,7 @@ namespace Roguelike
                 Console.WriteLine();
             }
 
+            ShowPlayerStats(player);
             ShowGameInterface(grid, player);
         }
 
@@ -72,6 +73,22 @@ namespace Roguelike
                 gameSymbol = "~";
             }
             return gameSymbol;
+        }
+
+        public void ShowPlayerStats(Player p)
+        {
+            int xCursor = Console.CursorTop;
+            int yCursor = Console.CursorLeft;
+            char c = '-';
+            Console.SetCursorPosition(70, 2);
+            Console.WriteLine("Player Stats");
+            Console.SetCursorPosition(70, 3);
+            Console.WriteLine("--------------");
+            Console.SetCursorPosition(70, 4);
+            Console.WriteLine($"HP{c,10}{p.Health, 7:f1}");
+            Console.SetCursorPosition(70, 5);
+            Console.WriteLine($"Weapon{c,6}");
+            Console.SetCursorPosition(yCursor, xCursor);
         }
 
         public void ShowGameInterface(GridManager grid, Player p)
@@ -104,41 +121,50 @@ namespace Roguelike
 
         public void ShowTileObjects(GridManager grid, Player p)
         {
-            Position pos1 = grid.Verify(p.PlayerPos.X - 1, p.PlayerPos.Y);
-            Position pos2 = grid.Verify(p.PlayerPos.X + 1, p.PlayerPos.Y);
-            Position pos3 = grid.Verify(p.PlayerPos.X, p.PlayerPos.Y - 1);
-            Position pos4 = grid.Verify(p.PlayerPos.X, p.PlayerPos.Y + 1);
+            Position pos1 = grid.RestrictToMap(p.PlayerPos.X - 1, p.PlayerPos.Y);
+            Position pos2 = grid.RestrictToMap(p.PlayerPos.X + 1, p.PlayerPos.Y);
+            Position pos3 = grid.RestrictToMap(p.PlayerPos.X, p.PlayerPos.Y - 1);
+            Position pos4 = grid.RestrictToMap(p.PlayerPos.X, p.PlayerPos.Y + 1);
 
             Console.WriteLine("\nWhat do I see?");
             Console.WriteLine("----------------");
 
-            Console.Write("* NORTH: ");
+            char c = ':';
+            Console.Write($"* NORTH{c,2} ");
             ObjectsInTile(grid, pos1);
             Console.WriteLine();
 
-            Console.Write("* EAST: ");
+            Console.Write($"* EAST{c,3} ");
             ObjectsInTile(grid, pos4);
             Console.WriteLine();
 
-            Console.Write("* WEST: ");
+            Console.Write($"* WEST{c,3} ");
             ObjectsInTile(grid, pos3);
             Console.WriteLine();
 
-            Console.Write("* SOUTH: ");
+            Console.Write($"* SOUTH{c,2} ");
             ObjectsInTile(grid, pos2);
+            Console.WriteLine();
+
+            Console.Write($"* HERE{c,3} ");
+            ObjectsInTile(grid, p.PlayerPos);
             Console.WriteLine();
         }
 
         public void ObjectsInTile(GridManager grid, Position pos)
         {
+            bool empty = true;
             if (grid.gameGrid[pos.X, pos.Y].Contains(grid.Exit))
                 Console.Write("Exit");
             foreach (IGameObject go in grid.gameGrid[pos.X, pos.Y])
             {
+                if (go != null) empty = false;
                 if (go is Trap) Console.Write($"Trap " +
                     $"({(go as Trap).TrapType})");
-                if (go is Map) Console.Write("Map");
+                else if (go is Map) Console.Write("Map");
             }
+
+            if (empty) Console.Write("Empty");
         }
 
         public void ShowsOptions()

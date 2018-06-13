@@ -113,8 +113,6 @@ namespace Roguelike
                 {
                     (go as Trap).FallenInto = true;
                     player.Health -= (go as Trap).Damage;
-
-
                 }
             }
 
@@ -158,10 +156,14 @@ namespace Roguelike
         {
             gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Explored = true;
 
-            Position pos1 = Verify(player.PlayerPos.X - 1, player.PlayerPos.Y);
-            Position pos2 = Verify(player.PlayerPos.X + 1, player.PlayerPos.Y);
-            Position pos3 = Verify(player.PlayerPos.X, player.PlayerPos.Y - 1);
-            Position pos4 = Verify(player.PlayerPos.X, player.PlayerPos.Y + 1);
+            Position pos1 = 
+                RestrictToMap(player.PlayerPos.X - 1, player.PlayerPos.Y);
+            Position pos2 = 
+                RestrictToMap(player.PlayerPos.X + 1, player.PlayerPos.Y);
+            Position pos3 = 
+                RestrictToMap(player.PlayerPos.X, player.PlayerPos.Y - 1);
+            Position pos4 = 
+                RestrictToMap(player.PlayerPos.X, player.PlayerPos.Y + 1);
 
             gameGrid[pos1.X, pos1.Y].Explored = true;
             gameGrid[pos2.X, pos2.Y].Explored = true;
@@ -169,7 +171,7 @@ namespace Roguelike
             gameGrid[pos4.X, pos4.Y].Explored = true;
         }
 
-        public Position Verify(int x, int y)
+        public Position RestrictToMap(int x, int y)
         {
             if (x < 0) x = 0;
             if (y < 0) y = 0;
