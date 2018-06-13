@@ -108,8 +108,7 @@ namespace Roguelike
                 if (go is Trap)
                 {
                     player.Health -= (go as Trap).Damage;
-                    gameGrid[player.PlayerPos.X, player.PlayerPos.Y].RemoveAt(i);
-                    gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Add(null);
+
                 }
             }
 

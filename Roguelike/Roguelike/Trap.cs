@@ -16,7 +16,7 @@ namespace Roguelike
 
         public Trap(Position pos)
         {
-            TrapType = (TypesOfTraps)rnd.Next(0, Enum.GetNames(typeof(TypesOfTraps)).Length + 1);
+            TrapType = (TypesOfTraps)rnd.Next(0, Enum.GetNames(typeof(TypesOfTraps)).Length);
             SetMaxDamage();
             TrapPos = pos; 
         }
