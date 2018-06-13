@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Roguelike
 {
-    class Trap : Item
+    class Trap : IGameObject
     {
         public int MaxDamage { get; private set; } 
         public float Damage { get; private set; }

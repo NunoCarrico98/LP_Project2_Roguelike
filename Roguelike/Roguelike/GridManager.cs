@@ -134,27 +134,71 @@ namespace Roguelike
             bool picked = false;
             string choice = Console.ReadLine();
             int i = Convert.ToInt32(choice);
-            do
+            if (i == 0)
+            {   
+                p.Health++;
+                return;
+            }
+            else
+            {   
+                do
+                {
+                    IGameObject go = gameGrid[p.PlayerPos.X, p.PlayerPos.Y][i];
+                    if (go is Item)
+                    {
+                        if ((p.Weight + (go as Item).Weight) > p.MaxWeight)
+                        {
+                            Console.WriteLine("You can't carry anymore.");
+                            Console.WriteLine("Press Enter to go back.");
+                            Console.ReadLine();
+                            return;
+                        }
+                        else
+                        {
+                            p.Inventory.Add(go as Item);
+                            p.Weight += (go as Item).Weight;
+                            gameGrid[p.PlayerPos.X, p.PlayerPos.Y].RemoveAt(i);
+                            gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Add(null);
+                            picked = true;
+                        }
+                    }
+                    else if (go is Map)
+                    {
+                        gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Remove(Map);
+                        gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Add(null);
+                        foreach (GameTile gt in gameGrid) gt.Explored = true;
+                        picked = true;
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                } while (!picked);
+            }
+        }
+
+        public void DropItems(Player p)
+        {
+            string choice = Console.ReadLine();
+            int i = Convert.ToInt32(choice);
+
+            if (i == 0)
             {
-                IGameObject go = gameGrid[p.PlayerPos.X, p.PlayerPos.Y][i];
+                p.Health++;
+                return;
+            }
+            else
+            {
+                IGameObject go = p.Inventory[i - 1];
                 if (go is Item)
                 {
-                    p.Inventory.Add(go as Item);
-                    gameGrid[p.PlayerPos.X, p.PlayerPos.Y].RemoveAt(i);
-                    gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Add(null);
-                    picked = true;
 
-                } else if (go is Map)
-                {
-                    gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Remove(Map);
-                    gameGrid[p.PlayerPos.X, p.PlayerPos.Y].Add(null);
-                    foreach (GameTile gt in gameGrid) gt.Explored = true;
-                    picked = true;
-                } else
-                {
-                    i++;
+                    gameGrid[p.PlayerPos.X, p.PlayerPos.Y].AddObject(go);
+                    p.Inventory.RemoveAt(i - 1);
+                    p.Weight -= (go as Item).Weight;
+
                 }
-            } while (!picked);
+            }
         }
 
         public void WinLevel(Player player)

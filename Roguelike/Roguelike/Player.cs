@@ -20,6 +20,7 @@ namespace Roguelike
             Health = 100;
             hsm = new HighScoreManager();
             render = new Renderer();
+            MaxWeight = 20;
         }
 
         public void Die(GridManager grid)
@@ -101,9 +102,11 @@ namespace Roguelike
                         Console.Clear();
                         render.PickUpScreen(grid, this);
                         grid.PickUpItems(this);
-                        Console.ReadKey();
-                        //grid.PickUpMap(this);
-                        //grid.PickUpItems(this);
+                        break;
+                    case "v":
+                        Console.Clear();
+                        render.DropItemsScreen(grid, this);
+                        grid.DropItems(this);
                         break;
                 }
             } while (Input == "I" || Input == "Q" || Input == "E" || Input == "U" || Input == "V");
