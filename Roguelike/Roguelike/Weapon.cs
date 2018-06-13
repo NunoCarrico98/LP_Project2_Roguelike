@@ -24,6 +24,7 @@ namespace Roguelike
         public Weapon(TypesOfWeapon typeweapon)
         {
             WeaponType = typeweapon;
+            SetDurAndAP();
         }
 
         public void SetDurAndAP()
