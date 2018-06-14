@@ -71,7 +71,7 @@ namespace Roguelike
                 else if (go is Weapon) gameSymbol = "W";
                 else if (go is NPC)
                 {
-                    if((go as NPC).NpcType == StateOfNpc.Enemy) 
+                    if ((go as NPC).NpcType == StateOfNpc.Enemy)
                         gameSymbol = "H";
                     if ((go as NPC).NpcType == StateOfNpc.Neutral)
                         gameSymbol = "N";
@@ -94,17 +94,23 @@ namespace Roguelike
             Console.SetCursorPosition(70, 3);
             Console.WriteLine("--------------");
             Console.SetCursorPosition(70, 4);
-            Console.WriteLine($"HP{c,10}{p.Health,7:f1}");
+            Console.WriteLine($"HP{c,10}   {p.Health:f1}");
             Console.SetCursorPosition(70, 5);
             Console.WriteLine($"Weapon{c,6}");
+            if (p.Equipped != null)
+            {
+                Console.SetCursorPosition(85, 5);
+                Console.WriteLine($"{p.Equipped.WeaponType}");
+            }
+            Console.SetCursorPosition(70, 6);
+            Console.WriteLine($"Weight{c,6}   {p.Weight:f1} / {p.MaxWeight:f1}");
             Console.SetCursorPosition(yCursor, xCursor);
         }
 
         public void ShowGameInterface(GridManager grid, Player p)
         {
-            Console.WriteLine(p.Health);
-            Console.WriteLine(p.Weight);
             ShowMessages(p.Input);
+            ShowErrorMessages(p);
             ShowTrapMessages(grid, p);
             ShowTileObjects(grid, p);
             ShowsOptions();
@@ -112,7 +118,6 @@ namespace Roguelike
 
         public void ShowMessages(string input)
         {
-
             Console.WriteLine("Messages");
             Console.WriteLine("----------");
             switch (input)
@@ -128,6 +133,25 @@ namespace Roguelike
                     break;
                 case "d":
                     Console.WriteLine("* You moved EAST");
+                    break;
+            }
+        }
+
+        public void ShowErrorMessages(Player p)
+        {
+            switch (p.Input)
+            {
+                case "e":
+                    break;
+                case "v":
+                    break;
+                case "u":
+                    break;
+                case "f":
+                    if (p.Equipped == null)
+                    {
+                        Console.WriteLine("You don't have a weapon. You cannot attack.");
+                    }
                     break;
             }
         }
@@ -213,8 +237,8 @@ namespace Roguelike
                 if (go is Weapon) Console.Write($"Weapon " +
                     $"({(go as Weapon).WeaponType}) ");
                 if (go is NPC) Console.Write($"NPC " +
-                    $"({(go as NPC).NpcType}, HP = {(go as NPC).HP}, " +
-                    $"AP = {(go as NPC).AP}) ");
+                    $"({(go as NPC).NpcType}, HP = {(go as NPC).HP:f1}, " +
+                    $"AP = {(go as NPC).AP:f1}) ");
             }
             if (empty) Console.Write("Empty");
         }
@@ -260,82 +284,6 @@ namespace Roguelike
             ShowTrapInfo();
         }
 
-        public void PickUpScreen(GridManager grid, Player p)
-        {
-            int count = 1;
-            Console.WriteLine($"\nSelect Item to pick up");
-            Console.WriteLine("---------------");
-            Console.WriteLine("0. Go back");
-
-            for (int i = 0; i < grid.ObjectsPerTile; i++)
-            {
-                IGameObject go = grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y][i];
-                if (go is Food)
-                {
-                    Console.WriteLine($"{count}. Food ({(go as Food).FoodType}) ");
-                    count++;
-                }
-                else if (go is Weapon)
-                {
-                    Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
-                    count++;
-                }
-                else if (go is Map)
-                {
-                    Console.WriteLine($"{count}. Map");
-                    count++;
-                }
-            }
-
-            Console.Write("\n> ");
-        }
-
-        public void DropItemsScreen(GridManager grid, Player p)
-        {
-            int count = 1;
-            Console.WriteLine($"\nSelect Item to drop");
-            Console.WriteLine("---------------");
-            Console.WriteLine("0. Go back");
-
-            for (int i = 0; i < p.Inventory.Count; i++)
-            {
-                IGameObject go = p.Inventory[i];
-                if (go is Food)
-                {
-                    Console.WriteLine($"{count}. Food ({(go as Food).FoodType}) ");
-                    count++;
-                }
-                else if (go is Weapon)
-                {
-                    Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
-                    count++;
-                }
-            }
-        }
-
-        public void UseItemScreen(Player p)
-        {
-            int count = 1;
-            Console.WriteLine($"\nSelect Item to use");
-            Console.WriteLine("---------------");
-            Console.WriteLine("0. Go back");
-
-            for (int i = 0; i < p.Inventory.Count; i++)
-            {
-                IGameObject go = p.Inventory[i];
-                if (go is Food)
-                {
-                    Console.WriteLine($"{count}. Food ({(go as Food).FoodType}) ");
-                    count++;
-                }
-                else if (go is Weapon)
-                {
-                    Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
-                    count++;
-                }
-            }
-        }
-
 
         public void ShowFoodInfo()
         {
@@ -374,6 +322,117 @@ namespace Roguelike
                 TrapList.Add(new Trap((TypesOfTraps)(i)));
                 Console.WriteLine(TrapList[i]);
             }
+        }
+
+        public bool ChooseEnemyScreen(GridManager grid, Player p)
+        {
+            int count = 1;
+
+            if (p.Equipped == null)
+            {
+                return false;
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine($"\nSelect Enemy to Attack");
+                Console.WriteLine("---------------");
+                Console.WriteLine("0. Go back");
+
+                foreach (IGameObject go in grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
+                {
+                    if (go is NPC)
+                    {
+                        Console.WriteLine($"{count}. {(go as NPC).NpcType}, " +
+                            $"{(go as NPC).HP}, {(go as NPC).AP}");
+                        count++;
+                    }
+                }
+                return true;
+            }
+        }
+
+        public void PickUpScreen(GridManager grid, Player p)
+        {
+            int count = 1;
+
+            Console.Clear();
+            Console.WriteLine($"\nSelect Item to pick up");
+            Console.WriteLine("---------------");
+            Console.WriteLine("0. Go back");
+
+            for (int i = 0; i < grid.ObjectsPerTile; i++)
+            {
+                IGameObject go = grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y][i];
+                if (go is Food)
+                {
+                    Console.WriteLine($"{count}. Food ({(go as Food).FoodType}) ");
+                    count++;
+                }
+                else if (go is Weapon)
+                {
+                    Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
+                    count++;
+                }
+                else if (go is Map)
+                {
+                    Console.WriteLine($"{count}. Map");
+                    count++;
+                }
+            }
+            Console.Write("\n> ");
+        }
+
+        public void DropItemsScreen(GridManager grid, Player p)
+        {
+            int count = 1;
+
+            Console.Clear();
+            Console.WriteLine($"\nSelect Item to drop");
+            Console.WriteLine("---------------");
+            Console.WriteLine("0. Go back");
+
+            for (int i = 0; i < p.Inventory.Count; i++)
+            {
+                IGameObject go = p.Inventory[i];
+                if (go is Food)
+                {
+                    Console.WriteLine($"{count}. Food ({(go as Food).FoodType}) ");
+                    count++;
+                }
+                else if (go is Weapon)
+                {
+                    Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
+                    count++;
+                }
+            }
+            Console.Write("\n> ");
+        }
+
+        public void UseItemScreen(Player p)
+        {
+            int count = 1;
+
+            Console.Clear();
+            Console.WriteLine($"\nSelect Item to use");
+            Console.WriteLine("---------------");
+            Console.WriteLine("0. Go back");
+
+            for (int i = 0; i < p.Inventory.Count; i++)
+            {
+                IGameObject go = p.Inventory[i];
+                if (go is Food)
+                {
+                    Console.WriteLine($"{count}. Food ({(go as Food).FoodType}) ");
+                    count++;
+                }
+                else if (go is Weapon)
+                {
+                    Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
+                    count++;
+                }
+            }
+            Console.Write("\n> ");
         }
 
         public void AddNewHighscoreInterface(GridManager grid)

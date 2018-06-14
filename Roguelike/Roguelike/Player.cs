@@ -15,6 +15,7 @@ namespace Roguelike
 
         private HighScoreManager hsm;
         private Renderer render;
+        private Random rnd = new Random();
 
         public Player()
         {
@@ -102,22 +103,55 @@ namespace Roguelike
                         render.RenderBoard(grid, this);
                         break;
                     case "e":
-                        Console.Clear();
                         render.PickUpScreen(grid, this);
                         grid.PickUpItems(this);
                         break;
                     case "v":
-                        Console.Clear();
                         render.DropItemsScreen(grid, this);
                         grid.DropItems(this);
                         break;
                     case "u":
-                        Console.Clear();
                         render.UseItemScreen(this);
                         grid.UseItems(this);
                         break;
+                    case "f":
+                        render.ChooseEnemyScreen(grid, this);
+                        break;
                 }
             } while (Input == "i" || Input == "q");
+        }
+
+        public void Fight(GridManager grid, NPC npc)
+        {
+            bool attacked = false;
+            string choice = Console.ReadLine();
+            int i = Convert.ToInt32(choice);
+            if (i == 0)
+            {
+                return;
+            }
+            else
+            {
+                do
+                {
+                    IGameObject go = grid.gameGrid[PlayerPos.X, PlayerPos.Y][i];
+                    if (go is NPC)
+                    {
+                        if ((go as NPC).NpcType == StateOfNpc.Neutral)
+                            (go as NPC).NpcType = StateOfNpc.Enemy;
+                        (go as NPC).HP -= rnd.Next(0, Equipped.AttackPower);
+                        if(rnd.NextDouble() < 1 - Equipped.Durability)
+                        {
+                            Equipped = null;
+                        }
+                        (go as NPC).Die(grid);
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                } while (!attacked);
+            }
         }
 
         public void MakeSureQuit(GridManager grid)

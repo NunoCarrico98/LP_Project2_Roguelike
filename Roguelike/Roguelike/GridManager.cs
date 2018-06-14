@@ -75,7 +75,7 @@ namespace Roguelike
             UpdatePlayerPosition(player);
             //Check current tile for traps
             CheckForTraps(player);
-            CheckForNPC(player);
+            CheckForNPC(this, player);
             // Check if player won level
             WinLevel(player);
         }
@@ -237,13 +237,13 @@ namespace Roguelike
             }
         }
 
-        public void CheckForNPC(Player p)
+        public void CheckForNPC(GridManager grid, Player p)
         {
             foreach (IGameObject go in gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
             {
                 if (go is NPC && (go as NPC).NpcType == StateOfNpc.Enemy)
                 {
-                    (go as NPC).Fight(p);
+                    (go as NPC).Fight(grid, p);
                 }
             }
         }
@@ -255,7 +255,6 @@ namespace Roguelike
             int i = Convert.ToInt32(choice);
             if (i == 0)
             {   
-                p.Health++;
                 return;
             }
             else
@@ -302,7 +301,6 @@ namespace Roguelike
 
             if (i == 0)
             {
-                p.Health++;
                 return;
             }
             else
@@ -324,7 +322,6 @@ namespace Roguelike
 
             if (i == 0)
             {
-                p.Health++;
                 return;
             }
             else

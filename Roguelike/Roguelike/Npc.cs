@@ -38,9 +38,18 @@ namespace Roguelike
             HP = rnd.NextDouble() * MaxHPForThisLevel;
         }
 
-        public void Fight(Player p)
+        public void Fight(GridManager grid, Player p)
         {
             p.Health -= rnd.NextDouble() * AP;
+            p.Die(grid);
+        }
+
+        public void Die(GridManager grid)
+        {
+            if (HP <= 0)
+            {
+                grid.gameGrid[Pos.X, Pos.Y].Remove(this);
+            }
         }
     }
 }
