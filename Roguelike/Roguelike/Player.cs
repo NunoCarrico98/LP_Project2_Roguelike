@@ -65,9 +65,7 @@ namespace Roguelike
                             grid.RestrictToMap(PlayerPos.X, PlayerPos.Y + 1);
                         break;
                     case "i":
-                        Console.Clear();
                         render.InfoInterface();
-                        Console.ReadKey();
                         render.RenderBoard(grid, this);
                         break;
                     case "q":

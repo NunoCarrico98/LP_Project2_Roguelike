@@ -66,7 +66,7 @@ namespace Roguelike
             if (gametile.Explored == true)
             {
                 if (go is null) gameSymbol = ".";
-                else if (go is Player) gameSymbol = "P";
+                else if (go is Player) gameSymbol = "\u26ED";
                 else if (go is Exit) gameSymbol = "E";
                 else if (go is Map) gameSymbol = "M";
                 else if (go is Trap) gameSymbol = "T";
@@ -281,9 +281,11 @@ namespace Roguelike
 
         public void InfoInterface()
         {
+            Console.Clear();
             ShowFoodInfo();
             ShowWeaponInfo();
             ShowTrapInfo();
+            Console.ReadKey();
         }
 
         public void ShowFoodInfo()
@@ -353,7 +355,6 @@ namespace Roguelike
                         count++;
                     }
                 }
-                Console.Write("\n> ");
                 return true;
             }
         }
@@ -444,7 +445,6 @@ namespace Roguelike
                         count++;
                     }
                 }
-                Console.Write("\n> ");
                 return true;
             }
         }
@@ -486,7 +486,6 @@ namespace Roguelike
                         count++;
                     }
                 }
-                Console.Write("\n> ");
                 return true;
             }
         }
