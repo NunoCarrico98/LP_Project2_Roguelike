@@ -102,18 +102,18 @@ namespace Roguelike
                         break;
                     case "e":
                         Console.Clear();
-                        render.PickUpScreen(grid, this);
-                        grid.PickUpItems(this);
+                        if(render.PickUpScreen(grid, this))
+                            grid.PickUpItems(this);
                         break;
                     case "v":
                         Console.Clear();
-                        render.DropItemsScreen(grid, this);
-                        grid.DropItems(this);
+                        if(render.DropItemsScreen(grid, this))
+                            grid.DropItems(this);
                         break;
                     case "u":
                         Console.Clear();
-                        render.UseItemScreen(this);
-                        grid.UseItems(this);
+                        if(render.UseItemScreen(this))
+                            grid.UseItems(this);
                         break;
                 }
             } while (Input == "I" || Input == "Q" || Input == "E" || Input == "U" || Input == "V");
