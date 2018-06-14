@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Roguelike
 {
@@ -284,7 +285,6 @@ namespace Roguelike
             ShowTrapInfo();
         }
 
-
         public void ShowFoodInfo()
         {
             List<Food> FoodList = new List<Food>();
@@ -352,87 +352,128 @@ namespace Roguelike
             }
         }
 
-        public void PickUpScreen(GridManager grid, Player p)
+
+        public bool PickUpScreen(GridManager grid, Player p)
         {
-            int count = 1;
+            int count = 0;
 
-            Console.Clear();
-            Console.WriteLine($"\nSelect Item to pick up");
-            Console.WriteLine("---------------");
-            Console.WriteLine("0. Go back");
-
-            for (int i = 0; i < grid.ObjectsPerTile; i++)
+            foreach (IGameObject go in grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
             {
-                IGameObject go = grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y][i];
-                if (go is Food)
-                {
-                    Console.WriteLine($"{count}. Food ({(go as Food).FoodType}) ");
-                    count++;
-                }
-                else if (go is Weapon)
-                {
-                    Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
-                    count++;
-                }
-                else if (go is Map)
-                {
-                    Console.WriteLine($"{count}. Map");
-                    count++;
-                }
+                if (go is Item) count++;
             }
-            Console.Write("\n> ");
+            if (count == 0)
+            {
+                Console.WriteLine("There is nothing to pick up.");
+                Console.ReadKey();
+                return false;
+            }
+            else
+            {
+                count = 1;
+                Console.WriteLine($"\nSelect Item to pick up");
+                Console.WriteLine("---------------");
+                Console.WriteLine("0. Go back");
+
+                for (int i = 0; i < grid.ObjectsPerTile; i++)
+                {
+                    IGameObject go = grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y][i];
+                    if (go is Food)
+                    {
+                        Console.WriteLine($"{count}. Food ({(go as Food).FoodType}) ");
+                        count++;
+                    }
+                    else if (go is Weapon)
+                    {
+                        Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
+                        count++;
+                    }
+                    else if (go is Map)
+                    {
+                        Console.WriteLine($"{count}. Map");
+                        count++;
+                    }
+                }
+                Console.Write("\n> ");
+                return true;
+            }
         }
 
-        public void DropItemsScreen(GridManager grid, Player p)
+        public bool DropItemsScreen(GridManager grid, Player p)
         {
-            int count = 1;
-
-            Console.Clear();
-            Console.WriteLine($"\nSelect Item to drop");
-            Console.WriteLine("---------------");
-            Console.WriteLine("0. Go back");
-
-            for (int i = 0; i < p.Inventory.Count; i++)
+            int count = 0;
+            foreach (IGameObject go in p.Inventory)
             {
-                IGameObject go = p.Inventory[i];
-                if (go is Food)
-                {
-                    Console.WriteLine($"{count}. Food ({(go as Food).FoodType}) ");
-                    count++;
-                }
-                else if (go is Weapon)
-                {
-                    Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
-                    count++;
-                }
+                if (go is Item) count++;
             }
-            Console.Write("\n> ");
+            if (count == 0)
+            {
+                Console.WriteLine("There is nothing to drop.");
+                Console.ReadKey();
+                return false;
+            }
+            else
+            {
+                count = 1;
+                Console.WriteLine($"\nSelect Item to drop");
+                Console.WriteLine("---------------");
+                Console.WriteLine("0. Go back");
+
+                for (int i = 0; i < p.Inventory.Count; i++)
+                {
+                    IGameObject go = p.Inventory[i];
+                    if (go is Food)
+                    {
+                        Console.WriteLine($"{count}. Food ({(go as Food).FoodType}) ");
+                        count++;
+                    }
+                    else if (go is Weapon)
+                    {
+                        Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
+                        count++;
+                    }
+                }
+                Console.Write("\n> ");
+                return true;
+            }
         }
 
-        public void UseItemScreen(Player p)
+        public bool UseItemScreen(Player p)
         {
-            int count = 1;
-
-            Console.Clear();
-            Console.WriteLine($"\nSelect Item to use");
-            Console.WriteLine("---------------");
-            Console.WriteLine("0. Go back");
-
-            for (int i = 0; i < p.Inventory.Count; i++)
+            int count = 0;
+            foreach (IGameObject go in p.Inventory)
             {
-                IGameObject go = p.Inventory[i];
-                if (go is Food)
-                {
-                    Console.WriteLine($"{count}. Food ({(go as Food).FoodType}) ");
-                    count++;
-                }
-                else if (go is Weapon)
-                {
-                    Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
-                    count++;
-                }
+                if (go is Item) count++;
             }
-            Console.Write("\n> ");
+            if (count == 0)
+            {
+                Console.WriteLine("There is nothing to use.");
+                Console.ReadKey();
+                return false;
+            }
+            else
+            {
+                count = 1;
+                Console.WriteLine($"\nSelect Item to use");
+                Console.WriteLine("---------------");
+                Console.WriteLine("0. Go back");
+
+                for (int i = 0; i < p.Inventory.Count; i++)
+                {
+                    IGameObject go = p.Inventory[i];
+                    if (go is Food)
+                    {
+                        Console.WriteLine($"{count}. Food ({(go as Food).FoodType}) ");
+                        count++;
+                    }
+                    else if (go is Weapon)
+                    {
+                        Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
+                        count++;
+                    }
+                }
+                Console.Write("\n> ");
+                return true;
+            }
         }
 
         public void AddNewHighscoreInterface(GridManager grid)

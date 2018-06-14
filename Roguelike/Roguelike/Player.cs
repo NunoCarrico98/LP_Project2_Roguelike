@@ -103,16 +103,19 @@ namespace Roguelike
                         render.RenderBoard(grid, this);
                         break;
                     case "e":
-                        render.PickUpScreen(grid, this);
-                        grid.PickUpItems(this);
+                        Console.Clear();
+                        if(render.PickUpScreen(grid, this))
+                            grid.PickUpItems(this);
                         break;
                     case "v":
-                        render.DropItemsScreen(grid, this);
-                        grid.DropItems(this);
+                        Console.Clear();
+                        if(render.DropItemsScreen(grid, this))
+                            grid.DropItems(this);
                         break;
                     case "u":
-                        render.UseItemScreen(this);
-                        grid.UseItems(this);
+                        Console.Clear();
+                        if(render.UseItemScreen(this))
+                            grid.UseItems(this);
                         break;
                     case "f":
                         render.ChooseEnemyScreen(grid, this);
