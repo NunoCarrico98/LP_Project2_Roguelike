@@ -12,7 +12,8 @@ namespace Roguelike
 
         public Weapon()
         {
-            WeaponType = (TypesOfWeapon)rnd.Next(0, Enum.GetNames(typeof(TypesOfTraps)).Length);
+            WeaponType = (TypesOfWeapon)
+                rnd.Next(0, Enum.GetNames(typeof(TypesOfTraps)).Length);
             SetDurAndAP();
         }
 
@@ -57,7 +58,8 @@ namespace Roguelike
         public override string ToString()
         {
 
-            return ($"{WeaponType,-14}| {AttackPower,13} | {Weight,10} | {Durability,12:f1}|");
+            return ($"{WeaponType,-14}| {AttackPower,13} | {Weight,10} | " +
+                $"{Durability,12:f1}|");
         }
     }
 }

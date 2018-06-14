@@ -123,6 +123,7 @@ namespace Roguelike
                         if (rnd.NextDouble() < 1 - Equipped.Durability)
                         {
                             Equipped = null;
+                            Weight -= Equipped.Weight;
                         }
                         (go as NPC).Die(grid);
                         attacked = true;

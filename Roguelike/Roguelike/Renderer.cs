@@ -215,32 +215,34 @@ namespace Roguelike
         public void ObjectsInTile(Player p, GridManager grid, int x, int y)
         {
             bool empty = true;
-            if (grid.gameGrid[x, y].Contains(grid.Exit))
-                Console.Write("Exit");
-            for (int i = 0; i < grid.gameGrid[x, y].Count; i++)
+            if (grid.gameGrid[x, y].Contains(grid.Exit)) Console.Write("Exit");
+            else
             {
-                IGameObject go = grid.gameGrid[x, y][i];
-                if (go != null) empty = false;
-                if (go is Trap) Console.Write($"Trap " +
-                    $"({(go as Trap).TrapType})");
-                if (go is Map) Console.Write("Map");
-                if (go is Food) Console.Write($"Food " +
-                    $"({(go as Food).FoodType})");
-                if (go is Weapon) Console.Write($"Weapon " +
-                    $"({(go as Weapon).WeaponType})");
-                if (go is NPC) Console.Write($"NPC " +
-                    $"({(go as NPC).NpcType}, HP = {(go as NPC).HP:f1}, " +
-                    $"AP = {(go as NPC).AP:f1})");
-                if (i + 1 < grid.gameGrid[x, y].Count)
+                for (int i = 0; i < grid.gameGrid[x, y].Count; i++)
                 {
-                    if (grid.gameGrid[x, y][i] != p &&
-                        grid.gameGrid[x, y][i + 1] != null)
+                    IGameObject go = grid.gameGrid[x, y][i];
+                    if (go != null) empty = false;
+                    if (go is Trap) Console.Write($"Trap " +
+                        $"({(go as Trap).TrapType})");
+                    if (go is Map) Console.Write("Map");
+                    if (go is Food) Console.Write($"Food " +
+                        $"({(go as Food).FoodType})");
+                    if (go is Weapon) Console.Write($"Weapon " +
+                        $"({(go as Weapon).WeaponType})");
+                    if (go is NPC) Console.Write($"NPC " +
+                        $"({(go as NPC).NpcType}, HP = {(go as NPC).HP:f1}, " +
+                        $"AP = {(go as NPC).AP:f1})");
+                    if (i + 1 < grid.gameGrid[x, y].Count)
                     {
-                        Console.Write(", ");
+                        if (grid.gameGrid[x, y][i] != p &&
+                            grid.gameGrid[x, y][i + 1] != null)
+                        {
+                            Console.Write(", ");
+                        }
                     }
                 }
+                if (empty) Console.Write("Empty");
             }
-            if (empty) Console.Write("Empty");
         }
 
         public bool[] RestrictToMap(GridManager grid, int x, int y)
