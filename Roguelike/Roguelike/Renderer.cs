@@ -20,8 +20,9 @@ namespace Roguelike
             }
 
             Console.Clear();
-            Console.WriteLine($"------------------------------------  LP1 - RPG : Level " +
-                $"{grid.Level}  ------------------------------------\n");
+            Console.WriteLine($"---------------------------------------  LP1 " +
+                $"- RPG : Level {grid.Level}  --------------------------------" +
+                $"-------\n");
             for (int x = 0; x < grid.Rows; x++)
             {
                 for (int y = 0; y < grid.Columns; y++)
@@ -30,7 +31,8 @@ namespace Roguelike
                         posInTile++)
                     {
                         gameSymbols[x, y][posInTile] =
-                            DefineGameSymbol(grid.GetGO(x, y, posInTile), grid.GetTile(x, y));
+                            DefineGameSymbol(grid.GetGO(x, y, posInTile), 
+                            grid.GetTile(x, y));
 
                         Console.Write(gameSymbols[x, y][posInTile]);
                     }
@@ -43,7 +45,8 @@ namespace Roguelike
                         posInTile < grid.ObjectsPerTile; posInTile++)
                     {
                         gameSymbols[x, y][posInTile] =
-                            DefineGameSymbol(grid.GetGO(x, y, posInTile), grid.GetTile(x, y));
+                            DefineGameSymbol(grid.GetGO(x, y, posInTile), 
+                            grid.GetTile(x, y));
 
                         Console.Write(gameSymbols[x, y][posInTile]);
                     }
@@ -153,10 +156,10 @@ namespace Roguelike
 
                 if (go is NPC && (go as NPC).NpcType == StateOfNpc.Enemy)
                 {
-                    Console.WriteLine("* You were attacked by an NPC and " +
-                        $"lost {(go as NPC).Damage} HP");
                     if (p.Input == "f") Console.WriteLine($"* You attacked an " +
                         $"NPC and did {p.Damage:f1} damage");
+                    Console.WriteLine("* You were attacked by an NPC and " +
+                        $"lost {(go as NPC).Damage:f1} HP");
                 }
             }
         }
@@ -172,7 +175,7 @@ namespace Roguelike
             if (RestrictToMap(grid, p.PlayerPos.X, p.PlayerPos.Y)[0])
             {
                 Console.Write($"* NORTH{c,2} ");
-                ObjectsInTile(grid, p.PlayerPos.X - 1, p.PlayerPos.Y);
+                ObjectsInTile(p, grid, p.PlayerPos.X - 1, p.PlayerPos.Y);
                 Console.WriteLine();
             }
             else Console.WriteLine($"* NORTH{c,2} ");
@@ -181,7 +184,7 @@ namespace Roguelike
             if (RestrictToMap(grid, p.PlayerPos.X, p.PlayerPos.Y)[3])
             {
                 Console.Write($"* EAST{c,3} ");
-                ObjectsInTile(grid, p.PlayerPos.X, p.PlayerPos.Y + 1);
+                ObjectsInTile(p, grid, p.PlayerPos.X, p.PlayerPos.Y + 1);
                 Console.WriteLine();
             }
             else Console.WriteLine($"* EAST{c,3} ");
@@ -190,7 +193,7 @@ namespace Roguelike
             if (RestrictToMap(grid, p.PlayerPos.X, p.PlayerPos.Y)[2])
             {
                 Console.Write($"* WEST{c,3} ");
-                ObjectsInTile(grid, p.PlayerPos.X, p.PlayerPos.Y - 1);
+                ObjectsInTile(p, grid, p.PlayerPos.X, p.PlayerPos.Y - 1);
                 Console.WriteLine();
             }
             else Console.WriteLine($"* WEST{c,3} ");
@@ -199,35 +202,44 @@ namespace Roguelike
             if (RestrictToMap(grid, p.PlayerPos.X, p.PlayerPos.Y)[1])
             {
                 Console.Write($"* SOUTH{c,2} ");
-                ObjectsInTile(grid, p.PlayerPos.X + 1, p.PlayerPos.Y);
+                ObjectsInTile(p, grid, p.PlayerPos.X + 1, p.PlayerPos.Y);
                 Console.WriteLine();
             }
             else Console.WriteLine($"* SOUTH{c,2} ");
 
             // Player Position
             Console.Write($"* HERE{c,3} ");
-            ObjectsInTile(grid, p.PlayerPos.X, p.PlayerPos.Y);
+            ObjectsInTile(p, grid, p.PlayerPos.X, p.PlayerPos.Y);
             Console.WriteLine();
         }
 
-        public void ObjectsInTile(GridManager grid, int x, int y)
+        public void ObjectsInTile(Player p, GridManager grid, int x, int y)
         {
             bool empty = true;
             if (grid.gameGrid[x, y].Contains(grid.Exit))
                 Console.Write("Exit");
-            foreach (IGameObject go in grid.gameGrid[x, y])
+            for (int i = 0; i < grid.gameGrid[x, y].Count; i++)
             {
+                IGameObject go = grid.gameGrid[x, y][i];
                 if (go != null) empty = false;
                 if (go is Trap) Console.Write($"Trap " +
-                    $"({(go as Trap).TrapType}) ");
-                if (go is Map) Console.Write("Map ");
+                    $"({(go as Trap).TrapType})");
+                if (go is Map) Console.Write("Map");
                 if (go is Food) Console.Write($"Food " +
-                    $"({(go as Food).FoodType}) ");
+                    $"({(go as Food).FoodType})");
                 if (go is Weapon) Console.Write($"Weapon " +
-                    $"({(go as Weapon).WeaponType}) ");
+                    $"({(go as Weapon).WeaponType})");
                 if (go is NPC) Console.Write($"NPC " +
                     $"({(go as NPC).NpcType}, HP = {(go as NPC).HP:f1}, " +
-                    $"AP = {(go as NPC).AP:f1}) ");
+                    $"AP = {(go as NPC).AP:f1})");
+                if (i + 1 < grid.gameGrid[x, y].Count)
+                {
+                    if (grid.gameGrid[x, y][i] != p &&
+                        grid.gameGrid[x, y][i + 1] != null)
+                    {
+                        Console.Write(", ");
+                    }
+                }
             }
             if (empty) Console.Write("Empty");
         }
@@ -276,35 +288,36 @@ namespace Roguelike
         public void ShowFoodInfo()
         {
             List<Food> FoodList = new List<Food>();
-            Console.WriteLine("Food          |    Hp Increase|      Weight|\n");
+            Console.WriteLine("Food          |    Hp Increase|      Weight|");
+            Console.WriteLine("--------------------------------------------");
             for (int i = 0; i < Enum.GetNames(typeof(TypesOfTraps)).Length; i++)
             {
                 FoodList.Add(new Food((TypesOfFood)(i)));
                 Console.WriteLine(FoodList[i]);
             }
-            Console.WriteLine();
-            Console.WriteLine("------------------------------------------------------------");
-            Console.WriteLine();
+            Console.WriteLine("\n\n\n\n");
         }
 
         public void ShowWeaponInfo()
         {
             List<Weapon> WeaponList = new List<Weapon>();
-            Console.WriteLine("Weapon        |   Attack Power|      Weight|   Durability|\n");
+            Console.WriteLine("Weapon        |   Attack Power|      Weight|   " +
+                "Durability|");
+            Console.WriteLine("-----------------------------------------------" +
+                "-----------");
             for (int i = 0; i < Enum.GetNames(typeof(TypesOfTraps)).Length; i++)
             {
                 WeaponList.Add(new Weapon((TypesOfWeapon)(i)));
                 Console.WriteLine(WeaponList[i]);
             }
-            Console.WriteLine();
-            Console.WriteLine("------------------------------------------------------------");
-            Console.WriteLine();
+            Console.WriteLine("\n\n\n\n");
         }
 
         public void ShowTrapInfo()
         {
             List<Trap> TrapList = new List<Trap>();
-            Console.WriteLine("Trap          |      MaxDamage|\n");
+            Console.WriteLine("Trap          |      MaxDamage|");
+            Console.WriteLine("-------------------------------");
             for (int i = 0; i < Enum.GetNames(typeof(TypesOfTraps)).Length; i++)
             {
                 TrapList.Add(new Trap((TypesOfTraps)(i)));
@@ -312,9 +325,9 @@ namespace Roguelike
             }
         }
 
-        public bool ChooseEnemyScreen(GridManager grid, Player p)
+        public bool ChooseEnemyScreen(GridManager grid, Player p, out int count)
         {
-            int count = 1;
+            count = 1;
 
             Console.Clear();
             if (p.Equipped == null)
@@ -329,7 +342,8 @@ namespace Roguelike
                 Console.WriteLine("---------------");
                 Console.WriteLine("0. Go back");
 
-                foreach (IGameObject go in grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
+                foreach (IGameObject go in 
+                    grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
                 {
                     if (go is NPC)
                     {
@@ -338,14 +352,15 @@ namespace Roguelike
                         count++;
                     }
                 }
+                Console.Write("\n> ");
                 return true;
             }
         }
 
 
-        public bool PickUpScreen(GridManager grid, Player p)
+        public bool PickUpScreen(GridManager grid, Player p, out int count)
         {
-            int count = 0;
+            count = 0;
 
             foreach (IGameObject go in grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
             {
@@ -371,12 +386,14 @@ namespace Roguelike
                     IGameObject go = grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y][i];
                     if (go is Food)
                     {
-                        Console.WriteLine($"{count}. Food ({(go as Food).FoodType}) ");
+                        Console.WriteLine($"{count}. Food " +
+                            $"({(go as Food).FoodType}) ");
                         count++;
                     }
                     else if (go is Weapon)
                     {
-                        Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
+                        Console.WriteLine($"{count}. Weapon " +
+                            $"({(go as Weapon).WeaponType}) ");
                         count++;
                     }
                     else if (go is Map)
@@ -385,14 +402,13 @@ namespace Roguelike
                         count++;
                     }
                 }
-                Console.Write("\n> ");
                 return true;
             }
         }
 
-        public bool DropItemsScreen(GridManager grid, Player p)
+        public bool DropItemsScreen(GridManager grid, Player p, out int count)
         {
-            int count = 0;
+            count = 0;
             foreach (IGameObject go in p.Inventory)
             {
                 if (go is Item) count++;
@@ -416,12 +432,14 @@ namespace Roguelike
                     IGameObject go = p.Inventory[i];
                     if (go is Food)
                     {
-                        Console.WriteLine($"{count}. Food ({(go as Food).FoodType}) ");
+                        Console.WriteLine($"{count}. Food " +
+                            $"({(go as Food).FoodType}) ");
                         count++;
                     }
                     else if (go is Weapon)
                     {
-                        Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
+                        Console.WriteLine($"{count}. Weapon " +
+                            $"({(go as Weapon).WeaponType}) ");
                         count++;
                     }
                 }
@@ -430,9 +448,9 @@ namespace Roguelike
             }
         }
 
-        public bool UseItemScreen(Player p)
+        public bool UseItemScreen(Player p, out int count)
         {
-            int count = 0;
+            count = 0;
             foreach (IGameObject go in p.Inventory)
             {
                 if (go is Item) count++;
@@ -456,12 +474,14 @@ namespace Roguelike
                     IGameObject go = p.Inventory[i];
                     if (go is Food)
                     {
-                        Console.WriteLine($"{count}. Food ({(go as Food).FoodType}) ");
+                        Console.WriteLine($"{count}. Food " +
+                            $"({(go as Food).FoodType}) ");
                         count++;
                     }
                     else if (go is Weapon)
                     {
-                        Console.WriteLine($"{count}. Weapon ({(go as Weapon).WeaponType}) ");
+                        Console.WriteLine($"{count}. Weapon " +
+                            $"({(go as Weapon).WeaponType}) ");
                         count++;
                     }
                 }
@@ -472,6 +492,7 @@ namespace Roguelike
 
         public void AddNewHighscoreInterface(GridManager grid)
         {
+            Console.Clear();
             Console.WriteLine("You're 1 of the 10 best players!");
             Console.WriteLine($"Score: {grid.Level}");
             Console.Write("What's your name? ");

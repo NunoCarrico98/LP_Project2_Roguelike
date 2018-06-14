@@ -175,17 +175,18 @@ namespace Roguelike
                 Position pos;
                 do
                 {
-                    int item = rnd.Next(2);
+                    int r = rnd.Next(2);
                     pos = new Position(rnd.Next(8), rnd.Next(8));
-                    switch (item)
+                    Item item;
+                    switch (r)
                     {
                         case 0:
-                            Food food = new Food(pos);
-                            gameGrid[pos.X, pos.Y].AddObject(food);
+                            item = new Food();
+                            gameGrid[pos.X, pos.Y].AddObject(item);
                             break;
                         case 1:
-                            Weapon weapon = new Weapon(pos);
-                            gameGrid[pos.X, pos.Y].AddObject(weapon);
+                            item = new Weapon();
+                            gameGrid[pos.X, pos.Y].AddObject(item);
                             break;
                     }
                 } while (gameGrid[pos.X, pos.Y].Contains(Exit));

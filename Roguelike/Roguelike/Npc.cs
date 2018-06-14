@@ -50,7 +50,27 @@ namespace Roguelike
         {
             if (HP <= 0)
             {
-                grid.gameGrid[Pos.X, Pos.Y].Remove(this);
+                int numberOfItens = rnd.Next(6);
+                for (int i = 0; i < numberOfItens; i++)
+                {
+                    do
+                    {
+                        int r = rnd.Next(2);
+                        Item item;
+                        switch (r)
+                        {
+                            case 0:
+                                item = new Food();
+                                grid.gameGrid[Pos.X, Pos.Y].AddObject(item);
+                                break;
+                            case 1:
+                                item = new Weapon();
+                                grid.gameGrid[Pos.X, Pos.Y].AddObject(item);
+                                break;
+                        }
+                    } while (grid.gameGrid[Pos.X, Pos.Y].Contains(grid.Exit));
+                    grid.gameGrid[Pos.X, Pos.Y].Remove(this);
+                }
             }
         }
     }

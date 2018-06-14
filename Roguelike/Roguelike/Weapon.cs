@@ -8,13 +8,11 @@ namespace Roguelike
         public int AttackPower { get; private set; }
         public double Durability { get; private set; }
         public TypesOfWeapon WeaponType { get; set; }
-        public Position WeaponPos { get; set; }
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
 
-        public Weapon(Position pos)
+        public Weapon()
         {
             WeaponType = (TypesOfWeapon)rnd.Next(0, Enum.GetNames(typeof(TypesOfTraps)).Length);
-            WeaponPos = pos;
             SetDurAndAP();
         }
 

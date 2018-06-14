@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Roguelike
 {
-    public class Item : IGameObject
+    public abstract class Item : IGameObject
     {
         public float Weight { get; set; }
     }

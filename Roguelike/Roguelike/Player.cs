@@ -44,6 +44,7 @@ namespace Roguelike
             {
                 Console.Write("\n> ");
                 Input = Console.ReadLine();
+                int count = 0;
 
                 switch (Input.ToLower())
                 {
@@ -104,26 +105,32 @@ namespace Roguelike
                         render.RenderBoard(grid, this);
                         break;
                     case "e":
-                        if(render.PickUpScreen(grid, this)) PickUpItems(grid);
+                        if(render.PickUpScreen(grid, this, out count)) PickUpItems(grid, count);
                         break;
                     case "v":
-                        if(render.DropItemsScreen(grid, this)) DropItems(grid);
+                        if(render.DropItemsScreen(grid, this, out count)) DropItems(grid, count);
                         break;
                     case "u":
-                        if(render.UseItemScreen(this)) UseItems();
+                        if(render.UseItemScreen(this, out count)) UseItems(count);
                         break;
                     case "f":
-                        if(render.ChooseEnemyScreen(grid, this)) Fight(grid);
+                        if(render.ChooseEnemyScreen(grid, this, out count)) Fight(grid, count);
                         break;
                 }
             } while (Input == "i" || Input == "q");
         }
 
-        public void Fight(GridManager grid)
+        public void Fight(GridManager grid, int count)
         {
             bool attacked = false;
-            string choice = Console.ReadLine();
-            int i = Convert.ToInt32(choice);
+            string choice = "";
+            int i = 0;
+            do
+            {
+                Console.Write("\n> ");
+                choice = Console.ReadLine();
+                if (choice != "") i = Convert.ToInt32(choice);
+            } while (i < 0 || i > count - 1 || choice == "");
             if (i == 0)
             {
                 return;
@@ -154,13 +161,20 @@ namespace Roguelike
             }
         }
 
-        public void PickUpItems(GridManager grid)
+        public void PickUpItems(GridManager grid, int count)
         {
             bool picked = false;
-            string choice = Console.ReadLine();
-            int i = Convert.ToInt32(choice);
+            string choice = "";
+            int i = 0;
+            do
+            {
+                Console.Write("\n> ");
+                choice = Console.ReadLine();
+                if (choice != "") i = Convert.ToInt32(choice);
+            } while (i < 0 || i > count - 1 || choice == "");
             if (i == 0)
             {
+                Health++;
                 return;
             }
             else
@@ -200,13 +214,20 @@ namespace Roguelike
             }
         }
 
-        public void DropItems(GridManager grid)
+        public void DropItems(GridManager grid, int count)
         {
-            string choice = Console.ReadLine();
-            int i = Convert.ToInt32(choice);
+            string choice = "";
+            int i = 0;
+            do
+            {
+                Console.Write("\n> ");
+                choice = Console.ReadLine();
+                if (choice != "") i = Convert.ToInt32(choice);
+            } while (i < 0 || i > count - 1 || choice == "");
 
             if (i == 0)
             {
+                Health++;
                 return;
             }
             else
@@ -221,13 +242,20 @@ namespace Roguelike
             }
         }
 
-        public void UseItems()
+        public void UseItems(int count)
         {
-            string choice = Console.ReadLine();
-            int i = Convert.ToInt32(choice);
+            string choice = "";
+            int i = 0;
+            do
+            {
+                Console.Write("\n> ");
+                choice = Console.ReadLine();
+                if(choice != "") i = Convert.ToInt32(choice);
+            } while (i < 0 || i > count - 1 || choice == "");
 
             if (i == 0)
             {
+                Health++;
                 return;
             }
             else

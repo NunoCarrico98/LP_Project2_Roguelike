@@ -6,14 +6,12 @@ namespace Roguelike
     {
         public float HPIncrease { get; private set; }
         public TypesOfFood FoodType { get; set; }
-        public Position FoodPos { get; set; }
         Random rnd = new Random(Guid.NewGuid().GetHashCode());
 
-        public Food(Position pos)
+        public Food()
         {
             FoodType = (TypesOfFood)rnd.Next(0, Enum.GetNames(typeof(TypesOfTraps)).Length);
             SetHp();
-            FoodPos = pos;
         }
 
         public Food(TypesOfFood typefood)
