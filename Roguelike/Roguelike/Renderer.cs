@@ -111,8 +111,7 @@ namespace Roguelike
         public void ShowGameInterface(GridManager grid, Player p)
         {
             ShowMessages(p.Input);
-            ShowErrorMessages(p);
-            ShowTrapMessages(grid, p);
+            ShowObjectMessages(grid, p);
             ShowTileObjects(grid, p);
             ShowsOptions();
         }
@@ -138,26 +137,7 @@ namespace Roguelike
             }
         }
 
-        public void ShowErrorMessages(Player p)
-        {
-            switch (p.Input)
-            {
-                case "e":
-                    break;
-                case "v":
-                    break;
-                case "u":
-                    break;
-                case "f":
-                    if (p.Equipped == null)
-                    {
-                        Console.WriteLine("You don't have a weapon. You cannot attack.");
-                    }
-                    break;
-            }
-        }
-
-        public void ShowTrapMessages(GridManager grid, Player p)
+        public void ShowObjectMessages(GridManager grid, Player p)
         {
             // Cycle through all objects in tile backwards
             foreach (IGameObject go in grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
@@ -169,6 +149,14 @@ namespace Roguelike
                         $"{(go as Trap).TrapType} and lost " +
                         $"{(go as Trap).Damage:f1} HP");
                     (go as Trap).WroteMessage = true;
+                }
+
+                if (go is NPC && (go as NPC).NpcType == StateOfNpc.Enemy)
+                {
+                    Console.WriteLine("* You were attacked by an NPC and " +
+                        $"lost {(go as NPC).Damage} HP");
+                    if (p.Input == "f") Console.WriteLine($"* You attacked an " +
+                        $"NPC and did {p.Damage:f1} damage");
                 }
             }
         }
@@ -328,13 +316,15 @@ namespace Roguelike
         {
             int count = 1;
 
+            Console.Clear();
             if (p.Equipped == null)
             {
+                Console.WriteLine("* You don't have a weapon. You cannot attack.");
+                Console.ReadKey();
                 return false;
             }
             else
             {
-                Console.Clear();
                 Console.WriteLine($"\nSelect Enemy to Attack");
                 Console.WriteLine("---------------");
                 Console.WriteLine("0. Go back");
@@ -344,7 +334,7 @@ namespace Roguelike
                     if (go is NPC)
                     {
                         Console.WriteLine($"{count}. {(go as NPC).NpcType}, " +
-                            $"{(go as NPC).HP}, {(go as NPC).AP}");
+                            $"HP = {(go as NPC).HP:f1}, AP = {(go as NPC).AP:f1}");
                         count++;
                     }
                 }
@@ -360,10 +350,12 @@ namespace Roguelike
             foreach (IGameObject go in grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
             {
                 if (go is Item) count++;
+                if (go is Map) count++;
             }
+            Console.Clear();
             if (count == 0)
             {
-                Console.WriteLine("There is nothing to pick up.");
+                Console.WriteLine("* There is nothing to pick up.");
                 Console.ReadKey();
                 return false;
             }
@@ -405,9 +397,10 @@ namespace Roguelike
             {
                 if (go is Item) count++;
             }
+            Console.Clear();
             if (count == 0)
             {
-                Console.WriteLine("There is nothing to drop.");
+                Console.WriteLine("* There is nothing to drop.");
                 Console.ReadKey();
                 return false;
             }
@@ -444,9 +437,10 @@ namespace Roguelike
             {
                 if (go is Item) count++;
             }
+            Console.Clear();
             if (count == 0)
             {
-                Console.WriteLine("There is nothing to use.");
+                Console.WriteLine("* There is nothing to use.");
                 Console.ReadKey();
                 return false;
             }

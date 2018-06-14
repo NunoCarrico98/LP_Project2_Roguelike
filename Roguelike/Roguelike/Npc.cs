@@ -12,6 +12,7 @@ namespace Roguelike
         public Position Pos { get; set; }
         public double HP { get; set; }
         public double AP { get; set; }
+        public double Damage { get; set; }
         public double MaxAPForThisLevel { get; set; }
         public double MaxHPForThisLevel { get; set; }
         public double HostileProbabilityForThisLevel { get; set; }
@@ -40,7 +41,8 @@ namespace Roguelike
 
         public void Fight(GridManager grid, Player p)
         {
-            p.Health -= rnd.NextDouble() * AP;
+            Damage = rnd.NextDouble() * AP;
+            p.Health -= Damage;
             p.Die(grid);
         }
 

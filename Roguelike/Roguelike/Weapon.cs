@@ -29,28 +29,28 @@ namespace Roguelike
             switch (WeaponType)
             {
                 case TypesOfWeapon.Axe:
-                    AttackPower = rnd.Next(5, 15);
-                    Durability = rnd.NextDouble();
+                    AttackPower = 15;
+                    Durability = 0.75d;
                     Weight = 5f;
                     break;
                 case TypesOfWeapon.Dagger:
-                    AttackPower = rnd.Next(1, 10);
-                    Durability = rnd.NextDouble();
+                    AttackPower = 5;
+                    Durability = 0.9d;
                     Weight = 2f;
                     break;
                 case TypesOfWeapon.Lance:
-                    AttackPower = rnd.Next(5, 20);
-                    Durability = rnd.NextDouble();
-                    Weight = 7f;
+                    AttackPower = 25;
+                    Durability = 0.5d;
+                    Weight = 9f;
                     break;
                 case TypesOfWeapon.SlingShot:
-                    AttackPower = rnd.Next(1, 5);
-                    Durability = rnd.NextDouble();
+                    AttackPower = 3;
+                    Durability = 0.95;
                     Weight = 1f;
                     break;
                 case TypesOfWeapon.Sword:
-                    AttackPower = rnd.Next(5, 20);
-                    Durability = rnd.NextDouble();
+                    AttackPower = 20;
+                    Durability = 0.65;
                     Weight = 7f;
                     break;
             }

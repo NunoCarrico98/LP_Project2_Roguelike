@@ -2,7 +2,7 @@
 
 namespace Roguelike
 {
-    class Trap : IGameObject
+    public class Trap : IGameObject
     {
         public int MaxDamage { get; private set; } 
         public double Damage { get; private set; }

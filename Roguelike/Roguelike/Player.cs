@@ -7,10 +7,11 @@ namespace Roguelike
     {
         public double Health { get; set; }
         public string Input { get; private set; } = "";
-        public Position PlayerPos { get; set; }
         public float MaxWeight { get; private set; }
-        public List<Item> Inventory { get; set; } = new List<Item>();
         public float Weight { get; set; }
+        public double Damage { get; set; }
+        public Position PlayerPos { get; set; }
+        public List<Item> Inventory { get; set; } = new List<Item>();
         public Weapon Equipped { get; set; }
 
         private HighScoreManager hsm;
@@ -103,28 +104,22 @@ namespace Roguelike
                         render.RenderBoard(grid, this);
                         break;
                     case "e":
-                        Console.Clear();
-                        if(render.PickUpScreen(grid, this))
-                            grid.PickUpItems(this);
+                        if(render.PickUpScreen(grid, this)) PickUpItems(grid);
                         break;
                     case "v":
-                        Console.Clear();
-                        if(render.DropItemsScreen(grid, this))
-                            grid.DropItems(this);
+                        if(render.DropItemsScreen(grid, this)) DropItems(grid);
                         break;
                     case "u":
-                        Console.Clear();
-                        if(render.UseItemScreen(this))
-                            grid.UseItems(this);
+                        if(render.UseItemScreen(this)) UseItems();
                         break;
                     case "f":
-                        render.ChooseEnemyScreen(grid, this);
+                        if(render.ChooseEnemyScreen(grid, this)) Fight(grid);
                         break;
                 }
             } while (Input == "i" || Input == "q");
         }
 
-        public void Fight(GridManager grid, NPC npc)
+        public void Fight(GridManager grid)
         {
             bool attacked = false;
             string choice = Console.ReadLine();
@@ -142,18 +137,128 @@ namespace Roguelike
                     {
                         if ((go as NPC).NpcType == StateOfNpc.Neutral)
                             (go as NPC).NpcType = StateOfNpc.Enemy;
-                        (go as NPC).HP -= rnd.Next(0, Equipped.AttackPower);
+                        Damage = rnd.Next(0, Equipped.AttackPower);
+                        (go as NPC).HP -= Damage;
                         if(rnd.NextDouble() < 1 - Equipped.Durability)
                         {
                             Equipped = null;
                         }
                         (go as NPC).Die(grid);
+                        attacked = true;
                     }
                     else
                     {
                         i++;
                     }
                 } while (!attacked);
+            }
+        }
+
+        public void PickUpItems(GridManager grid)
+        {
+            bool picked = false;
+            string choice = Console.ReadLine();
+            int i = Convert.ToInt32(choice);
+            if (i == 0)
+            {
+                return;
+            }
+            else
+            {
+                do
+                {
+                    IGameObject go = grid.gameGrid[PlayerPos.X, PlayerPos.Y][i];
+                    if (go is Item)
+                    {
+                        if ((Weight + (go as Item).Weight) > MaxWeight)
+                        {
+                            Console.WriteLine("You can't carry anymore.");
+                            Console.ReadLine();
+                            return;
+                        }
+                        else
+                        {
+                            Inventory.Add(go as Item);
+                            Weight += (go as Item).Weight;
+                            grid.gameGrid[PlayerPos.X, PlayerPos.Y].RemoveAt(i);
+                            grid.gameGrid[PlayerPos.X, PlayerPos.Y].Add(null);
+                            picked = true;
+                        }
+                    }
+                    else if (go is Map)
+                    {
+                        grid.gameGrid[PlayerPos.X, PlayerPos.Y].Remove(grid.Map);
+                        grid.gameGrid[PlayerPos.X, PlayerPos.Y].Add(null);
+                        foreach (GameTile gt in grid.gameGrid) gt.Explored = true;
+                        picked = true;
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                } while (!picked);
+            }
+        }
+
+        public void DropItems(GridManager grid)
+        {
+            string choice = Console.ReadLine();
+            int i = Convert.ToInt32(choice);
+
+            if (i == 0)
+            {
+                return;
+            }
+            else
+            {
+                IGameObject go = Inventory[i - 1];
+                if (go is Item)
+                {
+                    grid.gameGrid[PlayerPos.X, PlayerPos.Y].AddObject(go);
+                    Inventory.RemoveAt(i - 1);
+                    Weight -= (go as Item).Weight;
+                }
+            }
+        }
+
+        public void UseItems()
+        {
+            string choice = Console.ReadLine();
+            int i = Convert.ToInt32(choice);
+
+            if (i == 0)
+            {
+                return;
+            }
+            else
+            {
+                IGameObject go = Inventory[i - 1];
+                if (go is Food)
+                {
+                    Inventory.RemoveAt(i - 1);
+                    Weight -= (go as Item).Weight;
+                    if ((Health + (go as Food).HPIncrease) > 100)
+                    {
+                        Health = 100;
+                    }
+                    else
+                    {
+                        Health += (go as Food).HPIncrease;
+                    }
+                }
+                else if (go is Weapon)
+                {
+                    Inventory.RemoveAt(i - 1);
+                    if (Equipped == null)
+                    {
+                        Equipped = (go as Weapon);
+                    }
+                    else
+                    {
+                        Inventory.Add(Equipped as Weapon);
+                        Equipped = (go as Weapon);
+                    }
+                }
             }
         }
 
