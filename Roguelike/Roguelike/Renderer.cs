@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Roguelike
 {
@@ -31,7 +30,7 @@ namespace Roguelike
                         posInTile++)
                     {
                         gameSymbols[x, y][posInTile] =
-                            DefineGameSymbol(grid.GetGO(x, y, posInTile), 
+                            DefineGameSymbol(grid.GetGO(x, y, posInTile),
                             grid.GetTile(x, y));
 
                         Console.Write(gameSymbols[x, y][posInTile]);
@@ -45,7 +44,7 @@ namespace Roguelike
                         posInTile < grid.ObjectsPerTile; posInTile++)
                     {
                         gameSymbols[x, y][posInTile] =
-                            DefineGameSymbol(grid.GetGO(x, y, posInTile), 
+                            DefineGameSymbol(grid.GetGO(x, y, posInTile),
                             grid.GetTile(x, y));
 
                         Console.Write(gameSymbols[x, y][posInTile]);
@@ -342,7 +341,7 @@ namespace Roguelike
                 Console.WriteLine("---------------");
                 Console.WriteLine("0. Go back");
 
-                foreach (IGameObject go in 
+                foreach (IGameObject go in
                     grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
                 {
                     if (go is NPC)
@@ -495,7 +494,7 @@ namespace Roguelike
             Console.Clear();
             Console.WriteLine("You're 1 of the 10 best players!");
             Console.WriteLine($"Score: {grid.Level}");
-            Console.Write("What's your name? ");
+            Console.WriteLine("Please Write your name in less than 15 characters");
         }
 
         public void MainMenuInterface()
@@ -507,6 +506,16 @@ namespace Roguelike
             Console.WriteLine("4. Exit\n");
         }
 
+        public void HighScoreTable()
+        {
+            HighScoreManager hsm = new HighScoreManager();
+
+            Console.Clear();
+            Console.WriteLine(hsm);
+            Console.WriteLine("\nPress ENTER to go back\n");
+            Console.ReadKey();
+        }
+
         public void Credits()
         {
             Console.Clear();
@@ -514,7 +523,7 @@ namespace Roguelike
             Console.WriteLine("- Diogo Maia");
             Console.WriteLine("- Ianis Arquissandas");
             Console.WriteLine("- Nuno Carriço\n");
-            Console.WriteLine("Press ENTER to go back\n");
+            Console.WriteLine("\nPress ENTER to go back\n");
             Console.ReadKey();
         }
     }

@@ -4,8 +4,7 @@ namespace Roguelike
 {
     public class MainMenu
     {
-        Renderer render = new Renderer();
-        HighScoreManager hsm = new HighScoreManager();
+        private Renderer render = new Renderer();
 
         public bool GetMenuOption()
         {
@@ -34,9 +33,7 @@ namespace Roguelike
                     startGame = true;
                     break;
                 case "2":
-                    Console.Clear();
-                    Console.WriteLine(hsm);
-                    Console.ReadKey();
+                    render.HighScoreTable();
                     break;
                 case "3":
                     render.Credits();

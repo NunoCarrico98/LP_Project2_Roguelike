@@ -49,51 +49,21 @@ namespace Roguelike
                 switch (Input.ToLower())
                 {
                     case "w":
-                        if (PlayerPos.X == 0)
-                        {
-                            PlayerPos.X = 0;
-                            break;
-                        }
-                        else
-                        {
-                            PlayerPos.X--;
-                            break;
-                        }
+                        PlayerPos =
+                            grid.RestrictToMap(PlayerPos.X - 1, PlayerPos.Y);
+                        break;
                     case "s":
-                        if (PlayerPos.X == grid.Rows - 1)
-                        {
-                            PlayerPos.X = 7;
-                            break;
-                        }
-                        else
-                        {
-                            PlayerPos.X++;
-                            break;
-                        }
+                        PlayerPos =
+                            grid.RestrictToMap(PlayerPos.X + 1, PlayerPos.Y);
+                        break;
                     case "a":
-
-                        if (PlayerPos.Y == 0)
-                        {
-                            PlayerPos.Y = 0;
-                            break;
-                        }
-                        else
-                        {
-                            PlayerPos.Y--;
-                            break;
-                        }
+                        PlayerPos =
+                            grid.RestrictToMap(PlayerPos.X, PlayerPos.Y - 1);
+                        break;
                     case "d":
-
-                        if (PlayerPos.Y == grid.Columns - 1)
-                        {
-                            PlayerPos.Y = 7;
-                            break;
-                        }
-                        else
-                        {
-                            PlayerPos.Y++;
-                            break;
-                        }
+                        PlayerPos =
+                            grid.RestrictToMap(PlayerPos.X, PlayerPos.Y + 1);
+                        break;
                     case "i":
                         Console.Clear();
                         render.InfoInterface();
@@ -105,16 +75,20 @@ namespace Roguelike
                         render.RenderBoard(grid, this);
                         break;
                     case "e":
-                        if(render.PickUpScreen(grid, this, out count)) PickUpItems(grid, count);
+                        if (render.PickUpScreen(grid, this, out count))
+                            PickUpItems(grid, count);
                         break;
                     case "v":
-                        if(render.DropItemsScreen(grid, this, out count)) DropItems(grid, count);
+                        if (render.DropItemsScreen(grid, this, out count))
+                            DropItems(grid, count);
                         break;
                     case "u":
-                        if(render.UseItemScreen(this, out count)) UseItems(count);
+                        if (render.UseItemScreen(this, out count))
+                            UseItems(count);
                         break;
                     case "f":
-                        if(render.ChooseEnemyScreen(grid, this, out count)) Fight(grid, count);
+                        if (render.ChooseEnemyScreen(grid, this, out count))
+                            Fight(grid, count);
                         break;
                 }
             } while (Input == "i" || Input == "q");
@@ -146,7 +120,7 @@ namespace Roguelike
                             (go as NPC).NpcType = StateOfNpc.Enemy;
                         Damage = rnd.Next(0, Equipped.AttackPower);
                         (go as NPC).HP -= Damage;
-                        if(rnd.NextDouble() < 1 - Equipped.Durability)
+                        if (rnd.NextDouble() < 1 - Equipped.Durability)
                         {
                             Equipped = null;
                         }
@@ -250,7 +224,7 @@ namespace Roguelike
             {
                 Console.Write("\n> ");
                 choice = Console.ReadLine();
-                if(choice != "") i = Convert.ToInt32(choice);
+                if (choice != "") i = Convert.ToInt32(choice);
             } while (i < 0 || i > count - 1 || choice == "");
 
             if (i == 0)
@@ -292,9 +266,14 @@ namespace Roguelike
 
         public void MakeSureQuit(GridManager grid)
         {
+            Console.Clear();
             Console.WriteLine("Are you sure you want to quit? (y/n)");
             string input = "";
-            input = Console.ReadLine();
+            do
+            {
+                Console.Write("\n> ");
+                input = Console.ReadLine();
+            } while (input.ToLower() != "n" && input.ToLower() != "y");
             switch (input.ToLower())
             {
                 case "y":
@@ -312,7 +291,10 @@ namespace Roguelike
             {
                 string name = "";
                 render.AddNewHighscoreInterface(grid);
-                name = Console.ReadLine();
+                do {
+                    Console.Write("\n> ");
+                    name = Console.ReadLine();
+                } while (name.Length > 15);
                 hsm.AddScore(name, grid.Level);
                 hsm.Save();
             }

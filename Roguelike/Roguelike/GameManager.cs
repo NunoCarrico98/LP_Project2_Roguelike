@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Roguelike
+﻿namespace Roguelike
 {
     /// <summary>
     /// Class that manages the gameLoop

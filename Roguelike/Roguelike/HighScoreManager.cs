@@ -122,14 +122,14 @@ namespace Roguelike
         {
             // Instantiate a new instance of StringBuilder
             // StringBuilder provides a more efficient of joining strings together
-            StringBuilder sb = new StringBuilder("Name          |Score\n");
+            StringBuilder sb = new StringBuilder("Name            |Score\n");
             sb.Append("-------------------------\n");
 
             // For each element of the list
             foreach (Tuple<string, float> highscore in Highscores)
             {
                 // Add text with Name and score in table format
-                sb.AppendFormat($"{highscore.Item1,-14}|{highscore.Item2,-14}\n");
+                sb.AppendFormat($"{highscore.Item1,-16}|{highscore.Item2,-16}\n");
             }
 
             // Return string with formated table

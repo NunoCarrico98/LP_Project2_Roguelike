@@ -10,7 +10,8 @@ namespace Roguelike
 
         public Food()
         {
-            FoodType = (TypesOfFood)rnd.Next(0, Enum.GetNames(typeof(TypesOfTraps)).Length);
+            FoodType = (TypesOfFood)
+                rnd.Next(0, Enum.GetNames(typeof(TypesOfTraps)).Length);
             SetHp();
         }
 
