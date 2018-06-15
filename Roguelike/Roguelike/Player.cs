@@ -36,7 +36,7 @@ namespace Roguelike
             if (Health <= 0)
             {
                 Console.Clear();
-                Console.WriteLine("You Died. :(\n");
+                render.ShowDead();
                 AddNewHighScore(grid);
                 Environment.Exit(1);
             }
@@ -45,7 +45,7 @@ namespace Roguelike
         public void PlayerController(GridManager grid)
         {
             do
-            {
+            { 
                 Console.Write("\n> ");
                 Input = Console.ReadLine();
                 int count = 0;
@@ -97,6 +97,8 @@ namespace Roguelike
                         break;
                     case "k":
                         gm.SaveGame();
+                        render.SaveComplete();
+                        render.RenderBoard(grid, this);
                         break;
                 }
             } while (Input == "i" || Input == "q" || Input == "k");
@@ -302,9 +304,16 @@ namespace Roguelike
                 string name = "";
                 render.AddNewHighscoreInterface(grid);
                 do {
-                    Console.Write("\n> ");
+                    Console.Write("> ");
                     name = Console.ReadLine();
-                } while (name.Length > 15);
+                    Console.SetCursorPosition(20, 26);
+                    Console.WriteLine("                                      " +
+                        "                                                    " +
+                        "                                                    " +
+                        "                                                    " +
+                        "                                                    ");
+                    Console.SetCursorPosition(20, 26);
+                } while (name.Length > 15 || name == "");
                 hsm.AddScore(name, grid.Level);
                 hsm.Save();
             }

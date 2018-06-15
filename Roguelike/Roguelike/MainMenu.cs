@@ -10,13 +10,16 @@ namespace Roguelike
         {
             string input = "";
             int inputInt = 0;
+            int xCursor = Console.CursorTop;
+            int yCursor = Console.CursorLeft;
 
             while ((input != "1" && input != "2" && input != "3" &&
                 input != "4") || (!startGame[0] && !startGame[1]))
             {
                 render.MainMenuInterface();
-                Console.Write("Option: ");
+                Console.Write("> ");
                 input = Console.ReadLine();
+                Console.SetCursorPosition(yCursor, xCursor);
                 inputInt = Convert.ToInt32(input);
                 SetMenuOption(input, ref startGame);
             }
@@ -39,6 +42,7 @@ namespace Roguelike
                     render.Credits();
                     break;
                 case "5":
+                    Console.SetCursorPosition(30, 23);
                     Environment.Exit(1);
                     break;
             }

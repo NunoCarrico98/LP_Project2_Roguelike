@@ -22,23 +22,32 @@ namespace Roguelike
             render = new Renderer();
         }
 
-        /// <summary>
-        /// Method that Loops through all the game actions
-        /// </summary>
-        public void GameLoop(bool[] startGame)
+        public void IsLoadOrNew(bool[] startGame)
         {
-            // Variable to keep the game loop going
-            bool endGame = false;
-
             if (startGame[0])
             {
                 // Set initial Positions
                 grid.SetInitialPositions(player);
+                GameLoop();
             }
             else if (startGame[1])
             {
-                LoadGame();
+                if (File.Exists("GameData.dat"))
+                {
+                    LoadGame();
+                    GameLoop();
+                }
+                else render.ErrorLoading();
             }
+        }
+
+        /// <summary>
+        /// Method that Loops through all the game actions
+        /// </summary>
+        public void GameLoop()
+        {
+            // Variable to keep the game loop going
+            bool endGame = false;
 
             // GameLoop
             while (!endGame)

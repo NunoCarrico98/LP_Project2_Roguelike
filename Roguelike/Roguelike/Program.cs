@@ -18,7 +18,7 @@ namespace Roguelike
 
             if (startGame[0] || startGame[1])
             {
-                game.GameLoop(startGame);
+                game.IsLoadOrNew(startGame);
             }
         }
     }
