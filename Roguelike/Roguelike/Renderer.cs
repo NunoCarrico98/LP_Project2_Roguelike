@@ -66,10 +66,10 @@ namespace Roguelike
             if (gametile.Explored == true)
             {
                 if (go is null) gameSymbol = ".";
-                else if (go is Player) gameSymbol = "\u26ED";
+                else if (go is Player) gameSymbol = "P";
                 else if (go is Exit) gameSymbol = "E";
                 else if (go is Map) gameSymbol = "M";
-                else if (go is Trap) gameSymbol = "T";
+                else if (go is Trap) gameSymbol = "\u00A4";
                 else if (go is Food) gameSymbol = "F";
                 else if (go is Weapon) gameSymbol = "W";
                 else if (go is NPC)
@@ -100,6 +100,11 @@ namespace Roguelike
             Console.WriteLine($"HP{c,10}   {p.Health:f1}");
             Console.SetCursorPosition(70, 5);
             Console.WriteLine($"Weapon{c,6}");
+            if(p.Equipped == null)
+            {
+                Console.SetCursorPosition(85, 5);
+                Console.WriteLine($"None");
+            }
             if (p.Equipped != null)
             {
                 Console.SetCursorPosition(85, 5);
@@ -153,10 +158,24 @@ namespace Roguelike
                     (go as Trap).WroteMessage = true;
                 }
 
+                if (p.Broken)
+                {
+                    Console.WriteLine("* Your weapon broke");
+                    p.Broken = false;
+                }
+                if (p.Killed)
+                {
+                    Console.WriteLine($"* You attacked an NPC and " +
+                        $"killed it");
+                    p.Killed = false;
+                }
                 if (go is NPC && (go as NPC).NpcType == StateOfNpc.Enemy)
                 {
-                    if (p.Input == "f") Console.WriteLine($"* You attacked an " +
-                        $"NPC and did {p.Damage:f1} damage");
+                    if (p.Input == "f" && p.Attacked)
+                    {
+                        Console.WriteLine($"* You attacked an NPC and " +
+                                $"did {p.Damage:f1} damage");
+                    }
                     Console.WriteLine("* You were attacked by an NPC and " +
                         $"lost {(go as NPC).Damage:f1} HP");
                 }
@@ -330,9 +349,20 @@ namespace Roguelike
 
         public bool ChooseEnemyScreen(GridManager grid, Player p, out int count)
         {
-            count = 1;
+            count = 0;
+
+            foreach (IGameObject go in grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
+            {
+                if (go is NPC) count++;
+            }
 
             Console.Clear();
+            if (count == 0)
+            {
+                Console.WriteLine("* There are no NPCs here. You cannot attack.");
+                Console.ReadKey();
+                return false;
+            }
             if (p.Equipped == null)
             {
                 Console.WriteLine("* You don't have a weapon. You cannot attack.");
@@ -341,6 +371,7 @@ namespace Roguelike
             }
             else
             {
+                count = 1;
                 Console.WriteLine($"\nSelect Enemy to Attack");
                 Console.WriteLine("---------------");
                 Console.WriteLine("0. Go back");
@@ -492,8 +523,7 @@ namespace Roguelike
 
         public void AddNewHighscoreInterface(GridManager grid)
         {
-            Console.Clear();
-            Console.WriteLine("You're 1 of the 10 best players!");
+            Console.WriteLine("However, you're 1 of the 10 best players!");
             Console.WriteLine($"Score: {grid.Level}");
             Console.WriteLine("Please Write your name in less than 15 characters");
         }

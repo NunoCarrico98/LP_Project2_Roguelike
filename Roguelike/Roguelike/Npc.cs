@@ -13,7 +13,7 @@ namespace Roguelike
         public double MaxHPForThisLevel { get; set; }
         public double HostileProbabilityForThisLevel { get; set; }
 
-        private Random rnd = new Random();
+        private Random rnd = new Random(Guid.NewGuid().GetHashCode());
 
         public NPC(Position pos, GridManager grid)
         {
@@ -42,10 +42,13 @@ namespace Roguelike
             p.Die(grid);
         }
 
-        public void Die(GridManager grid)
+        public void Die(GridManager grid, Player p)
         {
             if (HP <= 0)
             {
+                p.Killed = true;
+                grid.gameGrid[Pos.X, Pos.Y].Remove(this);
+
                 int numberOfItens = rnd.Next(6);
                 for (int i = 0; i < numberOfItens; i++)
                 {
@@ -65,7 +68,6 @@ namespace Roguelike
                                 break;
                         }
                     } while (grid.gameGrid[Pos.X, Pos.Y].Contains(grid.Exit));
-                    grid.gameGrid[Pos.X, Pos.Y].Remove(this);
                 }
             }
         }

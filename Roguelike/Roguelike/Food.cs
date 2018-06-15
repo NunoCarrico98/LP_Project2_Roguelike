@@ -4,14 +4,14 @@ namespace Roguelike
 {
     public class Food : Item
     {
-        public float HPIncrease { get; private set; }
+        public double HPIncrease { get; private set; }
         public TypesOfFood FoodType { get; set; }
-        Random rnd = new Random(Guid.NewGuid().GetHashCode());
+        private Random rnd = new Random(Guid.NewGuid().GetHashCode());
 
         public Food()
         {
             FoodType = (TypesOfFood)
-                rnd.Next(0, Enum.GetNames(typeof(TypesOfTraps)).Length);
+                rnd.Next(0, Enum.GetNames(typeof(TypesOfFood)).Length);
             SetHp();
         }
 
@@ -26,23 +26,23 @@ namespace Roguelike
             switch (FoodType)
             {
                 case TypesOfFood.Bacon:
-                    HPIncrease = 4;
+                    HPIncrease = 4d;
                     Weight = 0.5f;
                     break;
                 case TypesOfFood.Burger:
-                    HPIncrease = 10;
-                    Weight = 1;
+                    HPIncrease = 10d;
+                    Weight = 1.5f;
                     break;
                 case TypesOfFood.Noodles:
-                    HPIncrease = 7;
-                    Weight = 1;
+                    HPIncrease = 7d;
+                    Weight = 1f;
                     break;
                 case TypesOfFood.Pizza:
-                    HPIncrease = 8;
-                    Weight = 2;
+                    HPIncrease = 15d;
+                    Weight = 2f;
                     break;
                 case TypesOfFood.Sushi:
-                    HPIncrease = 2;
+                    HPIncrease = 2d;
                     Weight = 0.1f;
                     break;
             }

@@ -10,6 +10,9 @@ namespace Roguelike
         public float MaxWeight { get; private set; }
         public float Weight { get; set; }
         public double Damage { get; set; }
+        public bool Attacked { get; set; } = false;
+        public bool Broken { get; set; } = false;
+        public bool Killed { get; set; } = false;
         public Position PlayerPos { get; set; }
         public List<Item> Inventory { get; set; } = new List<Item>();
         public Weapon Equipped { get; set; }
@@ -31,8 +34,8 @@ namespace Roguelike
         {
             if (Health <= 0)
             {
-                render.RenderBoard(grid, this);
-                Console.WriteLine("You Died. :(");
+                Console.Clear();
+                Console.WriteLine("You Died. :(\n");
                 AddNewHighScore(grid);
                 Environment.Exit(1);
             }
@@ -94,9 +97,9 @@ namespace Roguelike
 
         public void Fight(GridManager grid, int count)
         {
-            bool attacked = false;
             string choice = "";
             int i = 0;
+            Attacked = false;
             do
             {
                 Console.Write("\n> ");
@@ -118,19 +121,20 @@ namespace Roguelike
                             (go as NPC).NpcType = StateOfNpc.Enemy;
                         Damage = rnd.Next(0, Equipped.AttackPower);
                         (go as NPC).HP -= Damage;
+                        (go as NPC).Die(grid, this);
                         if (rnd.NextDouble() < 1 - Equipped.Durability)
                         {
-                            Equipped = null;
+                            Broken = true;
                             Weight -= Equipped.Weight;
+                            Equipped = null;
                         }
-                        (go as NPC).Die(grid);
-                        attacked = true;
+                        Attacked = true;
                     }
                     else
                     {
                         i++;
                     }
-                } while (!attacked);
+                } while (!Attacked);
             }
         }
 

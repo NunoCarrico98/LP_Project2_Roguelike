@@ -8,12 +8,12 @@ namespace Roguelike
         public int AttackPower { get; private set; }
         public double Durability { get; private set; }
         public TypesOfWeapon WeaponType { get; set; }
-        Random rnd = new Random(Guid.NewGuid().GetHashCode());
+        private Random rnd = new Random(Guid.NewGuid().GetHashCode());
 
         public Weapon()
         {
             WeaponType = (TypesOfWeapon)
-                rnd.Next(0, Enum.GetNames(typeof(TypesOfTraps)).Length);
+                rnd.Next(0, Enum.GetNames(typeof(TypesOfWeapon)).Length);
             SetDurAndAP();
         }
 
@@ -29,7 +29,7 @@ namespace Roguelike
             {
                 case TypesOfWeapon.Axe:
                     AttackPower = 15;
-                    Durability = 0.75d;
+                    Durability = 0.85d;
                     Weight = 5f;
                     break;
                 case TypesOfWeapon.Dagger:
@@ -39,7 +39,7 @@ namespace Roguelike
                     break;
                 case TypesOfWeapon.Lance:
                     AttackPower = 25;
-                    Durability = 0.5d;
+                    Durability = 0.75d;
                     Weight = 9f;
                     break;
                 case TypesOfWeapon.SlingShot:
@@ -49,7 +49,7 @@ namespace Roguelike
                     break;
                 case TypesOfWeapon.Sword:
                     AttackPower = 20;
-                    Durability = 0.65;
+                    Durability = 0.8d;
                     Weight = 7f;
                     break;
             }

@@ -10,7 +10,7 @@ namespace Roguelike
         public Position TrapPos { get; set; }
         public bool FallenInto { get; set; }
         public bool WroteMessage { get; set; }
-        Random rnd = new Random(Guid.NewGuid().GetHashCode());
+        private Random rnd = new Random(Guid.NewGuid().GetHashCode());
 
         public Trap(Position pos)
         {
