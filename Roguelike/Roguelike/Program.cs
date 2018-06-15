@@ -12,9 +12,13 @@ namespace Roguelike
             GameManager game = new GameManager();
             MainMenu mainMenu = new MainMenu();
 
-            if (mainMenu.GetMenuOption())
+            bool[] startGame = new bool[2];
+
+            mainMenu.GetMenuOption(ref startGame);
+
+            if (startGame[0] || startGame[1])
             {
-                game.GameLoop();
+                game.GameLoop(startGame);
             }
         }
     }

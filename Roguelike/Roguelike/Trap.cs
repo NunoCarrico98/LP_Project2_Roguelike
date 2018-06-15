@@ -2,6 +2,7 @@
 
 namespace Roguelike
 {
+    [Serializable()]
     public class Trap : IGameObject
     {
         public int MaxDamage { get; private set; } 

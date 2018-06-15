@@ -1,5 +1,8 @@
-﻿namespace Roguelike
+﻿using System;
+
+namespace Roguelike
 {
+    [Serializable()]
     public class Position
     {
         public int X { get; set; }

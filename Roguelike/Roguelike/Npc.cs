@@ -2,6 +2,7 @@
 
 namespace Roguelike
 {
+    [Serializable()]
     public class NPC : IGameObject
     {
         public StateOfNpc NpcType { get; set; }
@@ -47,7 +48,7 @@ namespace Roguelike
             if (HP <= 0)
             {
                 p.Killed = true;
-                grid.gameGrid[Pos.X, Pos.Y].Remove(this);
+                grid.GameGrid[Pos.X, Pos.Y].Remove(this);
 
                 int numberOfItens = rnd.Next(6);
                 for (int i = 0; i < numberOfItens; i++)
@@ -56,12 +57,12 @@ namespace Roguelike
                     if (rnd.NextDouble() < 0.5d)
                     {
                         item = new Food();
-                        grid.gameGrid[Pos.X, Pos.Y].AddObject(item);
+                        grid.GameGrid[Pos.X, Pos.Y].AddObject(item);
                     }
                     else
                     {
                         item = new Weapon();
-                        grid.gameGrid[Pos.X, Pos.Y].AddObject(item);
+                        grid.GameGrid[Pos.X, Pos.Y].AddObject(item);
                     }
                 }
             }

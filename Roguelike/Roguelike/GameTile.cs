@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Roguelike
 {
     /// <summary>
     /// Classe that defines a game tile. Each tile is a list of IGameObjects
     /// </summary>
+    [Serializable()]
     public class GameTile : List<IGameObject>
     {
 

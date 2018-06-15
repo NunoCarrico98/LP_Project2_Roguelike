@@ -2,6 +2,7 @@
 
 namespace Roguelike
 {
+    [Serializable()]
     public class Weapon : Item
     {
 

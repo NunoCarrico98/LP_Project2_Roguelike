@@ -8,6 +8,7 @@ namespace Roguelike
     /// <summary>
     /// Class that manages High Scores
     /// </summary>
+    [Serializable()]
     public class HighScoreManager
     {
 

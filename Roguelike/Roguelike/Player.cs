@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Roguelike
 {
+    [Serializable()]
     public class Player : IGameObject
     {
         public double Health { get; set; }
@@ -17,17 +18,17 @@ namespace Roguelike
         public List<Item> Inventory { get; set; } = new List<Item>();
         public Weapon Equipped { get; set; }
 
-        private HighScoreManager hsm;
-        private Renderer render;
+        private HighScoreManager hsm = new HighScoreManager();
+        private Renderer render = new Renderer();
+        private GameManager gm;
         private Random rnd = new Random();
 
-        public Player()
+        public Player(GameManager gm)
         {
             Health = 100;
-            hsm = new HighScoreManager();
-            render = new Renderer();
             MaxWeight = 20;
             Equipped = null;
+            this.gm = gm;
         }
 
         public void Die(GridManager grid)
@@ -48,6 +49,9 @@ namespace Roguelike
                 Console.Write("\n> ");
                 Input = Console.ReadLine();
                 int count = 0;
+
+                //Update oldPlayerPos
+                grid.oldPlayerPos = PlayerPos;
 
                 switch (Input.ToLower())
                 {
@@ -91,8 +95,11 @@ namespace Roguelike
                         if (render.ChooseEnemyScreen(grid, this, out count))
                             Fight(grid, count);
                         break;
+                    case "k":
+                        gm.SaveGame();
+                        break;
                 }
-            } while (Input == "i" || Input == "q");
+            } while (Input == "i" || Input == "q" || Input == "k");
         }
 
         public void Fight(GridManager grid, int count)
@@ -114,7 +121,7 @@ namespace Roguelike
             {
                 do
                 {
-                    IGameObject go = grid.gameGrid[PlayerPos.X, PlayerPos.Y][i];
+                    IGameObject go = grid.GameGrid[PlayerPos.X, PlayerPos.Y][i];
                     if (go is NPC)
                     {
                         if ((go as NPC).NpcType == StateOfNpc.Neutral)
@@ -158,7 +165,7 @@ namespace Roguelike
             {
                 do
                 {
-                    IGameObject go = grid.gameGrid[PlayerPos.X, PlayerPos.Y][i];
+                    IGameObject go = grid.GameGrid[PlayerPos.X, PlayerPos.Y][i];
                     if (go is Item)
                     {
                         if ((Weight + (go as Item).Weight) > MaxWeight)
@@ -171,16 +178,16 @@ namespace Roguelike
                         {
                             Inventory.Add(go as Item);
                             Weight += (go as Item).Weight;
-                            grid.gameGrid[PlayerPos.X, PlayerPos.Y].RemoveAt(i);
-                            grid.gameGrid[PlayerPos.X, PlayerPos.Y].Add(null);
+                            grid.GameGrid[PlayerPos.X, PlayerPos.Y].RemoveAt(i);
+                            grid.GameGrid[PlayerPos.X, PlayerPos.Y].Add(null);
                             picked = true;
                         }
                     }
                     else if (go is Map)
                     {
-                        grid.gameGrid[PlayerPos.X, PlayerPos.Y].Remove(grid.Map);
-                        grid.gameGrid[PlayerPos.X, PlayerPos.Y].Add(null);
-                        foreach (GameTile gt in grid.gameGrid) gt.Explored = true;
+                        grid.GameGrid[PlayerPos.X, PlayerPos.Y].Remove(grid.Map);
+                        grid.GameGrid[PlayerPos.X, PlayerPos.Y].Add(null);
+                        foreach (GameTile gt in grid.GameGrid) gt.Explored = true;
                         picked = true;
                     }
                     else
@@ -212,7 +219,7 @@ namespace Roguelike
                 IGameObject go = Inventory[i - 1];
                 if (go is Item)
                 {
-                    grid.gameGrid[PlayerPos.X, PlayerPos.Y].AddObject(go);
+                    grid.GameGrid[PlayerPos.X, PlayerPos.Y].AddObject(go);
                     Inventory.RemoveAt(i - 1);
                     Weight -= (go as Item).Weight;
                 }

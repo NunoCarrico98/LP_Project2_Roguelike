@@ -2,6 +2,7 @@
 
 namespace Roguelike
 {
+    [Serializable()]
     public class Food : Item
     {
         public double HPIncrease { get; private set; }

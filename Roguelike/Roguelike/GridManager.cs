@@ -5,6 +5,7 @@ namespace Roguelike
     /// <summary>
     /// Class that controls all grid movement and management
     /// </summary>
+    [Serializable()]
     public class GridManager
     {
         /// <summary>
@@ -27,7 +28,7 @@ namespace Roguelike
         /// <summary>
         /// Property that defines the game grid
         /// </summary>
-        public GameTile[,] gameGrid { get; private set; }
+        public GameTile[,] GameGrid { get; set; }
         /// <summary>
         /// Property that defines a Map. One map exists per level
         /// </summary>
@@ -37,15 +38,15 @@ namespace Roguelike
         /// it occupies the whole tile
         /// </summary>
         public Exit Exit { get; private set; } = new Exit();
+        /// <summary>
+        /// Create and Initialise an instance to save the old position of player
+        /// </summary>
+        public Position oldPlayerPos;
 
         /// <summary>
         /// Create and Initialise an instance of type Random
         /// </summary>
         private Random rnd = new Random();
-        /// <summary>
-        /// Create and Initialise an instance to save the old position of player
-        /// </summary>
-        private Position oldPlayerPos;
 
         /// <summary>
         /// Constructor to Initialise Level
@@ -53,14 +54,14 @@ namespace Roguelike
         public GridManager()
         {
             // Initialise game Grid
-            gameGrid = new GameTile[Rows, Columns];
+            GameGrid = new GameTile[Rows, Columns];
 
             // Cycle through all tiles and initialise them
             for (int x = 0; x < Rows; x++)
             {
                 for (int y = 0; y < Columns; y++)
                 {
-                    gameGrid[x, y] = new GameTile();
+                    GameGrid[x, y] = new GameTile();
                 }
             }
         }
@@ -91,7 +92,7 @@ namespace Roguelike
             int playerRnd = rnd.Next(8);
 
             // Add player to grid
-            gameGrid[playerRnd, 0][0] = player;
+            GameGrid[playerRnd, 0][0] = player;
             // Save old player position
             oldPlayerPos = new Position(playerRnd, 0);
             // Save player position
@@ -100,12 +101,12 @@ namespace Roguelike
             Explore(player);
 
             // Add Map to Level
-            gameGrid[rnd.Next(8), rnd.Next(8)].AddObject(Map);
+            GameGrid[rnd.Next(8), rnd.Next(8)].AddObject(Map);
 
             // Add Exit to tile on grid
             for (int i = 0; i < ObjectsPerTile; i++)
             {
-                gameGrid[exitRnd, 7][i] = Exit;
+                GameGrid[exitRnd, 7][i] = Exit;
             }
 
             // Spawn Traps
@@ -132,8 +133,8 @@ namespace Roguelike
                 do
                 {
                     Position pos = new Position(row, column);
-                    gameGrid[row, column].AddObject(new NPC(pos, this));
-                } while (gameGrid[row, column].Contains(Exit));
+                    GameGrid[row, column].AddObject(new NPC(pos, this));
+                } while (GameGrid[row, column].Contains(Exit));
             }
         }
 
@@ -156,10 +157,10 @@ namespace Roguelike
                 {
                     // Initialise trap in a random position
                     trap = new Trap(new Position(rnd.Next(8), rnd.Next(8)));
-                } while (gameGrid[trap.TrapPos.X, trap.TrapPos.Y].Contains(Exit));
+                } while (GameGrid[trap.TrapPos.X, trap.TrapPos.Y].Contains(Exit));
 
                 // Add trap to grid
-                gameGrid[trap.TrapPos.X, trap.TrapPos.Y].AddObject(trap);
+                GameGrid[trap.TrapPos.X, trap.TrapPos.Y].AddObject(trap);
             }
         }
 
@@ -180,15 +181,15 @@ namespace Roguelike
                     if (rnd.NextDouble() < 0.5d)
                     {
                         item = new Food();
-                        gameGrid[pos.X, pos.Y].AddObject(item);
+                        GameGrid[pos.X, pos.Y].AddObject(item);
                     }
                     else
                     {
                         item = new Weapon();
-                        gameGrid[pos.X, pos.Y].AddObject(item);
+                        GameGrid[pos.X, pos.Y].AddObject(item);
                     }
 
-                } while (gameGrid[pos.X, pos.Y].Contains(Exit));
+                } while (GameGrid[pos.X, pos.Y].Contains(Exit));
             }
         }
 
@@ -200,13 +201,13 @@ namespace Roguelike
         public void UpdatePlayerPosition(Player player)
         {
             // Remove Player from current tile
-            gameGrid[oldPlayerPos.X, oldPlayerPos.Y].Remove(player);
-            gameGrid[oldPlayerPos.X, oldPlayerPos.Y].Add(null);
-            oldPlayerPos = new Position(player.PlayerPos.X, player.PlayerPos.Y);
+            GameGrid[oldPlayerPos.X, oldPlayerPos.Y].Remove(player);
+            GameGrid[oldPlayerPos.X, oldPlayerPos.Y].Add(null);
+            //oldPlayerPos = player.PlayerPos;
 
             // Add Player to new tile
-            gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Insert(0, player);
-            gameGrid[player.PlayerPos.X, player.PlayerPos.Y].RemoveNullsOutsideView();
+            GameGrid[player.PlayerPos.X, player.PlayerPos.Y].Insert(0, player);
+            GameGrid[player.PlayerPos.X, player.PlayerPos.Y].RemoveNullsOutsideView();
 
             // Make sure tiles around player are explored
             Explore(player);
@@ -225,7 +226,7 @@ namespace Roguelike
             for (int i = ObjectsPerTile - 1; i >= 0; i--)
             {
                 // Save object in variable
-                IGameObject go = gameGrid[player.PlayerPos.X, player.PlayerPos.Y][i];
+                IGameObject go = GameGrid[player.PlayerPos.X, player.PlayerPos.Y][i];
                 // If object is a Trap and it wasn't activated yet
                 if (go is Trap && (go as Trap).FallenInto == false)
                 {
@@ -239,7 +240,7 @@ namespace Roguelike
 
         public void CheckForNPC(GridManager grid, Player p)
         {
-            foreach (IGameObject go in gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
+            foreach (IGameObject go in GameGrid[p.PlayerPos.X, p.PlayerPos.Y])
             {
                 if (go is NPC && (go as NPC).NpcType == StateOfNpc.Enemy)
                 {
@@ -255,15 +256,15 @@ namespace Roguelike
         public void WinLevel(Player player)
         {
             // If current tile contains player and exit
-            if (gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Contains(Exit) &&
-               gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Contains(player))
+            if (GameGrid[player.PlayerPos.X, player.PlayerPos.Y].Contains(Exit) &&
+               GameGrid[player.PlayerPos.X, player.PlayerPos.Y].Contains(player))
             {
                 // Restart grid
                 for (int x = 0; x < Rows; x++)
                 {
                     for (int y = 0; y < Columns; y++)
                     {
-                        gameGrid[x, y] = new GameTile();
+                        GameGrid[x, y] = new GameTile();
                     }
                 }
 
@@ -282,7 +283,7 @@ namespace Roguelike
         public void Explore(Player player)
         {
             // Tile that player is in becomes visible
-            gameGrid[player.PlayerPos.X, player.PlayerPos.Y].Explored = true;
+            GameGrid[player.PlayerPos.X, player.PlayerPos.Y].Explored = true;
 
             // Make sure that the positions we're checking are not outside the map
             Position pos1 =
@@ -295,10 +296,10 @@ namespace Roguelike
                 RestrictToMap(player.PlayerPos.X, player.PlayerPos.Y + 1);
 
             // Tiles above, below, to the left and right become visible
-            gameGrid[pos1.X, pos1.Y].Explored = true;
-            gameGrid[pos2.X, pos2.Y].Explored = true;
-            gameGrid[pos3.X, pos3.Y].Explored = true;
-            gameGrid[pos4.X, pos4.Y].Explored = true;
+            GameGrid[pos1.X, pos1.Y].Explored = true;
+            GameGrid[pos2.X, pos2.Y].Explored = true;
+            GameGrid[pos3.X, pos3.Y].Explored = true;
+            GameGrid[pos4.X, pos4.Y].Explored = true;
         }
 
         /// <summary>
@@ -330,7 +331,7 @@ namespace Roguelike
         public GameTile GetTile(int x, int y)
         {
             // Return tile
-            return gameGrid[x, y];
+            return GameGrid[x, y];
         }
 
         /// <summary>
@@ -344,7 +345,7 @@ namespace Roguelike
         public IGameObject GetGO(int x, int y, int posIntTile)
         {
             // Return game object on grid
-            return gameGrid[x, y][posIntTile];
+            return GameGrid[x, y][posIntTile];
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Roguelike
 {
+    [Serializable()]
     public class Renderer
     {
 
@@ -147,7 +148,7 @@ namespace Roguelike
         public void ShowObjectMessages(GridManager grid, Player p)
         {
             // Cycle through all objects in tile backwards
-            foreach (IGameObject go in grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
+            foreach (IGameObject go in grid.GameGrid[p.PlayerPos.X, p.PlayerPos.Y])
             {
                 // If object is a Trap and it wasn't activated yet
                 if (go is Trap && (go as Trap).WroteMessage == false)
@@ -234,12 +235,12 @@ namespace Roguelike
         public void ObjectsInTile(Player p, GridManager grid, int x, int y)
         {
             bool empty = true;
-            if (grid.gameGrid[x, y].Contains(grid.Exit)) Console.Write("Exit");
+            if (grid.GameGrid[x, y].Contains(grid.Exit)) Console.Write("Exit");
             else
             {
-                for (int i = 0; i < grid.gameGrid[x, y].Count; i++)
+                for (int i = 0; i < grid.GameGrid[x, y].Count; i++)
                 {
-                    IGameObject go = grid.gameGrid[x, y][i];
+                    IGameObject go = grid.GameGrid[x, y][i];
                     if (go != null) empty = false;
                     if (go is Trap) Console.Write($"Trap " +
                         $"({(go as Trap).TrapType})");
@@ -251,10 +252,10 @@ namespace Roguelike
                     if (go is NPC) Console.Write($"NPC " +
                         $"({(go as NPC).NpcType}, HP = {(go as NPC).HP:f1}, " +
                         $"AP = {(go as NPC).AP:f1})");
-                    if (i + 1 < grid.gameGrid[x, y].Count)
+                    if (i + 1 < grid.GameGrid[x, y].Count)
                     {
-                        if (grid.gameGrid[x, y][i] != p &&
-                            grid.gameGrid[x, y][i + 1] != null)
+                        if (grid.GameGrid[x, y][i] != p &&
+                            grid.GameGrid[x, y][i + 1] != null)
                         {
                             Console.Write(", ");
                         }
@@ -295,7 +296,7 @@ namespace Roguelike
                 "  (S) Move SOUTH (D) Move EAST");
             Console.WriteLine("(F) Attack NPC  (E) Pick up item " +
                 "(U) Use item   (V) Drop item");
-            Console.WriteLine("(I) Information (Q) Quit game");
+            Console.WriteLine("(I) Information (K) Save game    (Q) Quit game");
         }
 
         public void InfoInterface()
@@ -351,7 +352,7 @@ namespace Roguelike
         {
             count = 0;
 
-            foreach (IGameObject go in grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
+            foreach (IGameObject go in grid.GameGrid[p.PlayerPos.X, p.PlayerPos.Y])
             {
                 if (go is NPC) count++;
             }
@@ -377,7 +378,7 @@ namespace Roguelike
                 Console.WriteLine("0. Go back");
 
                 foreach (IGameObject go in
-                    grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
+                    grid.GameGrid[p.PlayerPos.X, p.PlayerPos.Y])
                 {
                     if (go is NPC)
                     {
@@ -395,7 +396,7 @@ namespace Roguelike
         {
             count = 0;
 
-            foreach (IGameObject go in grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y])
+            foreach (IGameObject go in grid.GameGrid[p.PlayerPos.X, p.PlayerPos.Y])
             {
                 if (go is Item) count++;
                 if (go is Map) count++;
@@ -416,7 +417,7 @@ namespace Roguelike
 
                 for (int i = 0; i < grid.ObjectsPerTile; i++)
                 {
-                    IGameObject go = grid.gameGrid[p.PlayerPos.X, p.PlayerPos.Y][i];
+                    IGameObject go = grid.GameGrid[p.PlayerPos.X, p.PlayerPos.Y][i];
                     if (go is Food)
                     {
                         Console.WriteLine($"{count}. Food " +
@@ -532,9 +533,10 @@ namespace Roguelike
         {
             Console.Clear();
             Console.WriteLine("1. New Game");
-            Console.WriteLine("2. High Scores");
-            Console.WriteLine("3. Credits");
-            Console.WriteLine("4. Exit\n");
+            Console.WriteLine("2. Load Game");
+            Console.WriteLine("3. High Scores");
+            Console.WriteLine("4. Credits");
+            Console.WriteLine("5. Exit\n");
         }
 
         public void HighScoreTable()
