@@ -57,6 +57,7 @@ namespace Roguelike
             }
 
             ShowPlayerStats(player);
+            ShowGuide();
             ShowGameInterface(grid, player);
         }
 
@@ -113,6 +114,37 @@ namespace Roguelike
             }
             Console.SetCursorPosition(70, 6);
             Console.WriteLine($"Weight{c,6}   {p.Weight:f1} / {p.MaxWeight:f1}");
+            Console.SetCursorPosition(yCursor, xCursor);
+        }
+
+        public void ShowGuide()
+        {
+            int xCursor = Console.CursorTop;
+            int yCursor = Console.CursorLeft;
+            Console.SetCursorPosition(70, 10);
+            Console.WriteLine("Guide");
+            Console.SetCursorPosition(70, 11);
+            Console.WriteLine("-------");
+            Console.SetCursorPosition(70, 12);
+            Console.WriteLine($"\u0298 - Player");
+            Console.SetCursorPosition(70, 13);
+            Console.WriteLine($"> - Exit");
+            Console.SetCursorPosition(70, 14);
+            Console.WriteLine($". - Empty");
+            Console.SetCursorPosition(70, 15);
+            Console.WriteLine($"~ - Unexplored");
+            Console.SetCursorPosition(70, 16);
+            Console.WriteLine($"\u00B6 - Neutral NPC");
+            Console.SetCursorPosition(70, 17);
+            Console.WriteLine($"\u0278 - Hostile NPC");
+            Console.SetCursorPosition(70, 18);
+            Console.WriteLine($"\u0277 - Food");
+            Console.SetCursorPosition(70, 19);
+            Console.WriteLine($"\u2020 - Weapon");
+            Console.SetCursorPosition(70, 20);
+            Console.WriteLine($"\u00A4 - Trap");
+            Console.SetCursorPosition(70, 21);
+            Console.WriteLine($"X - Map");
             Console.SetCursorPosition(yCursor, xCursor);
         }
 

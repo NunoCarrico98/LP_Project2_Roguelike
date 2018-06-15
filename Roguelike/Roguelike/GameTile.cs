@@ -23,7 +23,7 @@ namespace Roguelike
             {
                 Add(null);
             }
-            Explored = true;
+            Explored = false;
         }
 
         /// <summary>
