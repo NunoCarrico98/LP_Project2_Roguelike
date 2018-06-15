@@ -87,8 +87,8 @@ namespace Roguelike
         public void SetInitialPositions(Player player)
         {
             // Create and Initialise Player and Exit randoms
-            int exitRnd = rnd.Next(0, 8);
-            int playerRnd = rnd.Next(0, 8);
+            int exitRnd = rnd.Next(8);
+            int playerRnd = rnd.Next(8);
 
             // Add player to grid
             gameGrid[playerRnd, 0][0] = player;
@@ -100,7 +100,7 @@ namespace Roguelike
             Explore(player);
 
             // Add Map to Level
-            gameGrid[rnd.Next(0, 8), rnd.Next(0, 8)].AddObject(Map);
+            gameGrid[rnd.Next(8), rnd.Next(8)].AddObject(Map);
 
             // Add Exit to tile on grid
             for (int i = 0; i < ObjectsPerTile; i++)
@@ -123,7 +123,7 @@ namespace Roguelike
         {
             int maxNPCsForLevel =
                 (int)ProcGenFunctions.Logistic(Level, 20d, 10d, 0.3d);
-            int numberOfNPCs = rnd.Next(maxNPCsForLevel);
+            int numberOfNPCs = rnd.Next(maxNPCsForLevel + 1);
 
             for (int i = 0; i < numberOfNPCs; i++)
             {
@@ -133,7 +133,7 @@ namespace Roguelike
                 {
                     Position pos = new Position(row, column);
                     gameGrid[row, column].AddObject(new NPC(pos, this));
-                } while (gameGrid[row,column].Contains(Exit));
+                } while (gameGrid[row, column].Contains(Exit));
             }
         }
 
@@ -144,7 +144,7 @@ namespace Roguelike
         {
             int maxTrapsPerLevel =
                 (int)ProcGenFunctions.Logistic(Level, 20d, 10d, 0.3d);
-            int numberOfTraps = rnd.Next(maxTrapsPerLevel);
+            int numberOfTraps = rnd.Next(maxTrapsPerLevel + 1);
 
             for (int i = 0; i < numberOfTraps; i++)
             {
@@ -155,7 +155,7 @@ namespace Roguelike
                 do
                 {
                     // Initialise trap in a random position
-                    trap = new Trap(new Position(rnd.Next(0, 8), rnd.Next(0, 8)));
+                    trap = new Trap(new Position(rnd.Next(8), rnd.Next(8)));
                 } while (gameGrid[trap.TrapPos.X, trap.TrapPos.Y].Contains(Exit));
 
                 // Add trap to grid
@@ -168,31 +168,30 @@ namespace Roguelike
         {
             int maxItensPerLevel =
                 (int)ProcGenFunctions.Logistic(Level, 30d, 10d, -0.3d);
-            int numberOfItens = rnd.Next(maxItensPerLevel);
+            int numberOfItens = rnd.Next(maxItensPerLevel + 1);
 
             for (int i = 0; i < numberOfItens; i++)
             {
                 Position pos;
                 do
                 {
-                    int r = rnd.Next(2);
                     pos = new Position(rnd.Next(8), rnd.Next(8));
                     Item item;
-                    switch (r)
+                    if (rnd.NextDouble() < 0.5d)
                     {
-                        case 0:
-                            item = new Food();
-                            gameGrid[pos.X, pos.Y].AddObject(item);
-                            break;
-                        case 1:
-                            item = new Weapon();
-                            gameGrid[pos.X, pos.Y].AddObject(item);
-                            break;
+                        item = new Food();
+                        gameGrid[pos.X, pos.Y].AddObject(item);
                     }
-                } while (gameGrid[pos.X, pos.Y].Contains(Exit));
+                    else
+                    {
+                        item = new Weapon();
+                        gameGrid[pos.X, pos.Y].AddObject(item);
+                    }
 
+                } while (gameGrid[pos.X, pos.Y].Contains(Exit));
             }
         }
+
 
         /// <summary>
         /// Method that updates player position according to user input

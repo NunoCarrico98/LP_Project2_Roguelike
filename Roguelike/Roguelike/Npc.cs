@@ -52,22 +52,17 @@ namespace Roguelike
                 int numberOfItens = rnd.Next(6);
                 for (int i = 0; i < numberOfItens; i++)
                 {
-                    do
+                    Item item;
+                    if (rnd.NextDouble() < 0.5d)
                     {
-                        int r = rnd.Next(2);
-                        Item item;
-                        switch (r)
-                        {
-                            case 0:
-                                item = new Food();
-                                grid.gameGrid[Pos.X, Pos.Y].AddObject(item);
-                                break;
-                            case 1:
-                                item = new Weapon();
-                                grid.gameGrid[Pos.X, Pos.Y].AddObject(item);
-                                break;
-                        }
-                    } while (grid.gameGrid[Pos.X, Pos.Y].Contains(grid.Exit));
+                        item = new Food();
+                        grid.gameGrid[Pos.X, Pos.Y].AddObject(item);
+                    }
+                    else
+                    {
+                        item = new Weapon();
+                        grid.gameGrid[Pos.X, Pos.Y].AddObject(item);
+                    }
                 }
             }
         }

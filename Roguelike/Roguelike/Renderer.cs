@@ -66,18 +66,18 @@ namespace Roguelike
             if (gametile.Explored == true)
             {
                 if (go is null) gameSymbol = ".";
-                else if (go is Player) gameSymbol = "P";
-                else if (go is Exit) gameSymbol = "E";
-                else if (go is Map) gameSymbol = "M";
+                else if (go is Player) gameSymbol = "\u0298";
+                else if (go is Exit) gameSymbol = ">";
+                else if (go is Map) gameSymbol = "X";
                 else if (go is Trap) gameSymbol = "\u00A4";
-                else if (go is Food) gameSymbol = "F";
-                else if (go is Weapon) gameSymbol = "W";
+                else if (go is Food) gameSymbol = "\u0277";
+                else if (go is Weapon) gameSymbol = "\u2020";
                 else if (go is NPC)
                 {
                     if ((go as NPC).NpcType == StateOfNpc.Enemy)
-                        gameSymbol = "H";
+                        gameSymbol = "\u0278";
                     if ((go as NPC).NpcType == StateOfNpc.Neutral)
-                        gameSymbol = "N";
+                        gameSymbol = "\u00B6";
                 }
             }
             else

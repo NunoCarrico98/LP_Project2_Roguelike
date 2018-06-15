@@ -6,10 +6,10 @@ namespace Roguelike
     public class Player : IGameObject
     {
         public double Health { get; set; }
+        public double Damage { get; set; }
         public string Input { get; private set; } = "";
         public float MaxWeight { get; private set; }
         public float Weight { get; set; }
-        public double Damage { get; set; }
         public bool Attacked { get; set; } = false;
         public bool Broken { get; set; } = false;
         public bool Killed { get; set; } = false;
@@ -119,7 +119,7 @@ namespace Roguelike
                     {
                         if ((go as NPC).NpcType == StateOfNpc.Neutral)
                             (go as NPC).NpcType = StateOfNpc.Enemy;
-                        Damage = rnd.Next(0, Equipped.AttackPower);
+                        Damage = rnd.NextDouble() * Equipped.AttackPower;
                         (go as NPC).HP -= Damage;
                         (go as NPC).Die(grid, this);
                         if (rnd.NextDouble() < 1 - Equipped.Durability)
