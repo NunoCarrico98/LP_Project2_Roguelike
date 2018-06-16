@@ -8,17 +8,15 @@ namespace Roguelike
         public int MaxDamage { get; private set; } 
         public double Damage { get; private set; }
         public TypesOfTraps TrapType { get; set; }
-        public Position TrapPos { get; set; }
         public bool FallenInto { get; set; }
         public bool WroteMessage { get; set; }
         private Random rnd = new Random(Guid.NewGuid().GetHashCode());
 
-        public Trap(Position pos)
+        public Trap()
         {
             TrapType = (TypesOfTraps)
                 rnd.Next(Enum.GetNames(typeof(TypesOfTraps)).Length);
             SetMaxDamage();
-            TrapPos = pos;
             FallenInto = false;
             WroteMessage = false;
         }

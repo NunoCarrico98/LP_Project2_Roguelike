@@ -3,25 +3,25 @@
 namespace Roguelike
 {
     /// <summary>
-    /// Class that controls all grid movement and management
+    /// Class that controls all grid movement and management.
     /// </summary>
     [Serializable()]
     public class GridManager
     {
         /// <summary>
-        /// Property that defines number of rows
+        /// Property that defines number of rows.
         /// </summary>
         public int Rows { get; } = 8;
         /// <summary>
-        /// Property that defines number of columns
+        /// Property that defines number of columns.
         /// </summary>
         public int Columns { get; } = 8;
         /// <summary>
-        /// Property that defines max numberof visible objects
+        /// Property that defines max numberof visible objects.
         /// </summary>
         public int ObjectsPerTile { get; } = 10;
         /// <summary>
-        /// Property that defines the current game level
+        /// Property that defines the current game level.
         /// </summary>
         public int Level { get; set; } = 1;
 
@@ -30,26 +30,26 @@ namespace Roguelike
         /// </summary>
         public GameTile[,] GameGrid { get; set; }
         /// <summary>
-        /// Property that defines a Map. One map exists per level
+        /// Property that defines a Map. One map exists per level.
         /// </summary>
         public Map Map { get; private set; } = new Map();
         /// <summary>
         /// Property that defines an exit. One exit exists per level and 
-        /// it occupies the whole tile
+        /// it occupies the whole tile.
         /// </summary>
         public Exit Exit { get; private set; } = new Exit();
         /// <summary>
-        /// Create and Initialise an instance to save the old position of player
+        /// Create and Initialise an instance to save the old position of player.
         /// </summary>
         public Position oldPlayerPos;
 
         /// <summary>
-        /// Create and Initialise an instance of type Random
+        /// Create and Initialise an instance of type Random.
         /// </summary>
         private Random rnd = new Random();
 
         /// <summary>
-        /// Constructor to Initialise Level
+        /// Constructor to Initialise Level.
         /// </summary>
         public GridManager()
         {
@@ -67,24 +67,24 @@ namespace Roguelike
         }
 
         /// <summary>
-        /// Update Grid
+        /// Method to update Grid.
         /// </summary>
-        /// <param name="player">Current player in game</param>
+        /// <param name="player">Current player in game.</param>
         public void Update(Player player)
         {
             // Update player position
             UpdatePlayerPosition(player);
             //Check current tile for traps
             CheckForTraps(player);
-            CheckForNPC(this, player);
+            CheckForNPC(player);
             // Check if player won level
             WinLevel(player);
         }
 
         /// <summary>
-        /// Set initial positions for all game objects
+        /// Set initial positions for all game objects.
         /// </summary>
-        /// <param name="player">Current player in game</param>
+        /// <param name="player">Current player in game.</param>
         public void SetInitialPositions(Player player)
         {
             // Create and Initialise Player and Exit randoms
@@ -120,84 +120,123 @@ namespace Roguelike
 
         }
 
+        /// <summary>
+        /// Method to spawn level NPCs
+        /// </summary>
         public void SpawnNPC()
         {
+            // Initialise the maximum number of NPCs. It increases with level
             int maxNPCsForLevel =
                 (int)ProcGenFunctions.Logistic(Level, 20d, 10d, 0.3d);
+            // Set the number of NPCs for the current level. 
+            // It's random between 0 and the maximum number of NPCs.
             int numberOfNPCs = rnd.Next(maxNPCsForLevel + 1);
 
+            // Repeat spawn for the number of NPCs of level
             for (int i = 0; i < numberOfNPCs; i++)
             {
-                int row = rnd.Next(8);
-                int column = rnd.Next(8);
+                // Create variables row and columns
+                int row;
+                int column;
+                // Do cycle while tile of row and column contains exit
                 do
                 {
-                    Position pos = new Position(row, column);
-                    GameGrid[row, column].AddObject(new NPC(pos, this));
+                    // Define row and column for current NPC
+                    row = rnd.Next(8);
+                    column = rnd.Next(8);
                 } while (GameGrid[row, column].Contains(Exit));
+                // Define position to give to NPC
+                Position pos = new Position(row, column);
+                // Add NPC to tile
+                GameGrid[row, column].AddObject(new NPC(pos, this));
             }
         }
 
         /// <summary>
-        /// Method to spawn all traps from level
+        /// Method to spawn level traps.
         /// </summary>
         public void SpawnTraps()
         {
+            // Initialise the maximum number of traps. It increases with level
             int maxTrapsPerLevel =
                 (int)ProcGenFunctions.Logistic(Level, 20d, 10d, 0.3d);
+            // Set the number of traps for the current level. 
+            // It's random between 0 and the maximum number of traps.
             int numberOfTraps = rnd.Next(maxTrapsPerLevel + 1);
 
+            // Repeat spawn for the number of traps of level
             for (int i = 0; i < numberOfTraps; i++)
             {
-                // Create new trap
-                Trap trap;
+                // Create variables row and columns
+                int row;
+                int column;
                 // Do cycle while the position chosen for the trap is the same 
                 // as the exit
                 do
                 {
-                    // Initialise trap in a random position
-                    trap = new Trap(new Position(rnd.Next(8), rnd.Next(8)));
-                } while (GameGrid[trap.TrapPos.X, trap.TrapPos.Y].Contains(Exit));
+                    // Define row and column for current NPC
+                    row = rnd.Next(8);
+                    column = rnd.Next(8);
+                } while (GameGrid[row, column].Contains(Exit));
 
+                // Initialise trap in a random position
+                Trap trap = new Trap();
                 // Add trap to grid
-                GameGrid[trap.TrapPos.X, trap.TrapPos.Y].AddObject(trap);
+                GameGrid[row, column].AddObject(trap);
             }
         }
 
-
+        /// <summary>
+        /// Method to spawn level items.
+        /// </summary>
         public void SpawnItems()
         {
+            // Initialise the maximum number of items. It decreases with level
             int maxItensPerLevel =
                 (int)ProcGenFunctions.Logistic(Level, 30d, 10d, -0.3d);
+            // Set the number of items for the current level. 
+            // It's random between 0 and the maximum number of items.
             int numberOfItens = rnd.Next(maxItensPerLevel + 1);
 
+            // Repeat spawn for the number of items of level
             for (int i = 0; i < numberOfItens; i++)
             {
-                Position pos;
+                // Create variables row and columns
+                int row;
+                int column;
+                // Do cycle while the position chosen for the trap is the same 
+                // as the exit
                 do
                 {
-                    pos = new Position(rnd.Next(8), rnd.Next(8));
-                    Item item;
-                    if (rnd.NextDouble() < 0.5d)
-                    {
-                        item = new Food();
-                        GameGrid[pos.X, pos.Y].AddObject(item);
-                    }
-                    else
-                    {
-                        item = new Weapon();
-                        GameGrid[pos.X, pos.Y].AddObject(item);
-                    }
+                    // Define row and column for current NPC
+                    row = rnd.Next(8);
+                    column = rnd.Next(8);
+                } while (GameGrid[row, column].Contains(Exit));
 
-                } while (GameGrid[pos.X, pos.Y].Contains(Exit));
+                // 50% probability that item is food
+                if (rnd.NextDouble() < 0.5d)
+                {
+                    // Create and Initialise food
+                    Item item = new Food();
+                    // Add food to tile
+                    GameGrid[row, column].AddObject(item);
+                }
+                // 50% probability that item is a weapon
+                else
+                {
+                    // Create and Initialise weapon
+                    Item item = new Weapon();
+                    // Add weapon to tile
+                    GameGrid[row, column].AddObject(item);
+                }
             }
         }
 
 
         /// <summary>
-        /// Method that updates player position according to user input
+        /// Method that updates player position according to user input.
         /// </summary>
-        /// <param name="player">Current player in game</param>
+        /// <param name="player">Current player in game.</param>
         public void UpdatePlayerPosition(Player player)
         {
             // Remove Player from current tile
@@ -217,16 +256,14 @@ namespace Roguelike
         }
 
         /// <summary>
-        /// Method that checks if player got hit by a trap
+        /// Method that checks if player got hit by a trap.
         /// </summary>
-        /// <param name="player">Current player in game</param>
+        /// <param name="player">Current player in game.</param>
         public void CheckForTraps(Player player)
         {
-            // Cycle through all objects in tile backwards
-            for (int i = ObjectsPerTile - 1; i >= 0; i--)
+            // Cycle through all objects in tile
+            foreach (IGameObject go in GameGrid[player.PlayerPos.X, player.PlayerPos.Y])
             {
-                // Save object in variable
-                IGameObject go = GameGrid[player.PlayerPos.X, player.PlayerPos.Y][i];
                 // If object is a Trap and it wasn't activated yet
                 if (go is Trap && (go as Trap).FallenInto == false)
                 {
@@ -238,21 +275,28 @@ namespace Roguelike
             }
         }
 
-        public void CheckForNPC(GridManager grid, Player p)
+        /// <summary>
+        /// Method that checks if player entered a tile with NPCs.
+        /// </summary>
+        /// <param name="p">Current player in game.</param>
+        public void CheckForNPC(Player p)
         {
+            // Cycle through all objects in tile 
             foreach (IGameObject go in GameGrid[p.PlayerPos.X, p.PlayerPos.Y])
             {
+                // If object is a NPC and it is an Hostile
                 if (go is NPC && (go as NPC).NpcType == StateOfNpc.Enemy)
                 {
-                    (go as NPC).Fight(grid, p);
+                    // NPC hits player
+                    (go as NPC).Fight(this, p);
                 }
             }
         }
 
         /// <summary>
-        /// Method that checks if player got to an exit
+        /// Method that checks if player got to an exit.
         /// </summary>
-        /// <param name="player">Current player in game</param>
+        /// <param name="player">Current player in game.</param>
         public void WinLevel(Player player)
         {
             // If current tile contains player and exit
@@ -277,9 +321,9 @@ namespace Roguelike
         }
 
         /// <summary>
-        /// Method that makes sure that tiles around player are visible
+        /// Method that makes sure that tiles around player are visible.
         /// </summary>
-        /// <param name="player">Current player in game</param>
+        /// <param name="player">Current player in game.</param>
         public void Explore(Player player)
         {
             // Tile that player is in becomes visible
@@ -303,11 +347,11 @@ namespace Roguelike
         }
 
         /// <summary>
-        /// Method that checks if given coordinates are outside map
+        /// Method that checks if given coordinates are outside map.
         /// </summary>
-        /// <param name="x">Row of Coordinates</param>
-        /// <param name="y">Column of Coordinates</param>
-        /// <returns>Returns the new Position inside grid</returns>
+        /// <param name="x">Row of Coordinates.</param>
+        /// <param name="y">Column of Coordinates.</param>
+        /// <returns>Returns the new Position inside grid.</returns>
         public Position RestrictToMap(int x, int y)
         {
             // If x or are less than 0, they become 0
@@ -323,11 +367,11 @@ namespace Roguelike
         }
 
         /// <summary>
-        /// Method to get the tile in certain coordinates
+        /// Method to get the tile in certain coordinates.
         /// </summary>
-        /// <param name="x">Row of grid</param>
-        /// <param name="y">Column of grid</param>
-        /// <returns>Returns the tile in given coordinates</returns>
+        /// <param name="x">Row of grid.</param>
+        /// <param name="y">Column of grid.</param>
+        /// <returns>Returns the tile in given coordinates.</returns>
         public GameTile GetTile(int x, int y)
         {
             // Return tile
@@ -335,13 +379,13 @@ namespace Roguelike
         }
 
         /// <summary>
-        /// MMethod to get the game object in certain coordinates
+        /// MMethod to get the game object in certain coordinates.
         /// </summary>
-        /// <param name="x">Row of grid</param>
-        /// <param name="y">Column of grid</param>
-        /// <param name="posIntTile">Position in tile</param>
+        /// <param name="x">Row of grid.</param>
+        /// <param name="y">Column of grid.</param>
+        /// <param name="posIntTile">Position in tile.</param>
         /// <returns>Returns the game object in given coordinates and 
-        /// tile position</returns>
+        /// tile position.</returns>
         public IGameObject GetGO(int x, int y, int posIntTile)
         {
             // Return game object on grid

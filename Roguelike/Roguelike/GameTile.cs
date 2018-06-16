@@ -4,16 +4,18 @@ using System.Collections.Generic;
 namespace Roguelike
 {
     /// <summary>
-    /// Classe that defines a game tile. Each tile is a list of IGameObjects
+    /// Classe that defines a game tile. Each tile is a list of IGameObjects.
     /// </summary>
     [Serializable()]
     public class GameTile : List<IGameObject>
     {
-
+        /// <summary>
+        /// Property that defines if a tile is explored or not.
+        /// </summary>
         public bool Explored { get; set; }
 
         /// <summary>
-        /// Constructor that initialises each game tile
+        /// Constructor that initialises each game tile.
         /// </summary>
         public GameTile() : base(10)
         {
@@ -23,13 +25,14 @@ namespace Roguelike
             {
                 Add(null);
             }
+            // Set the tile as unexplored
             Explored = false;
         }
 
         /// <summary>
-        /// Add game object in the position of the first null found
+        /// Add game object in the position of the first null found.
         /// </summary>
-        /// <param name="go">Game object to add to list</param>
+        /// <param name="go">Game object to add to list.</param>
         public void AddObject(IGameObject go)
         {
             // Create and Initialise Index
@@ -67,7 +70,7 @@ namespace Roguelike
         }
 
         /// <summary>
-        /// Remove nulls that exist but are not being rendered by the grid
+        /// Remove nulls that exist but are not being rendered by the grid.
         /// </summary>
         public void RemoveNullsOutsideView()
         {

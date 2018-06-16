@@ -660,8 +660,8 @@ namespace Roguelike
             Console.Clear();
             Console.SetCursorPosition(35, 18);
             Console.WriteLine("* Game Saved *\n");
-            Console.SetCursorPosition(28, 20);
-            Console.WriteLine("* Press ENTER to go back... *\n");
+            Console.SetCursorPosition(27, 20);
+            Console.WriteLine("* Press any key to go back... *\n");
             Console.ReadKey();
             Console.SetCursorPosition(yCursor, xCursor);
         }

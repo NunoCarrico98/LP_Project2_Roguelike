@@ -6,26 +6,26 @@ using System.Text;
 namespace Roguelike
 {
     /// <summary>
-    /// Class that manages High Scores
+    /// Class that manages High Scores.
     /// </summary>
     [Serializable()]
     public class HighScoreManager
     {
 
         /// <summary>
-        /// Create a List to hold highscores
+        /// Create a List to hold highscores.
         /// </summary>
         public List<Tuple<string, float>> Highscores { get; private set; }
 
         /// <summary>
-        /// Create variable to hold the filename
+        /// Create variable to hold the filename.
         /// </summary>
-        private string filename = "";
+        private readonly string filename = "";
 
         /// <summary>
-        /// Constructor to initialise List
+        /// Constructor to initialise List.
         /// </summary>
-        /// <param name="filename">Filename given by user</param>
+        /// <param name="filename">Filename given by user.</param>
         public HighScoreManager(string filename = "HighScores.txt")
         {
             // Initialise filename with filename given
@@ -74,10 +74,10 @@ namespace Roguelike
         }
 
         /// <summary>
-        /// Method that Adds a new Highscore
+        /// Method that Adds a new Highscore.
         /// </summary>
-        /// <param name="name">Name of player</param>
-        /// <param name="score">Score of player</param>
+        /// <param name="name">Name of player.</param>
+        /// <param name="score">Score of player.</param>
         public void AddScore(string name, float score)
         {
             // Create and instantiate a new object to hold the new highscore
@@ -98,7 +98,7 @@ namespace Roguelike
         }
 
         /// <summary>
-        /// Method to save highscores to file
+        /// Method to save highscores to file.
         /// </summary>
         public void Save()
         {
@@ -116,9 +116,9 @@ namespace Roguelike
         }
 
         /// <summary>
-        /// Overriding method ToString()
+        /// Overriding method ToString().
         /// </summary>
-        /// <returns>Returns a fully formmated table with all high scores</returns>
+        /// <returns>Returns a fully formmated table with all high scores.</returns>
         public override string ToString()
         {
             // Instantiate a new instance of StringBuilder
@@ -138,7 +138,7 @@ namespace Roguelike
         }
 
         /// <summary>
-        /// Method to sort the list
+        /// Method to sort the list.
         /// </summary>
         private void SortList()
         {
