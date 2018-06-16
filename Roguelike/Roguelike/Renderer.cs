@@ -383,8 +383,6 @@ namespace Roguelike
         public bool ChooseEnemyScreen(GridManager grid, Player p, out int count)
         {
             count = 0;
-            int xCursor = Console.CursorTop;
-            int yCursor = Console.CursorLeft;
 
             foreach (IGameObject go in grid.GameGrid[p.PlayerPos.X, p.PlayerPos.Y])
             {
@@ -399,13 +397,9 @@ namespace Roguelike
             }
             if (p.Equipped == null)
             {
-                Console.SetCursorPosition(26, 20);
                 Console.WriteLine("* You don't have a weapon selected *");
-                Console.SetCursorPosition(34, 21);
                 Console.WriteLine("* You cannot attack *");
-                Console.SetCursorPosition(34, 22);
                 Console.ReadKey();
-                Console.SetCursorPosition(yCursor, xCursor);
                 return false;
             }
             else
@@ -433,8 +427,6 @@ namespace Roguelike
         public bool PickUpScreen(GridManager grid, Player p, out int count)
         {
             count = 0;
-            int xCursor = Console.CursorTop;
-            int yCursor = Console.CursorLeft;
             foreach (IGameObject go in grid.GameGrid[p.PlayerPos.X, p.PlayerPos.Y])
             {
                 if (go is Item) count++;
@@ -443,11 +435,8 @@ namespace Roguelike
             Console.Clear();
             if (count == 0)
             {
-                Console.SetCursorPosition(29, 20);
                 Console.WriteLine("* There is nothing to pick up *");
-                Console.SetCursorPosition(29, 21);
                 Console.ReadKey();
-                Console.SetCursorPosition(yCursor, xCursor);
                 return false;
             }
             else
@@ -485,8 +474,6 @@ namespace Roguelike
         public bool DropItemsScreen(GridManager grid, Player p, out int count)
         {
             count = 0;
-            int xCursor = Console.CursorTop;
-            int yCursor = Console.CursorLeft;
             foreach (IGameObject go in p.Inventory)
             {
                 if (go is Item) count++;
@@ -494,11 +481,8 @@ namespace Roguelike
             Console.Clear();
             if (count == 0)
             {
-                Console.SetCursorPosition(30, 20);
                 Console.WriteLine("* There is nothing to drop *");
-                Console.SetCursorPosition(30, 21);
                 Console.ReadKey();
-                Console.SetCursorPosition(yCursor, xCursor);
                 return false;
             }
             else
@@ -531,8 +515,6 @@ namespace Roguelike
         public bool UseItemScreen(Player p, out int count)
         {
             count = 0;
-            int xCursor = Console.CursorTop;
-            int yCursor = Console.CursorLeft;
             foreach (IGameObject go in p.Inventory)
             {
                 if (go is Item) count++;
@@ -540,11 +522,8 @@ namespace Roguelike
             Console.Clear();
             if (count == 0)
             {
-                Console.SetCursorPosition(30, 20);
                 Console.WriteLine("* There is nothing to use *");
-                Console.SetCursorPosition(30, 21);
                 Console.ReadKey();
-                Console.SetCursorPosition(yCursor, xCursor);
                 return false;
             }
             else
@@ -576,36 +555,25 @@ namespace Roguelike
 
         public void ShowDead()
         {
-            Console.SetCursorPosition(38, 20);
+            Console.Clear();
             Console.WriteLine("* WASTED *");
-            Console.SetCursorPosition(30, 22);
         }
 
         public void AddNewHighscoreInterface(GridManager grid)
         {
-            Console.SetCursorPosition(20, 22);
             Console.WriteLine("* However, you're 1 of the 10 best players! *");
-            Console.SetCursorPosition(20, 23);
             Console.WriteLine($"* Score: {grid.Level} *");
-            Console.SetCursorPosition(20, 24);
             Console.WriteLine("* Please Write your name in less than 15 characters *");
-            Console.SetCursorPosition(20, 26);
         }
 
         public void MainMenuInterface()
         {
             Console.Clear();
-            Console.SetCursorPosition(38, 16);
             Console.WriteLine("1. New Game");
-            Console.SetCursorPosition(38, 18);
             Console.WriteLine("2. Load Game");
-            Console.SetCursorPosition(38, 20);
             Console.WriteLine("3. High Scores");
-            Console.SetCursorPosition(38, 22);
             Console.WriteLine("4. Credits");
-            Console.SetCursorPosition(38, 24);
             Console.WriteLine("5. Exit");
-            Console.SetCursorPosition(38, 26);
         }
 
         public void HighScoreTable()
@@ -620,50 +588,30 @@ namespace Roguelike
 
         public void Credits()
         {
-            int xCursor = Console.CursorTop;
-            int yCursor = Console.CursorLeft;
             Console.Clear();
-            Console.SetCursorPosition(30, 17);
             Console.WriteLine("* Trabalho Realizado Por *");
-            Console.SetCursorPosition(30, 18);
             Console.WriteLine();
-            Console.SetCursorPosition(36, 19);
             Console.WriteLine("* Diogo Maia *");
-            Console.SetCursorPosition(32, 20);
             Console.WriteLine("* Ianis Arquissandas *");
-            Console.SetCursorPosition(35, 21);
             Console.WriteLine("* Nuno Carriço *\n");
-            Console.SetCursorPosition(30, 22);
             Console.WriteLine();
-            Console.SetCursorPosition(28, 23);
             Console.WriteLine("* Press any key to go back... *\n");
             Console.ReadKey();
-            Console.SetCursorPosition(yCursor, xCursor);
         }
 
         public void ErrorLoading()
         {
-            int xCursor = Console.CursorTop;
-            int yCursor = Console.CursorLeft;
             Console.Clear();
-            Console.SetCursorPosition(30, 15);
             Console.WriteLine("* There is no file to Load *\n");
-            Console.SetCursorPosition(32, 16);
             Console.WriteLine("* The game will exit... *\n");
-            Console.SetCursorPosition(30, 17);
         }
 
         public void SaveComplete()
         {
-            int xCursor = Console.CursorTop;
-            int yCursor = Console.CursorLeft;
             Console.Clear();
-            Console.SetCursorPosition(35, 18);
             Console.WriteLine("* Game Saved *\n");
-            Console.SetCursorPosition(27, 20);
             Console.WriteLine("* Press any key to go back... *\n");
             Console.ReadKey();
-            Console.SetCursorPosition(yCursor, xCursor);
         }
     }
 }

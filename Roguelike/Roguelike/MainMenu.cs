@@ -21,21 +21,17 @@ namespace Roguelike
         {
             // Create and Initialise variable to hold input
             string input = "";
-            // Create and Initialise variable to hold current mouse position
-            int xCursor = Console.CursorTop;
-            int yCursor = Console.CursorLeft;
 
             // Do cycle while input is not correct or 
             // both start and load game are false
             while ((input != "1" && input != "2" && input != "3" &&
-                input != "4") || input != "5" || (!startGame[0] && !startGame[1]))
+                input != "4") || (!startGame[0] && !startGame[1]))
             {
                 // Render Menu Interface
                 render.MainMenuInterface();
                 Console.Write("> ");
                 // Save user input to variable input
                 input = Console.ReadLine();
-                Console.SetCursorPosition(yCursor, xCursor);
                 // Define what program does with input
                 SetMenuOption(input, ref startGame);
             }

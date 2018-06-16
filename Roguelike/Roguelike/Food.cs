@@ -13,12 +13,14 @@ namespace Roguelike
         /// It depends on the type of food it is.
         /// </summary>
         public double HPIncrease { get; private set; }
+
         /// <summary>
         /// Property that defines the type of food it is.
         /// </summary>
         public TypesOfFood FoodType { get; set; }
+
         /// <summary>
-        /// Create and Initialise an instance of type Random.
+        /// Instance variable to be able to randomize numbers.
         /// </summary>
         private Random rnd = new Random(Guid.NewGuid().GetHashCode());
 

@@ -12,14 +12,17 @@ namespace Roguelike
         /// Property that defines number of rows.
         /// </summary>
         public int Rows { get; } = 8;
+
         /// <summary>
         /// Property that defines number of columns.
         /// </summary>
         public int Columns { get; } = 8;
+
         /// <summary>
         /// Property that defines max numberof visible objects.
         /// </summary>
         public int ObjectsPerTile { get; } = 10;
+
         /// <summary>
         /// Property that defines the current game level.
         /// </summary>
@@ -29,22 +32,25 @@ namespace Roguelike
         /// Property that defines the game grid
         /// </summary>
         public GameTile[,] GameGrid { get; set; }
+
         /// <summary>
         /// Property that defines a Map. One map exists per level.
         /// </summary>
         public Map Map { get; private set; } = new Map();
+
         /// <summary>
         /// Property that defines an exit. One exit exists per level and 
         /// it occupies the whole tile.
         /// </summary>
         public Exit Exit { get; private set; } = new Exit();
+
         /// <summary>
         /// Create and Initialise an instance to save the old position of player.
         /// </summary>
         public Position oldPlayerPos;
 
         /// <summary>
-        /// Create and Initialise an instance of type Random.
+        /// Instance variable to be able to randomize numbers.
         /// </summary>
         private Random rnd = new Random();
 
@@ -74,15 +80,19 @@ namespace Roguelike
         {
             // Update player position
             UpdatePlayerPosition(player);
-            //Check current tile for traps
+
+            // Check current tile for traps
             CheckForTraps(player);
+
+            // Check current tile for NPCs
             CheckForNPC(player);
+
             // Check if player won level
             WinLevel(player);
         }
 
         /// <summary>
-        /// Set initial positions for all game objects.
+        /// Method that defines initial positions for all game objects in a level.
         /// </summary>
         /// <param name="player">Current player in game.</param>
         public void SetInitialPositions(Player player)

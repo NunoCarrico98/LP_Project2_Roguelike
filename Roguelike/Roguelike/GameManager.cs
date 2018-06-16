@@ -15,10 +15,12 @@ namespace Roguelike
         /// Instance that defines the player.
         /// </summary>
         private Player player;
+
         /// <summary>
         /// Instance that defines the game board.
         /// </summary>
         private GridManager grid;
+
         /// <summary>
         /// Instance that defines a renderer.
         /// </summary>
