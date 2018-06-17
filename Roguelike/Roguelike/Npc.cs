@@ -3,7 +3,7 @@
 namespace Roguelike
 {
     /// <summary>
-    /// Class that defines a NPC.It is a Game Object.
+    /// Class that defines a NPC. It is a Game Object.
     /// </summary>
     [Serializable()]
     public class NPC : IGameObject

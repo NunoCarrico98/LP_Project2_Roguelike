@@ -97,7 +97,8 @@ namespace Roguelike
         {
             // Set + as variable
             char plus = '+';
-            // Return a line with food type, HPIncrease and Weight
+
+            // Return a formatted line with food type, HPIncrease and Weight
             return ($"{FoodType,-14}|{plus,12}{HPIncrease,4}| {Weight, 10}|");
         }
     }
