@@ -63,9 +63,9 @@
 
 ### Data structures
 
-	For our game grid, we decided to use an object that could hold all game objects. In that way, we created a class `GameTile` which implements `List<T>`. We also created an interface called `IGameObject` so the class `GameTile` can be a a `list` of game objects (`List<IGameObject>`).
+For our game grid, we decided to use an object that could hold all game objects. In that way, we created a class `GameTile` which implements `List<T>`. We also created an interface called `IGameObject` so the class `GameTile` can be a a `list` of game objects (`List<IGameObject>`).
 Therefore, all of our game objects implement `IGameObject` so they can be added to each tile.
-	However, this only creates one `tile`. To make a complete grid (8x8), we created a `mutidimensional array` of `GameTile`, creating a complete grid of `tiles` that can be manipulated to contain all game objects.
+However, this only creates one `tile`. To make a complete grid (8x8), we created a `mutidimensional array` of `GameTile`, creating a complete grid of `tiles` that can be manipulated to contain all game objects.
 
 
 Besides that, we also used a `list` for the `player inventory`. This is a `list` of itens (`List<Item>`) so every Food and Weapon (that inherit from `Item`) can be added to the `inventory` and the `player` can hold them.
@@ -74,7 +74,7 @@ We also create new `lists` when the `player` uses the information screen. That i
 
 ### Algorithms
 
-	Our game starts by entering the `GetMenuOption()` method. This method calls the `Main Menu` of the game and according to user `input` will do something different.
+Our game starts by entering the `GetMenuOption()` method. This method calls the `Main Menu` of the game and according to user `input` will do something different.
  If the `player` chooses "New Game", a new game will begin and the `SetInitialPositions()` method is called. This method sets the initial positions for all game objects (`Player`, `Exit`, `Map`, `Items` and `NPCs`). From here the player can move, pick up items, drop items, use items, attack `NPCs` or use the information screen.
  If the `player` chooses to move, then his `position` is changed according to where he wants to move and he moves on the grid. By moving, the `player` is removed from the `list` (`GameTile`) where he previously was and is added to the `tile` where he chose to move to. However, a `null` element has to be added to the old `list` so the number of elements in that `tile` stays the same.
 
@@ -87,7 +87,7 @@ We also create new `lists` when the `player` uses the information screen. That i
 	Player is added to new tile;
 ```
 
-	If the `player` chooses to pick up an `item` and there is an `item` on the `tile` he is currently on, the pick up screen is called. There the `player` has to either go back or choose an `item` to pick up. If he goes back a turn will not be spent. However, if he chooses to pick up an `item` an algorithm is called to make sure he picks up the `item` he chose.
+If the `player` chooses to pick up an `item` and there is an `item` on the `tile` he is currently on, the pick up screen is called. There the `player` has to either go back or choose an `item` to pick up. If he goes back a turn will not be spent. However, if he chooses to pick up an `item` an algorithm is called to make sure he picks up the `item` he chose.
 This algorithm starts by creating a `counter` and initialising it as the user `input`. Because the `index` of the `tile` is always the same or more than the user `input`. If the current `index` of the `tile` is the same as the `counter`, that `item` is picked up. Picking an `item` up means removing the `item` from the current `tile` and adding it to the `player inventory`.
 However, if it's more than the `counter`, the `counter` cycles through the `tile` with the `counter` as the `index`. If the currently analysed spot has an `item`, it is picked up. But if it's not, the `counter` increments by 1. This cycle repeats until an `item` is picked up.
 
@@ -111,7 +111,7 @@ Pick Up Item:
 			while (player didn't pick up an item)
 ```
 
-	If the `player` chooses to drop or use an `item`, a similar algorithm is called. However, this one goes through the `player inventory` and it does not have to do a cycle because we simply have to decrease 1 to the `input` of the `player` to know what `item` to drop.
+If the `player` chooses to drop or use an `item`, a similar algorithm is called. However, this one goes through the `player inventory` and it does not have to do a cycle because we simply have to decrease 1 to the `input` of the `player` to know what `item` to drop.
 Droping an `item` means removing the `item` from the `player inventory` and it's `weight` from the `player's weight` and add it to the current `tile`. 
 Using an `item` uses the same process with the exception that the `item` is not put back to the current `tile`. If the `item` is `Food`, the `HP` of the `player` increases according to the `Food` type. If the `item` is a `Weapon` and the `player` has no `weapon equipped`, the chosen `weapon` is equipped. But if the `player` has a `weapon` equipped, that `weapon` is put on the `player inventory` and the chosen `weapon` is equipped.
 This algorithm only occurs if the `player` has an `item` in his `inventory`.
@@ -154,7 +154,7 @@ Use Item:
 				remvoe weight from player weight;
 ```
 
-	If the `player` chooses to attack an `NPC`, a similar algorithm to the one used to pick an `Item` is used. This one works almost the same as one to pick up an `item`, but instead of `items` it uses the `NPC` class. 
+If the `player` chooses to attack an `NPC`, a similar algorithm to the one used to pick an `Item` is used. This one works almost the same as one to pick up an `item`, but instead of `items` it uses the `NPC` class. 
 That means that it only works if there is an `NPC` on the current `player tile`.
 Attacking an `NPC` means taking a random amount of `HP` of the chosen `NPC` between 0 and the `equipped weapon's attack power`. In this attack, the `equipped weapon` can break. If it does, the `weapon` is no longer usable and it disappears from the game.
 Besides that, if the attacked `NPC` is not an `Hostile`, it becomes an `Hostile` after being attacked. Moreover, there is always a verification if the `NPC` is dead. If the `NPC` dies, there a chance that he will spawn a random number of `Items` (`Food` or `Weapon`) between 0 and 5.
@@ -183,15 +183,15 @@ Attacked NPC:
 			while (player didn't pick up an item)
 ```
 
-	However, if the `player` moves and the `tile` he moves to contains a `trap`. The `trap` removes `HP` from the `player`. The same happens if the `tile` contains a `Hostile NPC`.
+However, if the `player` moves and the `tile` he moves to contains a `trap`. The `trap` removes `HP` from the `player`. The same happens if the `tile` contains a `Hostile NPC`.
 There is also the possibility that the `player` finds a `Map`. If he does, he can pick it up, revealing the entire `level`.
 That is how one of the turns of the game works. Therefore, the game keeps going until the `player` decides to quit or he dies.
 
 
-	Instead of choosing "New game" in the `Main Menu`, the `player` can also load a previous save. If he does he will start where he saved and continue from there.
+Instead of choosing "New game" in the `Main Menu`, the `player` can also load a previous save. If he does he will start where he saved and continue from there.
 He can also see the best high scores and the credits (who made the game).
 
-	The highscore system works by creating a `list` of `Tuples` of `strings` and `floats`(Tuples<string, float>). This `list` contains the `name` and the last `level` the `player` played.
+The highscore system works by creating a `list` of `Tuples` of `strings` and `floats`(Tuples<string, float>). This `list` contains the `name` and the last `level` the `player` played.
 Once you a add a new `tuple` to the list, which only happens if the `score` of the player is bigger than the last `score` on the `list`, the `list` will be sorted on descending order.
 This `list` is then written on a file so it is saved between each game.
 
