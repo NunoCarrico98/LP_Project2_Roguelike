@@ -47,9 +47,12 @@ namespace Roguelike
                         gameSymbols[x, y][posInTile] =
                             DefineGameSymbol(grid.GetGO(x, y, posInTile),
                             grid.GetTile(x, y));
-
+                        // Chooses the symbol color
+                        PickGameSymbolColor(gameSymbols[x, y][posInTile]);
                         // Print symbol
                         Console.Write(gameSymbols[x, y][posInTile]);
+                        // Resets the color back to white
+                        Console.ResetColor();
                     }
                     Console.Write("\t");
                 }
@@ -66,8 +69,12 @@ namespace Roguelike
                             DefineGameSymbol(grid.GetGO(x, y, posInTile),
                             grid.GetTile(x, y));
 
+                        // Chooses the symbol color
+                        PickGameSymbolColor(gameSymbols[x, y][posInTile]);
                         // Print symbol
                         Console.Write(gameSymbols[x, y][posInTile]);
+                        // Resets the color back to white
+                        Console.ResetColor();
                     }
                     Console.Write("\t");
                 }
@@ -146,10 +153,19 @@ namespace Roguelike
 
             // Print player health
             Console.SetCursorPosition(70, 4);
+            PlayerHPColor(p);
             Console.WriteLine($"HP{c,10}   {p.Health:f1}");
+            Console.ResetColor();
 
             // Print the currently equipped weapon
             Console.SetCursorPosition(70, 5);
+            if (p.Equipped == null)
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+            } else
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+            }
             Console.WriteLine($"Weapon{c,6}");
 
             // If there is no weapon equipped
@@ -164,15 +180,18 @@ namespace Roguelike
                 Console.SetCursorPosition(85, 5);
                 Console.WriteLine($"{p.Equipped.WeaponType}");
             }
+            Console.ResetColor();
 
             // Print Current weight of player
             Console.SetCursorPosition(70, 6);
+            PlayerWeightColor(p);
             Console.WriteLine($"Weight{c,6}   {p.Weight:f1} / {p.MaxWeight:f1}");
             Console.SetCursorPosition(yCursor, xCursor);
+            Console.ResetColor();
         }
 
         /// <summary>
-        /// Method to print the guide to all game symbols in the game.
+        /// Method to print the guide to all game symbols with a chosen color in the game.
         /// </summary>
         public void ShowGuide()
         {
@@ -183,25 +202,45 @@ namespace Roguelike
             Console.SetCursorPosition(70, 11);
             Console.WriteLine("-------");
             Console.SetCursorPosition(70, 12);
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"\u0298 - Player");
+            Console.ResetColor();
             Console.SetCursorPosition(70, 13);
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"> - Exit");
+            Console.ResetColor();
             Console.SetCursorPosition(70, 14);
+            Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine($". - Empty");
+            Console.ResetColor();
             Console.SetCursorPosition(70, 15);
+            Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine($"~ - Unexplored");
+            Console.ResetColor();
             Console.SetCursorPosition(70, 16);
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine($"\u00B6 - Neutral NPC");
             Console.SetCursorPosition(70, 17);
+            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"\u0278 - Hostile NPC");
+            Console.ResetColor();
             Console.SetCursorPosition(70, 18);
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"\u0277 - Food");
+            Console.ResetColor();
             Console.SetCursorPosition(70, 19);
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"\u2020 - Weapon");
+            Console.ResetColor();
             Console.SetCursorPosition(70, 20);
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine($"\u00A4 - Trap");
+            Console.ResetColor();
             Console.SetCursorPosition(70, 21);
+            Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine($"X - Map");
+            Console.ResetColor();
             Console.SetCursorPosition(yCursor, xCursor);
         }
 
@@ -919,6 +958,93 @@ namespace Roguelike
             Console.WriteLine("* Game Saved *\n");
             Console.WriteLine("* Press any key to go back... *\n");
             Console.ReadKey();
+        }
+
+
+        /// <summary>
+        /// Method that shows the player's HP in a certain color based on how low their HP is.
+        /// </summary>
+        /// <param name="p"></param>
+        public void PlayerHPColor(Player p)
+        {
+            if(p.Health > 70)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+            } else if (p.Health > 50 && p.Health < 71)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+            } else if (p.Health > 30 && p.Health < 51)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            } else if (p.Health > 0 && p.Health < 31)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+            }
+        }
+
+        /// <summary>
+        /// Method that shows the player's Weight in a certain color based on how much Weight they're carrying.
+        /// </summary>
+        /// <param name="p"></param>
+        public void PlayerWeightColor(Player p)
+        {
+            if (p.Weight < 5)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+            }
+            else if (p.Weight > 4 && p.Weight < 10)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+            }
+            else if (p.Weight > 9 && p.Weight < 19)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+            }
+            else if (p.Weight > 18 && p.Weight < 21)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+            }
+        }
+
+        /// <summary>
+        /// Method that picks the color to be printed for each symbol in the grid.
+        /// </summary>
+        /// <param name="gameSymbol"></param>
+        public void PickGameSymbolColor(string gameSymbol)
+        {
+            switch(gameSymbol)
+            {
+                case "\u0298":
+                    Console.ForegroundColor = ConsoleColor.White;
+                    break;
+                case ">":
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case "X":
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    break;
+                case "\u00A4":
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    break;
+                case "\u0277":
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    break;
+                case "\u2020":
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    break;
+                case "\u0278":
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                case "\u00B6":
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    break;
+                case "~":
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    break;
+                case ".":
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    break;
+            }
         }
     }
 }
