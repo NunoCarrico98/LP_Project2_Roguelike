@@ -7,11 +7,44 @@
 ## Who did what?
 
 **Diogo Maia:**
+* Start checking neighbourhood;
+* Add unexplored and explored tiles;
+* Add exploration of top, below, left and right tiles of player;
+* Add pick up of Map;
+* Add Food and Gun classes;
+* Add Startof NPC.
+* Add Fluxogram and UML;
 
 **Ianis Arquissandas:**
+* Start Player Movement;
+* Add Player Movement Restrictions;
+* Add Trap to Map;
+* Add information view for all itens and traps;
+* Improve CheckForTraps();
+* Add random trap placement;
+* Improve Traps;
+* Add weight to itens and player;
+* Add pick up for all itens;
+* Add drop and use item methods;
+* Error messages for pick up, drop and use;
+* Help on UML;
 
-**Nuno Carriço**
-
+**Nuno Carriço:**
+* Create beginner classes and Main Menu;
+* Add Visualization - begginning;
+* Add Player and Exit randomly to grid;
+* Improve Player Movement;
+* Revamp Grid;
+* Improve Error Detection in Main Menu
+* Add High Score System;
+* Add game interfaces;
+* Fix Trap Spawning;
+* Add comments to all classes;
+* Add Procedural Generation for itens, NCPs and traps;
+* Add combat to game;
+* Fix Bugs of certain classes and visualization;
+* Add save and load to game.
+* Add Doxygen file and README;
 
 ## Our solution
 
@@ -61,7 +94,7 @@ Pick Up Item:
 			go back without spending a turn;
 		if(player chooses to pick up an item)
 			do
-				if(tile[counter] is an item)
+				if(tile[counter - 1] is an item)
 					remove item from tile;
 					add null to tile;
 					add item to player inventory;
@@ -85,7 +118,7 @@ Drop Item:
 		if(player chooses to go back)
 			go back without spending a turn;
 		if(player chooses to drop an item)
-			if(inventory[counter] is an item)
+			if(inventory[input - 1] is an item)
 				remove item from inventory;
 				add item to tile;
 				remvoe weight from player weight;
@@ -100,10 +133,10 @@ Use Item:
 		if(player chooses to go back)
 			go back without spending a turn;
 		if(player chooses to use an item)
-			ifinventory[counter] is an item)
-				if(inventory[counter] is Food)
+			ifinventory[input - 1] is an item)
+				if(inventory[input - 1] is Food)
 					Increase player HP;
-				if(inventory[counter] is Weapon)
+				if(inventory[input - 1] is Weapon)
 					if(player has no equipped weapon)
 						equip weapon;
 					if(player has equipped weapon)
@@ -113,9 +146,50 @@ Use Item:
 				remvoe weight from player weight;
 ```
 
+If the player chooses to attack an NPC, a similar algorithm to the one used to pick an Item is used. This one works almost the same as one to pick up an item, but instead of itens it uses the NPC class. 
+That means that it only works if there is an NPC on the current player tile.
+Attacking an NPC means taking a random amount of HP of the chosen NPC between 0 and the equipped weapon's attack power. In this attack, the equipped weapon can break. If it does, the weapon is no longer usable and it disappears from the game.
+Besides that, if the attacked NPC is not an hostile, it becomes an Hostile after being attacked. Moreover, there is always a verification if the NPC is dead. If the NPC dies, there a chance that the NPC will spawn a random number of Itens (Foor or Weapon) between 0 and 5.
+
+Attacked NPC:
+```c#
+	counter = input of player;
+	Make sure there is an NPC on tile;
+	if(there is not)
+		Call error screen;
+	if(there is)
+		Call attack screen;
+		if(player chooses to go back)
+			go back without spending a turn;
+		if(player chooses to attack an NPC)
+			do
+				if(tile[counter - 1] is an NPC)
+					take HP from NPC;
+					if(weapon breaks)
+						remove weapon to player inventory;
+						remove the weapon's weight from the player's weight;
+						if(NPC dies)
+							remove NPC from tile;
+							add null to tile;
+				else increment counter by 1;
+			while (player didn't pick up an item)
+```
+
+However, if the player moves and the tile he moves contains a trap. The trap takes HP from the player. The same happens if the tile contains a hostile NPC.
+
+There is also the possibility that the player finds a Map. If he does, he can pick it up, revealing the entire Map.
+
+That is how one of the turns of the game works. Therefore, the game keeps going until the player decides to quit or he dies.
+
+
+Instead of choosing "New game" in the Main Menu, the player can also load a previous save. If he does he will start where he saved and continue from there.
+He can also see the best high scores and the credits (who made the game).
+
 ## Conclusions
 
-
+1. Better understanding of c# object-oriented programming;
+2. Improvement of the use of lists;
+3. Better understanding of the creation of roguelike games;
 
 ## References ##
 
