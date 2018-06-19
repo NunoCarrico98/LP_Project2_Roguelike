@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Roguelike
+﻿namespace Roguelike
 {
+    /// <summary>
+    /// Interface that defines a gameObject.
+    /// </summary>
     public interface IGameObject
     {
     }

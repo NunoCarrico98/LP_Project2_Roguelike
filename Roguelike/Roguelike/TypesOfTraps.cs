@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Roguelike
 {
+    /// <summary>
+    /// Enumeration that contains all types of traps
+    /// </summary>
     public enum TypesOfTraps
     {
         BearTrap,
