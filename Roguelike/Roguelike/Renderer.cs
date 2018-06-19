@@ -771,7 +771,6 @@ namespace Roguelike
         /// <summary>
         /// Method to show interface to choose item to use.
         /// </summary>
-        /// <param name="grid">Game grid.</param>
         /// <param name="p">Current player in game.</param>
         /// <param name="count">Counter to be able to set error treatment 
         /// on UseItem() method</param>

@@ -44,7 +44,7 @@ namespace Roguelike
         /// <summary>
         /// Alternative constructor to initialise weapon properties.
         /// </summary>
-        /// <param name="type">Weapon type we want the weapon to be.</param>
+        /// <param name="typeweapon">Weapon type we want the weapon to be.</param>
         public Weapon(TypesOfWeapon typeweapon)
         {
             // Set weapon type
