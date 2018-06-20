@@ -51,13 +51,13 @@
 
 ### Fluxogram
 
-![Roguelike_Fluxogram_-_Page_1__1_]()
+![RoguelikeFluxo](../RoguelikeFluxo.svg)
 
 **Picture 1** - Our Fluxogram represents the flow of the program, in this case, the Game Loop.
 
 ### UML Diagram
 
-![UML]()
+![UML](../RogueLike_UML.svg)
 
 **Picture 2** - Our UML Diagram shows the structure of our program as well as the relationships between our classes. 
 
