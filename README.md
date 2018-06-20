@@ -57,7 +57,7 @@
 
 ### UML Diagram
 
-![UML](https://gitlab.com/NunoCarrico98/Project2_Roguelike/uploads/0f75074e535dd640529d06fa392c2dad/RogueLike_UML.png)
+![UML](https://gitlab.com/NunoCarrico98/Project2_Roguelike/uploads/6accdc3258d96bbf51f55d185a84a592/RogueLike_UML.png)
 
 **Picture 2** - Our UML Diagram shows the structure of our program as well as the relationships between our classes. 
 
