@@ -51,13 +51,13 @@
 
 ### Fluxogram
 
-![RoguelikeFluxo](../RoguelikeFluxo.svg)
+![RoguelikeFluxo](https://gitlab.com/NunoCarrico98/Project2_Roguelike/uploads/48f13900164b5a9989be9ab56caea2a4/RoguelikeFluxo.png)
 
 **Picture 1** - Our Fluxogram represents the flow of the program, in this case, the Game Loop.
 
 ### UML Diagram
 
-![UML](../RogueLike_UML.svg)
+![UML](https://gitlab.com/NunoCarrico98/Project2_Roguelike/uploads/0f75074e535dd640529d06fa392c2dad/RogueLike_UML.png)
 
 **Picture 2** - Our UML Diagram shows the structure of our program as well as the relationships between our classes. 
 
